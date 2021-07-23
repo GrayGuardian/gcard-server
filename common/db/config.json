@@ -1,0 +1,9 @@
+{
+    "db_game": {
+        "host": "rm-bp1vx095wt77a964q5o.mysql.rds.aliyuncs.com",
+        "user": "gcard",
+        "password": "**game123456**",
+        "port": 3306,
+        "database": "gcard"
+    }
+}
