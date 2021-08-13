@@ -17,7 +17,7 @@ module.exports = async function (cb) {
     global.SERVER_TYPE = arr[arr.length - 2];
     global.SERVER_ORDER = Number(arg.splice(2));
     global.SERVER_NAME = `${SERVER_TYPE}${SERVER_ORDER}`;
-    global.SERVER_CONFIG = serverConfig.getConfigFromName(SERVER_NAME)
+    global.SERVER_CONFIG = serverConfig.getServerFromName(SERVER_NAME)
 
     if (SERVER_CONFIG == null) {
         log.error(`服务器配置不存在 >>> ${SERVER_NAME}`)
