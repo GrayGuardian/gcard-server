@@ -1,13 +1,13 @@
 const net = require('net');
 const DataBuffer = require("./dataBuffer");
 const SocketDataPack = require('./socketDataPack');
-const SocketEvent = require('./socketEvent');
+const SocketEvent = require('./socket_event');
 
 const HEAD_OFFSET = 2000;   //心跳包发送间隔 毫秒
 const RECONN_MAX_SUM = 3;   //最大重连次数
 
-var SocketClient = function (ip, port) {
-    this.ip = ip
+var SocketClient = function (host, port) {
+    this.host = host
     this.port = port
 
     this.isConnect = false;
@@ -86,7 +86,7 @@ SocketClient.prototype.connect = function (success, error) {
         this.isConnect = false;
         this.close();
     });
-    this.client.connect(this.port, this.ip, () => {
+    this.client.connect(this.port, this.host, () => {
         this.isConnect = true;
 
         this.headBeatInterval = setInterval(() => {

@@ -1,6 +1,9 @@
 module.exports = async function (cb) {
-    global.SocketClient = require("./socket/socketClient");
-    global.SocketServer = require("./socket/socketServer");
+    global.log = require("./base/log");
+    global.ServerType = require("./server/server_type");;
+
+    global.SocketClient = require("./socket/socket_client");
+    global.SocketServer = require("./socket/socket_server");
 
     global.mysqlMgr = new (require("./db/mysql_mgr"))();
     global.mySqlLogic = new (require("./db/mysql_logic"))();
@@ -14,8 +17,13 @@ module.exports = async function (cb) {
     global.SERVER_TYPE = arr[arr.length - 2];
     global.SERVER_ORDER = Number(arg.splice(2));
     global.SERVER_NAME = `${SERVER_TYPE}${SERVER_ORDER}`;
-    // global.SERVER_CONFIG = 
-    console.log(SERVER_TYPE, SERVER_ORDER, SERVER_NAME, serverConfig.getConfigFromName(SERVER_NAME));
+    global.SERVER_CONFIG = serverConfig.getConfigFromName(SERVER_NAME)
+
+    if (SERVER_CONFIG == null) {
+        log.error(`服务器配置不存在 >>> ${SERVER_NAME}`)
+        return;
+    }
+    // console.log(SERVER_TYPE, SERVER_ORDER, SERVER_NAME, SERVER_CONFIG);
 
     cb();
 }

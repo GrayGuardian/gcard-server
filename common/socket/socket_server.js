@@ -2,13 +2,13 @@
 const net = require('net')
 const DataBuffer = require("./dataBuffer");
 const SocketDataPack = require('./socketDataPack');
-const SocketEvent = require('./socketEvent');
+const SocketEvent = require('./socket_event');
 
 const HEAD_TIMEOUT = 5000;    // 心跳超时 毫秒
 const HEAD_CHECKTIME = 5000;   // 心跳包超时检测 毫秒
 
-var SocketServer = function (ip, port) {
-    this.ip = ip
+var SocketServer = function (host, port) {
+    this.host = host
     this.port = port
 
     this.cb = {};
@@ -65,7 +65,7 @@ SocketServer.prototype.listen = function (cb) {
         socket.on("error", () => {
         });
     });
-    this.server.listen(this.port, this.ip, () => {
+    this.server.listen(this.port, this.host, () => {
         this.headCheckInterval = setInterval(() => {
             this.checkHeadTimeOut();
         }, HEAD_CHECKTIME);
@@ -150,6 +150,4 @@ SocketServer.prototype.call = function (type, arg1, arg2, arg3, arg4) {
 }
 
 
-module.exports = function (ip, port) {
-    return new SocketServer(ip, port);
-}
+module.exports = SocketServer
