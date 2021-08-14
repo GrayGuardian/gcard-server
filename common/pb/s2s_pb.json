@@ -1,0 +1,119 @@
+{
+  "nested": {
+    "s2s": {
+      "nested": {
+        "rpc": {
+          "fields": {
+            "code": {
+              "rule": "required",
+              "type": "int32",
+              "id": 1
+            },
+            "from": {
+              "rule": "required",
+              "type": "string",
+              "id": 2
+            },
+            "to": {
+              "rule": "required",
+              "type": "string",
+              "id": 3
+            },
+            "router": {
+              "rule": "required",
+              "type": "string",
+              "id": 4
+            },
+            "conn": {
+              "type": "conn",
+              "id": 50
+            }
+          }
+        },
+        "rpcRet": {
+          "fields": {
+            "code": {
+              "rule": "required",
+              "type": "int32",
+              "id": 1
+            },
+            "from": {
+              "rule": "required",
+              "type": "string",
+              "id": 2
+            },
+            "to": {
+              "rule": "required",
+              "type": "string",
+              "id": 3
+            },
+            "router": {
+              "rule": "required",
+              "type": "string",
+              "id": 4
+            },
+            "connRet": {
+              "type": "connRet",
+              "id": 50
+            }
+          }
+        },
+        "conn": {
+          "fields": {
+            "config": {
+              "rule": "required",
+              "type": "common.ServerConfig",
+              "id": 1
+            }
+          }
+        },
+        "connRet": {
+          "fields": {
+            "code": {
+              "rule": "required",
+              "type": "int32",
+              "id": 1
+            }
+          }
+        }
+      }
+    },
+    "common": {
+      "nested": {
+        "ServerConfig": {
+          "fields": {
+            "id": {
+              "rule": "required",
+              "type": "int32",
+              "id": 1
+            },
+            "name": {
+              "rule": "required",
+              "type": "string",
+              "id": 2
+            },
+            "type": {
+              "rule": "required",
+              "type": "int32",
+              "id": 3
+            },
+            "host": {
+              "rule": "required",
+              "type": "string",
+              "id": 4
+            },
+            "port": {
+              "rule": "required",
+              "type": "int32",
+              "id": 5
+            },
+            "desc": {
+              "type": "string",
+              "id": 6
+            }
+          }
+        }
+      }
+    }
+  }
+}

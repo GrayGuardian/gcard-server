@@ -1,4 +1,5 @@
 module.exports = async function (cb) {
+    global.pb = new (require("./pb/pb"))();
     global.log = require("./base/log");
     global.ServerType = require("./server/server_type");;
 

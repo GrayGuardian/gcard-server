@@ -1,0 +1,30 @@
+syntax = "proto2";
+package s2s;
+
+import "common.proto";
+
+message rpc {
+    required int32 code = 1;
+    required string from = 2;
+    required string to = 3;
+    required string router = 4;
+
+    optional conn conn = 50;
+}
+
+message rpcRet {
+    required int32 code = 1;
+    required string from = 2;
+    required string to = 3;
+    required string router = 4;
+
+    optional connRet connRet = 50;
+}
+
+message conn {
+    required common.ServerConfig config = 1;
+}
+
+message connRet{
+    required int32 code = 1;
+}

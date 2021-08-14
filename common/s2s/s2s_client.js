@@ -1,5 +1,5 @@
 var Client = function (cb) {
-    this.config = serverConfig.getCenterServerFromConfig(SERVER_CONFIG)
+    this.config = serverConfig.getCenterServerFromName(SERVER_NAME)
     if (this.config == null) {
         log.error(`未找到[${SERVER_NAME}]对应的中心服务器`);
         return;

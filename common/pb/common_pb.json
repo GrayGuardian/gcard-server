@@ -1,0 +1,41 @@
+{
+  "nested": {
+    "common": {
+      "nested": {
+        "ServerConfig": {
+          "fields": {
+            "id": {
+              "rule": "required",
+              "type": "int32",
+              "id": 1
+            },
+            "name": {
+              "rule": "required",
+              "type": "string",
+              "id": 2
+            },
+            "type": {
+              "rule": "required",
+              "type": "int32",
+              "id": 3
+            },
+            "host": {
+              "rule": "required",
+              "type": "string",
+              "id": 4
+            },
+            "port": {
+              "rule": "required",
+              "type": "int32",
+              "id": 5
+            },
+            "desc": {
+              "type": "string",
+              "id": 6
+            }
+          }
+        }
+      }
+    }
+  }
+}

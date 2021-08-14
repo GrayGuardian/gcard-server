@@ -1,0 +1,23 @@
+{
+  "name": "gcard-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GrayGuardian/gcard-server.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GrayGuardian/gcard-server/issues"
+  },
+  "homepage": "https://github.com/GrayGuardian/gcard-server#readme",
+  "dependencies": {
+    "mysql": "^2.18.1",
+    "protobufjs": "^6.11.2"
+  }
+}
