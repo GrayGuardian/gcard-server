@@ -43,6 +43,7 @@ Log.print = function (text) {
         { color: "37", text: "[Print]" },
         { color: "35", text: `[${getStackInfo()}]` },
         { color: "37", text: text },
+        { color: "37", text: '' },
     ]
     let logText = '';
     arr.forEach(info => {
@@ -56,6 +57,7 @@ Log.error = function (text) {
         { color: "31", text: "[Error]" },
         { color: "35", text: `[${getStackInfo()}]` },
         { color: "31", text: text },
+        { color: "37", text: '' },
     ]
     let logText = '';
     arr.forEach(info => {

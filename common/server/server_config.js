@@ -26,9 +26,14 @@ ServerConfig.prototype.getServerFromName = function (name) {
 }
 // 根据服务器名字获取转发服务器配置
 ServerConfig.prototype.getCenterServerFromConfig = function (config) {
-    let arr = this.configTypeMap.get(ServerType.Center);
-    let index = this.configTypeMap.get(config.type).indexOf(config) % arr.length;
-    return arr[index];
+    try {
+        let arr = this.configTypeMap.get(ServerType.Center);
+        let index = this.configTypeMap.get(config.type).indexOf(config) % arr.length;
+        return arr[index];
+    }
+    catch {
+        return null;
+    }
 }
 
 module.exports = ServerConfig;
