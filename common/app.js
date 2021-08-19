@@ -1,7 +1,12 @@
 module.exports = async function (cb) {
     global.pb = new (require("./pb/pb"))();
     global.log = require("./base/log");
-    global.ServerType = require("./server/server_type");;
+    global.ServerType = require("./server/server_type");
+    global.SocketEvent = require("./socket/socket_event");
+    const ERROR_INFO = require('./const/ERROR_INFO');
+    global.SUCCESS_CODE = ERROR_INFO.SUCCESS_CODE;
+    global.ERROR_CODE = ERROR_INFO.ERROR_CODE;
+    global.genErrorMsg = ERROR_INFO.genErrorMsg;
 
     global.SocketClient = require("./socket/socket_client");
     global.SocketServer = require("./socket/socket_server");

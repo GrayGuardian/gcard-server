@@ -3,7 +3,7 @@ var SocketEvent = {
     sc_disconn: 0x0002,   //客户端主动断开
     sc_kickout: 0x0003,    //服务端踢出
 
-    sc_test: 0x1001,   //测试用
+    sc_send: 0x1001,   //发送数据包
 };
 
 module.exports = SocketEvent;

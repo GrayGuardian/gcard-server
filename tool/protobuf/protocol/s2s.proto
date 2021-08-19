@@ -4,12 +4,17 @@ package s2s;
 import "common.proto";
 
 message rpc {
-    required int32 code = 1;
-    required string from = 2;
-    required string to = 3;
-    required string router = 4;
+    required int32 code = 1;    // 消息code
+    required string from = 2;   //来源服务器
+    required string to = 3; // 目标服务器
+    required string router = 4; // 路由
+    required string type = 5;   //来源 - Rpc or RpcRet
 
     optional conn conn = 50;
+    optional connRet connRet = 51;
+    
+    optional test test = 100;
+    optional testRet testRet = 101;
 }
 
 message rpcRet {
@@ -19,12 +24,21 @@ message rpcRet {
     required string router = 4;
 
     optional connRet connRet = 50;
+
+    optional testRet testRet = 100;
 }
 
 message conn {
     required common.ServerConfig config = 1;
 }
-
 message connRet{
+    required int32 code = 1;
+}
+
+message test{
+
+}
+
+message testRet{
     required int32 code = 1;
 }

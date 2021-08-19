@@ -24,9 +24,26 @@
               "type": "string",
               "id": 4
             },
+            "type": {
+              "rule": "required",
+              "type": "string",
+              "id": 5
+            },
             "conn": {
               "type": "conn",
               "id": 50
+            },
+            "connRet": {
+              "type": "connRet",
+              "id": 51
+            },
+            "test": {
+              "type": "test",
+              "id": 100
+            },
+            "testRet": {
+              "type": "testRet",
+              "id": 101
             }
           }
         },
@@ -55,6 +72,10 @@
             "connRet": {
               "type": "connRet",
               "id": 50
+            },
+            "testRet": {
+              "type": "testRet",
+              "id": 100
             }
           }
         },
@@ -68,6 +89,18 @@
           }
         },
         "connRet": {
+          "fields": {
+            "code": {
+              "rule": "required",
+              "type": "int32",
+              "id": 1
+            }
+          }
+        },
+        "test": {
+          "fields": {}
+        },
+        "testRet": {
           "fields": {
             "code": {
               "rule": "required",
