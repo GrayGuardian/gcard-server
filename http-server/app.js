@@ -16,4 +16,15 @@ app(() => {
         }
     );
 
+    const HttpServer = require("../common/http/http_server")
+    global.httpServer = new HttpServer(SERVER_CONFIG.host, SERVER_CONFIG.port);
+    httpServer.use(async (ctx, next) => {
+        // console.log(ctx.data)
+        ctx.end("123")
+        await next();
+    })
+    httpServer.listen(() => {
+        log.print(`Http服务器创建成功 ${SERVER_NAME} http://${SERVER_CONFIG.host}:${SERVER_CONFIG.port}`);
+    })
+
 });
