@@ -1,15 +1,14 @@
 const S2SType = require("./s2s_type");
 const S2SClient = require("./s2s_client");
 
-var Server = function (host, ip) {
-    console.log(SERVER_TYPE.CENTER)
+var Server = function (host, port) {
     if (SERVER_CONFIG.type != SERVER_TYPE.CENTER) {
         log.error(`[${SERVER_NAME}]不是中心服务器，无法创建转发服务器`)
         return;
     }
     this.clientMap = new Map();
     this.s2sClientMap = new Map();
-    this.server = new SocketServer(host, ip)
+    this.server = new SocketServer(host, port)
     this.server.on("onReceive", (socket, dataPack) => { this.onReceive(socket, dataPack) });
     this.server.on("onError", (ex) => { log.error(ex) });
 }
