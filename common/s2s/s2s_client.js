@@ -19,8 +19,7 @@ Client.prototype.connect = function (success, error) {
     if (this.client == null) return;
     this.client.connect(() => {
         this.rpc(this.config.name, "conn", { config: SERVER_CONFIG }, (s2sdata, data) => {
-            if (data.code == SUCCESS_CODE) {
-                this.rpc(SERVER_NAME, 'test', null, () => { console.log("接收回调testRet") })
+            if (data.code == ERROR_INFO.SUCCESS_CODE) {
                 if (success != null) success(this);
             }
             else {
@@ -56,7 +55,7 @@ Client.prototype.send = function (s2sdata) {
     log.print(`[s2s] [${s2sdata.code}] [${s2sdata.from}] to [${s2sdata.to}] [${s2sdata.router}] >>> ${JSON.stringify(s2sdata[s2sdata.router])}`)
 
     let buff = pb.encode("s2s.rpc", s2sdata);
-    this.client.send(SocketEvent.sc_send, buff);
+    this.client.send(SOCKET_EVENT.SEND, buff);
 }
 
 

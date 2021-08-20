@@ -1,15 +1,13 @@
 module.exports = async function (cb) {
-    global.pb = new (require("./pb/pb"))();
-    global.log = require("./base/log");
-    global.ServerType = require("./server/server_type");
-    global.SocketEvent = require("./socket/socket_event");
-    const ERROR_INFO = require('./const/ERROR_INFO');
-    global.SUCCESS_CODE = ERROR_INFO.SUCCESS_CODE;
-    global.ERROR_CODE = ERROR_INFO.ERROR_CODE;
-    global.genErrorMsg = ERROR_INFO.genErrorMsg;
+    global.SERVER_TYPE = require("./server/server_type");
+    global.SOCKET_EVENT = require("./socket/socket_event");
+    global.ERROR_INFO = require('./const/ERROR_INFO');
 
     global.SocketClient = require("./socket/socket_client");
     global.SocketServer = require("./socket/socket_server");
+
+    global.pb = new (require("./pb/pb"))();
+    global.log = require("./base/log");
 
     global.mysqlMgr = new (require("./db/mysql_mgr"))();
     global.mySqlLogic = new (require("./db/mysql_logic"))();
@@ -20,16 +18,14 @@ module.exports = async function (cb) {
     //服务器配置获取
     var arg = process.argv;
     var arr = arg[1].split('\\');
-    global.SERVER_TYPE = arr[arr.length - 2];
-    global.SERVER_ORDER = Number(arg.splice(2));
-    global.SERVER_NAME = `${SERVER_TYPE}${SERVER_ORDER}`;
+    global.SERVER_ORDER = Number(arg.splice(2))
+    global.SERVER_NAME = `${arr[arr.length - 2]}${SERVER_ORDER}`;
     global.SERVER_CONFIG = serverConfig.getServerFromName(SERVER_NAME)
 
     if (SERVER_CONFIG == null) {
         log.error(`服务器配置不存在 >>> ${SERVER_NAME}`)
         return;
     }
-    // console.log(SERVER_TYPE, SERVER_ORDER, SERVER_NAME, SERVER_CONFIG);
 
     cb();
 }

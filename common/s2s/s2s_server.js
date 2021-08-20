@@ -1,11 +1,14 @@
 const S2SType = require("./s2s_type");
+const S2SClient = require("./s2s_client");
 
 var Server = function (host, ip) {
-    if (SERVER_CONFIG.type != ServerType.Center) {
+    console.log(SERVER_TYPE.CENTER)
+    if (SERVER_CONFIG.type != SERVER_TYPE.CENTER) {
         log.error(`[${SERVER_NAME}]不是中心服务器，无法创建转发服务器`)
         return;
     }
     this.clientMap = new Map();
+    this.s2sClientMap = new Map();
     this.server = new SocketServer(host, ip)
     this.server.on("onReceive", (socket, dataPack) => { this.onReceive(socket, dataPack) });
     this.server.on("onError", (ex) => { log.error(ex) });
@@ -43,7 +46,6 @@ Server.prototype.onReceive = function (socket, dataPack) {
     }
 
     // 转发操作
-    console.log("转发>>", s2sdata.type, s2sdata.router)
     this.send(s2sdata)
 }
 Server.prototype.send = function (s2sdata) {
@@ -52,11 +54,42 @@ Server.prototype.send = function (s2sdata) {
     let buff = pb.encode("s2s.rpc", s2sdata);
     client = this.clientMap.get(s2sdata.to)
     if (client != null) {
-        // 本地转发
-        this.server.send(client, SocketEvent.sc_send, buff)
+        // 本地回发
+        this.server.send(client, SOCKET_EVENT.SEND, buff)
     }
     else {
         // 查找对应的中心服务器二次转发
+        let config = serverConfig.getCenterServerFromName(s2sdata.to);
+        if (config == null) {
+            log.error(`未查找到[${SERVER_NAME}]的中心服务器`);
+            return;
+        }
+        if (config.name == SERVER_NAME) {
+            log.error(`[${s2sdata.to}]未连接中心服务器[${config.name}]`);
+            return;
+        }
+        // 二次转发逻辑
+        let tsend;
+        tsend = () => {
+            let s2sClient = this.s2sClientMap.get(config.name);
+            if (s2sClient != null) {
+                s2sClient.send(s2sdata);
+            }
+            else {
+                s2sClient = new S2SClient(config);
+                s2sClient.connect(
+                    () => {
+                        log.print(`转发服务器[${s2sClient.config.name}]连接成功`);
+                        this.s2sClientMap.set(s2sClient.config.name, s2sClient);
+                        tsend();
+                    },
+                    () => {
+                        log.error(`转发服务器[${s2sClient.config.name}]连接失败 ${s2sClient.config.host}:${s2sClient.config.port}`);
+                    }
+                );
+            }
+        }
+        tsend();
 
     }
 

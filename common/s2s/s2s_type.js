@@ -1,7 +1,7 @@
 
 module.exports = {
     // S2S
-    S2S: "s2s.rpc",
+    S2S: "Rpc",
     // S2SRet
-    S2SRet: "s2s.rpcRet",
+    S2SRet: "RpcRet",
 }

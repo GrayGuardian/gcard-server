@@ -12,21 +12,11 @@ message rpc {
 
     optional conn conn = 50;
     optional connRet connRet = 51;
-    
+
     optional test test = 100;
     optional testRet testRet = 101;
 }
 
-message rpcRet {
-    required int32 code = 1;
-    required string from = 2;
-    required string to = 3;
-    required string router = 4;
-
-    optional connRet connRet = 50;
-
-    optional testRet testRet = 100;
-}
 
 message conn {
     required common.ServerConfig config = 1;
@@ -40,5 +30,4 @@ message test{
 }
 
 message testRet{
-    required int32 code = 1;
 }

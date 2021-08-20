@@ -1,7 +1,7 @@
 const net = require('net');
 const DataBuffer = require("./dataBuffer");
 const SocketDataPack = require('./socketDataPack');
-const SocketEvent = require('./socket_event');
+const SOCKET_EVENT = require('./socket_event');
 
 const HEAD_OFFSET = 2000;   //心跳包发送间隔 毫秒
 const RECONN_MAX_SUM = 3;   //最大重连次数
@@ -62,7 +62,7 @@ SocketClient.prototype.connect = function (success, error) {
         let dataPack = this.dataBuffer.TryUnpack();
         if (dataPack != null) {
             switch (dataPack.type) {
-                case SocketEvent.sc_kickout:
+                case SOCKET_EVENT.KICKOUT:
                     // 自动会回调close消息，此处可以不需要额外操作
                     // 服务端踢出
                     break;
@@ -90,7 +90,7 @@ SocketClient.prototype.connect = function (success, error) {
         this.isConnect = true;
 
         this.headBeatInterval = setInterval(() => {
-            this.send(SocketEvent.sc_head)
+            this.send(SOCKET_EVENT.HEARTBEAT)
         }, HEAD_OFFSET);
 
         if (success != null) success();
@@ -120,7 +120,7 @@ SocketClient.prototype.reConnect = function (num, index) {
 // 断开连接
 SocketClient.prototype.disConnect = function () {
     if (!this.isConnect) return;
-    this.send(SocketEvent.sc_disconn)
+    this.send(SOCKET_EVENT.DISCONN)
     this.close();
 }
 

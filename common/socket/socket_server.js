@@ -2,7 +2,7 @@
 const net = require('net')
 const DataBuffer = require("./dataBuffer");
 const SocketDataPack = require('./socketDataPack');
-const SocketEvent = require('./socket_event');
+const SOCKET_EVENT = require('./socket_event');
 
 const HEAD_TIMEOUT = 5000;    // 心跳超时 毫秒
 const HEAD_CHECKTIME = 5000;   // 心跳包超时检测 毫秒
@@ -45,10 +45,10 @@ SocketServer.prototype.listen = function (cb) {
             let dataPack = this.dataBuffer.TryUnpack();
             if (dataPack != null) {
                 switch (dataPack.type) {
-                    case SocketEvent.sc_head:
+                    case SOCKET_EVENT.HEARTBEAT:
                         this.receiveHead(socket);
                         break;
-                    case SocketEvent.sc_disconn:
+                    case SOCKET_EVENT.DISCONN:
                         // 自动会回调close消息，此处可以不需要额外操作
                         // console.log("客户端主动断开连接");
                         break;
@@ -95,7 +95,7 @@ SocketServer.prototype.send = function (socket, type, data, cb) {
     });
 }
 SocketServer.prototype.kickOut = function (socket) {
-    this.send(socket, SocketEvent.sc_kickout, null, () => {
+    this.send(socket, SOCKET_EVENT.KICKOUT, null, () => {
         this.closeClient(socket);
     });
 }

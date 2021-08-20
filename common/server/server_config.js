@@ -3,7 +3,7 @@ var ServerConfig = function () { }
 ServerConfig.prototype.create = function (configs) {
     this.configs = configs
     this.configNameMap = new Map();
-    this.configTypeMap = new Map();;
+    this.configTypeMap = new Map();
     configs.forEach(config => {
         this.configNameMap.set(config.name, config)
         let arr = this.configTypeMap.get(config.type);
@@ -28,7 +28,7 @@ ServerConfig.prototype.getServerFromName = function (name) {
 ServerConfig.prototype.getCenterServerFromName = function (name) {
     try {
         let config = this.configNameMap.get(name);
-        let arr = this.configTypeMap.get(ServerType.Center);
+        let arr = this.configTypeMap.get(SERVER_TYPE.CENTER);
         let index = this.configTypeMap.get(config.type).indexOf(config) % arr.length;
         return arr[index];
     }
