@@ -23,6 +23,7 @@ let getStackInfo = function () {
     }
     let stackStr = stackArr[index];
 
+
     return stackStr.substring(stackStr.lastIndexOf('\\') + 1, stackStr.lastIndexOf(':'));
 }
 let getDateInfo = function () {

@@ -1,5 +1,5 @@
 syntax = "proto2";
-package http;
+package socket;
 
 import "common.proto";
 
