@@ -9,8 +9,9 @@ var Server = function (host, port) {
     this.clientMap = new Map();
     this.s2sClientMap = new Map();
     this.server = new SocketServer(host, port)
-    this.server.on("onReceive", (socket, dataPack) => { this.onReceive(socket, dataPack) });
-    this.server.on("onError", (ex) => { log.error(ex) });
+
+    this.server.use(SocketServer.EVENT_TYPE.OnReceive, async (ctx, next) => { this.onReceive(ctx.socket, ctx.dataPack); await next(); });
+    this.server.use(SocketServer.EVENT_TYPE.OnError, async (ex, next) => { log.error(ex); await next(); });
 }
 Server.prototype.listen = function (cb) {
     if (this.server == null) return;

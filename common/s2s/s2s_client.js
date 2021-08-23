@@ -11,9 +11,9 @@ var Client = function (config) {
 
     this.client = new SocketClient(this.config.host, this.config.port)
 
-    this.client.on("onReceive", (dataPack) => { this.onReceive(dataPack) });
+    this.client.use(SocketClient.EVENT_TYPE.OnReceive, async (ctx, next) => { this.onReceive(ctx.dataPack); await next(); });
+    this.client.use(SocketClient.EVENT_TYPE.OnError, async (ex, next) => { log.error(ex); await next(); });
 }
-    ;
 
 Client.prototype.connect = function (success, error) {
     if (this.client == null) return;

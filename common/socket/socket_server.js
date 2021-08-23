@@ -13,20 +13,43 @@ var SocketServer = function (host, port) {
 
     this.cb = {};
 };
-SocketServer.prototype.onConnect = function (socket) {
-    this.call("onConnect", socket);
+
+SocketServer.EVENT_TYPE = {
+    OnConnect: 0,
+    OnDisconnect: 1,
+    OnReceive: 2,
+    OnSend: 3,
+    OnError: 4
+};
+
+SocketServer.prototype.use = function (type, cb) {
+    if (this.cb[type] == null) {
+        this.cb[type] = [];
+    }
+    this.cb[type].push(cb);
 }
-SocketServer.prototype.onDisconnect = function (socket, hadError) {
-    this.call("onDisconnect", socket, hadError);
+SocketServer.prototype.disuse = function (type, cb) {
+    let arr = this.cb[type];
+    if (arr == null) return false;
+    let index = arr.indexOf(cb);
+    if (index == -1) return false;
+    arr.splice(index, 1);
+    return true;
 }
-SocketServer.prototype.onReceive = function (socket, dataPack) {
-    this.call("onReceive", socket, dataPack);
-}
-SocketServer.prototype.onSend = function (socket, dataPack) {
-    this.call("onSend", socket, dataPack);
-}
-SocketServer.prototype.onError = function (ex) {
-    this.call("onError", ex);
+SocketServer.prototype.next = async function (type, ctx, index) {
+    let arr = this.cb[type];
+    if (arr == null) {
+        return;
+    }
+    ctx = ctx ?? {};
+    index = index ?? 0;
+    if (index < arr.length) {
+        let next = async () => {
+            await this.next(type, ctx, index + 1);
+        }
+        let fun = arr[index];
+        await fun(ctx, next)
+    }
 }
 
 SocketServer.prototype.listen = function (cb) {
@@ -35,11 +58,13 @@ SocketServer.prototype.listen = function (cb) {
 
     this.server = new net.createServer();
     this.server.on('error', (ex) => {
-        this.onError(ex);
+        this.next(SocketServer.EVENT_TYPE.OnError, ex)
     });
     this.server.on("connection", (socket) => {
         this.clientInfoMap.set(socket, { headTime: Date.now() });
-        this.onConnect(socket);
+
+        this.next(SocketServer.EVENT_TYPE.OnConnect, { socket: socket })
+
         socket.on("data", (data) => {
             this.dataBuffer.addBuffer(data);
             let dataPack = this.dataBuffer.TryUnpack();
@@ -53,13 +78,14 @@ SocketServer.prototype.listen = function (cb) {
                         // console.log("客户端主动断开连接");
                         break;
                     default:
-                        this.onReceive(socket, dataPack);
+                        this.next(SocketServer.EVENT_TYPE.OnReceive, { socket: socket, dataPack: dataPack })
                         break;
                 }
             }
         });
         socket.on("close", (hadError) => {
-            this.onDisconnect(socket, hadError);
+            this.next(SocketServer.EVENT_TYPE.OnDisconnect, { socket: socket, hadError: hadError })
+
             this.closeClient(socket);
         });
         socket.on("error", () => {
@@ -91,7 +117,7 @@ SocketServer.prototype.send = function (socket, type, data, cb) {
     let dataPack = new SocketDataPack(type, data);
     socket.write(dataPack.buff, "utf8", () => {
         if (cb != null) cb(socket, dataPack);
-        this.onSend(socket, dataPack);
+        this.next(SocketServer.EVENT_TYPE.OnSend, { socket: socket, dataPack: dataPack })
     });
 }
 SocketServer.prototype.kickOut = function (socket) {
@@ -125,28 +151,6 @@ SocketServer.prototype.close = function (cb) {
 }
 SocketServer.prototype.address = function () {
     return this.server.address();
-}
-
-SocketServer.prototype.on = function (type, cb) {
-    if (type == null || cb == null) return;
-    if (this.cb[type] == null) {
-        this.cb[type] = [];
-    }
-    this.cb[type].push(cb);
-}
-SocketServer.prototype.off = function (type, cb) {
-    if (type == null || cb == null || this.cb[type] == null || !Array.isArray(this.cb[type])) return;
-    let index = this.cb[type].indexOf(cb);
-    if (index >= 0) {
-        this.cb[type].splice(index, 1);
-    }
-
-}
-SocketServer.prototype.call = function (type, arg1, arg2, arg3, arg4) {
-    if (type == null || this.cb[type] == null || !Array.isArray(this.cb[type])) return;
-    this.cb[type].forEach(cb => {
-        cb(arg1, arg2, arg3, arg4);
-    });
 }
 
 

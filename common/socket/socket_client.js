@@ -14,33 +14,48 @@ var SocketClient = function (host, port) {
     this.cb = [];
 }
 
-SocketClient.prototype.onConnectSuccess = function () {
-    this.call("onConnectSuccess");
+SocketClient.EVENT_TYPE = {
+    OnConnectSuccess: 0,
+    OnConnectError: 1,
+    OnDisConnect: 2,
+    OnReceive: 3,
+    OnSend: 4,
+    OnError: 5,
+    OnReconnecting: 6,
+    OnReConnectSuccess: 7,
+    OnReConnectError: 8
+};
+
+SocketClient.prototype.use = function (type, cb) {
+    if (this.cb[type] == null) {
+        this.cb[type] = [];
+    }
+    this.cb[type].push(cb);
 }
-SocketClient.prototype.onConnectError = function () {
-    this.call("onConnectError");
+SocketClient.prototype.disuse = function (type, cb) {
+    let arr = this.cb[type];
+    if (arr == null) return false;
+    let index = arr.indexOf(cb);
+    if (index == -1) return false;
+    arr.splice(index, 1);
+    return true;
 }
-SocketClient.prototype.onDisConnect = function () {
-    this.call("onDisConnect");
+SocketClient.prototype.next = async function (type, ctx, index) {
+    let arr = this.cb[type];
+    if (arr == null) {
+        return;
+    }
+    ctx = ctx ?? {};
+    index = index ?? 0;
+    if (index < arr.length) {
+        let next = async () => {
+            await this.next(type, ctx, index + 1);
+        }
+        let fun = arr[index];
+        await fun(ctx, next)
+    }
 }
-SocketClient.prototype.onReceive = function (dataPack) {
-    this.call("onReceive", dataPack);
-}
-SocketClient.prototype.onSend = function (dataPack) {
-    this.call("onSend", dataPack);
-}
-SocketClient.prototype.onError = function (ex) {
-    this.call("onError", ex);
-}
-SocketClient.prototype.onReconnecting = function (index) {
-    this.call("onReconnecting", index);
-}
-SocketClient.prototype.onReConnectSuccess = function (index) {
-    this.call("onReConnectSuccess", index);
-}
-SocketClient.prototype.onReConnectError = function (index) {
-    this.call("onReConnectError", index);
-}
+
 
 SocketClient.prototype.connect = function (success, error) {
     this.dataBuffer = new DataBuffer();
@@ -50,10 +65,11 @@ SocketClient.prototype.connect = function (success, error) {
         switch (ex.code) {
             case "ECONNREFUSED":
                 if (error != null) error();
-                this.onConnectError();
+                this.next(SocketClient.EVENT_TYPE.OnConnectError);
                 break;
             default:
                 this.onError(ex);
+                this.next(SocketClient.EVENT_TYPE.OnError, ex);
                 break;
         }
     });
@@ -67,7 +83,7 @@ SocketClient.prototype.connect = function (success, error) {
                     // 服务端踢出
                     break;
                 default:
-                    this.onReceive(dataPack);
+                    this.next(SocketClient.EVENT_TYPE.OnReceive, { dataPack: dataPack });
                     break;
             }
         }
@@ -76,7 +92,7 @@ SocketClient.prototype.connect = function (success, error) {
         if (this.isConnect) {
             if (!hadError) {
                 // 正常关闭
-                this.onDisConnect();
+                this.next(SocketClient.EVENT_TYPE.OnDisConnect);
             }
             else {
                 // 异常关闭，尝试重连
@@ -94,7 +110,7 @@ SocketClient.prototype.connect = function (success, error) {
         }, HEAD_OFFSET);
 
         if (success != null) success();
-        this.onConnectSuccess();
+        this.next(SocketClient.EVENT_TYPE.OnConnectSuccess);
     });
 
 }
@@ -106,14 +122,14 @@ SocketClient.prototype.reConnect = function (num, index) {
     num--;
     index++;
     if (num < 0) {
-        this.onDisConnect();
+        this.next(SocketClient.EVENT_TYPE.OnDisConnect);
         return;
     }
-    this.onReconnecting(index);
+    this.next(SocketClient.EVENT_TYPE.OnReconnecting, { index: index });
     this.connect(() => {
-        this.onReConnectSuccess(index);
+        this.next(SocketClient.EVENT_TYPE.OnReConnectSuccess, { index: index });
     }, () => {
-        this.onReConnectError(index);
+        this.next(SocketClient.EVENT_TYPE.OnReConnectError, { index: index });
         this.reConnect(num, index);
     });
 }
@@ -137,31 +153,8 @@ SocketClient.prototype.send = function (type, data, cb) {
     let dataPack = new SocketDataPack(type, data);
     this.client.write(dataPack.buff, "utf8", () => {
         if (cb != null) cb();
-        this.onSend(dataPack);
+        this.next(SocketClient.EVENT_TYPE.OnSend, { dataPack: dataPack });
     });
 }
-
-SocketClient.prototype.on = function (type, cb) {
-    if (type == null || cb == null) return;
-    if (this.cb[type] == null) {
-        this.cb[type] = [];
-    }
-    this.cb[type].push(cb);
-}
-SocketClient.prototype.off = function (type, cb) {
-    if (type == null || cb == null || this.cb[type] == null || !Array.isArray(this.cb[type])) return;
-    let index = this.cb[type].indexOf(cb);
-    if (index >= 0) {
-        this.cb[type].splice(index, 1);
-    }
-
-}
-SocketClient.prototype.call = function (type, arg1, arg2, arg3, arg4) {
-    if (type == null || this.cb[type] == null || !Array.isArray(this.cb[type])) return;
-    this.cb[type].forEach(cb => {
-        cb(arg1, arg2, arg3, arg4);
-    });
-}
-
 
 module.exports = SocketClient

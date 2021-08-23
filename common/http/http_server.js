@@ -72,7 +72,14 @@ var Server = function (host, port) {
 Server.prototype.use = function (cb) {
     this.onReceiveArr.push(cb);
 }
+Server.prototype.disuse = function (cb) {
+    let index = this.onReceiveArr.indexOf(cb);
+    if (index == -1) return false;
+    this.onReceiveArr.splice(index, 1);
+    return true;
+}
 Server.prototype.next = async function (ctx, index) {
+    ctx = ctx ?? {};
     index = index ?? 0;
     if (index < this.onReceiveArr.length) {
         let next = async () => {
