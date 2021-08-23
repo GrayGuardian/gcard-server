@@ -68,7 +68,6 @@ SocketClient.prototype.connect = function (success, error) {
                 this.next(SocketClient.EVENT_TYPE.OnConnectError);
                 break;
             default:
-                this.onError(ex);
                 this.next(SocketClient.EVENT_TYPE.OnError, ex);
                 break;
         }
