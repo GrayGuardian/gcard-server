@@ -18,8 +18,10 @@ app(() => {
 
     const HttpServer = require("../common/http/http_server")
     global.httpServer = new HttpServer(SERVER_CONFIG.host, SERVER_CONFIG.port);
+    httpServer.use(require('./filter/method'));
     httpServer.use(async (ctx, next) => {
-        // console.log(ctx.data)
+        console.log(ctx.data)
+        console.log(pb.decode('http.rpc', ctx.data))
         ctx.end("123")
         await next();
     })

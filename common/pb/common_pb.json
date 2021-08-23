@@ -34,6 +34,34 @@
               "id": 6
             }
           }
+        },
+        "ErrorCode": {
+          "fields": {
+            "id": {
+              "rule": "required",
+              "type": "int32",
+              "id": 1
+            },
+            "code": {
+              "rule": "required",
+              "type": "string",
+              "id": 2
+            },
+            "clientTip": {
+              "rule": "required",
+              "type": "string",
+              "id": 3
+            },
+            "serverTip": {
+              "rule": "required",
+              "type": "string",
+              "id": 4
+            },
+            "desc": {
+              "type": "string",
+              "id": 5
+            }
+          }
         }
       }
     }

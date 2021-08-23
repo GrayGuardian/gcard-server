@@ -1,0 +1,18 @@
+syntax = "proto2";
+package http;
+
+import "common.proto";
+
+message rpc {
+    required string router = 1; // 路由
+
+    optional test test = 100;
+    optional testRet testRet = 101;
+}
+message test{
+
+}
+
+message testRet{
+
+}

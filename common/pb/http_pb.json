@@ -1,41 +1,13 @@
 {
   "nested": {
-    "s2s": {
+    "http": {
       "nested": {
         "rpc": {
           "fields": {
-            "code": {
-              "rule": "required",
-              "type": "int32",
-              "id": 1
-            },
-            "from": {
-              "rule": "required",
-              "type": "string",
-              "id": 2
-            },
-            "to": {
-              "rule": "required",
-              "type": "string",
-              "id": 3
-            },
             "router": {
               "rule": "required",
               "type": "string",
-              "id": 4
-            },
-            "type": {
-              "rule": "required",
-              "type": "string",
-              "id": 5
-            },
-            "conn": {
-              "type": "conn",
-              "id": 50
-            },
-            "connRet": {
-              "type": "connRet",
-              "id": 51
+              "id": 1
             },
             "test": {
               "type": "test",
@@ -44,24 +16,6 @@
             "testRet": {
               "type": "testRet",
               "id": 101
-            }
-          }
-        },
-        "conn": {
-          "fields": {
-            "config": {
-              "rule": "required",
-              "type": "common.ServerConfig",
-              "id": 1
-            }
-          }
-        },
-        "connRet": {
-          "fields": {
-            "code": {
-              "rule": "required",
-              "type": "common.ErrorCode",
-              "id": 1
             }
           }
         },

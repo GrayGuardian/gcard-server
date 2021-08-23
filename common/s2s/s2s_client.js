@@ -19,7 +19,7 @@ Client.prototype.connect = function (success, error) {
     if (this.client == null) return;
     this.client.connect(() => {
         this.rpc(this.config.name, "conn", { config: SERVER_CONFIG }, (s2sdata, data) => {
-            if (data.code == ERROR_INFO.SUCCESS_CODE) {
+            if (util.EqualErrorCode(data.code, Template.template_error_code.SUCCESS)) {
                 if (success != null) success(this);
             }
             else {
@@ -39,7 +39,7 @@ Client.prototype.rpc = function (to, router, data, cb) {
     s2sdata.to = to;
     s2sdata.router = router;
     s2sdata[router] = data;
-    s2sdata.type = S2SType.S2S;
+    s2sdata.type = S2SType.RPC;
 
     if (cb != null) {
         this.retCbMap.set(s2sdata.code, cb);
@@ -69,14 +69,14 @@ Client.prototype.onReceive = function (dataPack) {
     let data = s2sdata[s2sdata.router];
 
     // 首次接收
-    if (s2sdata.type == S2SType.S2S) {
+    if (s2sdata.type == S2SType.RPC) {
         if (s2sdata.to == SERVER_NAME) {
             let fun = s2sRouter[s2sdata.router];
             if (fun != null) {
                 log.print(`[s2s] [${s2sdata.code}] [${s2sdata.from}] to [${s2sdata.to}] [${s2sdata.router}] >>> ${JSON.stringify(data)}`)
                 let next = (retdata) => {
                     let router = `${s2sdata.router}Ret`
-                    let tdata = { code: s2sdata.code, from: SERVER_NAME, to: s2sdata.from, router: router, type: S2SType.S2SRet };
+                    let tdata = { code: s2sdata.code, from: SERVER_NAME, to: s2sdata.from, router: router, type: S2SType.RET };
                     tdata[router] = retdata
 
                     this.send(tdata)
@@ -87,7 +87,7 @@ Client.prototype.onReceive = function (dataPack) {
         return;
     }
     // 回调
-    if (s2sdata.type == S2SType.S2SRet) {
+    if (s2sdata.type == S2SType.RET) {
         if (s2sdata.to == SERVER_NAME) {
             log.print(`[s2s] [${s2sdata.code}] [${s2sdata.from}] to [${s2sdata.to}] [${s2sdata.router}] >>> ${JSON.stringify(data)}`)
             let fun = this.retCbMap.get(s2sdata.code)

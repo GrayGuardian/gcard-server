@@ -22,7 +22,7 @@ message conn {
     required common.ServerConfig config = 1;
 }
 message connRet{
-    required int32 code = 1;
+    required common.ErrorCode code = 1;
 }
 
 message test{

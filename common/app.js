@@ -1,13 +1,14 @@
 module.exports = async function (cb) {
+    global.log = require("./base/log");
+    global.util = require("./base/util");
+    global.Template = require("./template/template");
     global.SERVER_TYPE = require("./server/server_type");
     global.SOCKET_EVENT = require("./socket/socket_event");
-    global.ERROR_INFO = require('./const/ERROR_INFO');
 
     global.SocketClient = require("./socket/socket_client");
     global.SocketServer = require("./socket/socket_server");
 
     global.pb = new (require("./pb/pb"))();
-    global.log = require("./base/log");
 
     global.mysqlMgr = new (require("./db/mysql_mgr"))();
     global.mySqlLogic = new (require("./db/mysql_logic"))();
