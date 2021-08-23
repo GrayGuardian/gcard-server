@@ -19,7 +19,7 @@ Client.prototype.connect = function (success, error) {
     if (this.client == null) return;
     this.client.connect(() => {
         this.rpc(this.config.name, "conn", { config: SERVER_CONFIG }, (s2sdata, data) => {
-            if (util.EqualErrorCode(data.code, Template.template_error_code.SUCCESS)) {
+            if (util.equalErrorCode(data.code, Template.template_error_code.SUCCESS)) {
                 if (success != null) success(this);
             }
             else {
@@ -71,9 +71,9 @@ Client.prototype.onReceive = function (dataPack) {
     // 首次接收
     if (s2sdata.type == S2SType.RPC) {
         if (s2sdata.to == SERVER_NAME) {
+            log.print(`[s2s] [${s2sdata.code}] [${s2sdata.from}] to [${s2sdata.to}] [${s2sdata.router}] >>> ${JSON.stringify(data)}`)
             let fun = s2sRouter[s2sdata.router];
             if (fun != null) {
-                log.print(`[s2s] [${s2sdata.code}] [${s2sdata.from}] to [${s2sdata.to}] [${s2sdata.router}] >>> ${JSON.stringify(data)}`)
                 let next = (retdata) => {
                     let router = `${s2sdata.router}Ret`
                     let tdata = { code: s2sdata.code, from: SERVER_NAME, to: s2sdata.from, router: router, type: S2SType.RET };

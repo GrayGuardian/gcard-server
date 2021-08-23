@@ -1,7 +1,7 @@
 var pb = new (require('./common/pb/pb'))()
 
 var http = require('http');
-var querystring = require('querystring');
+
 var post_data = {
     router: 'test',
     test: {}
@@ -19,9 +19,12 @@ var options = {
 var req = http.request(options, function (res) {
     console.log('STATUS: ' + res.statusCode);
     console.log('HEADERS: ' + JSON.stringify(res.headers));
-    res.setEncoding('utf8');
+    // res.setEncoding('utf8');
     res.on('data', function (chunk) {
-        console.log('BODY: ' + chunk);
+        let dataPack = pb.decode('http.rpc', chunk);
+        let router = dataPack.router;
+        let data = dataPack[router];
+        console.log(router, ">>>", data);
     });
 });
 req.on('error', function (e) {

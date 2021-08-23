@@ -6,9 +6,15 @@ import "common.proto";
 message rpc {
     required string router = 1; // 路由
 
+    optional error error = 50;
+
     optional test test = 100;
     optional testRet testRet = 101;
 }
+message error{
+    required common.ErrorCode code = 1;
+}
+
 message test{
 
 }

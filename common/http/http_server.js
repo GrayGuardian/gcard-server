@@ -4,8 +4,11 @@ const querystring = require('querystring');
 const Property = async (ctx, next) => {
     ctx.buff = null;
     ctx.data = null;
-    ctx.write = (chunk, encoding, callback) => { return ctx.response.write(chunk, encoding, callback); };
-    ctx.end = (data, encoding, callback) => { return ctx.response.end(data, encoding, callback); };
+    ctx.state = {};
+    ctx.state.method = ctx.request.method;
+    ctx.method = {}
+    ctx.method.write = (chunk, encoding, callback) => { return ctx.response.write(chunk, encoding, callback); };
+    ctx.method.end = (data, encoding, callback) => { return ctx.response.end(data, encoding, callback); };
     await next();
 }
 const GetBuff = async (ctx, next) => {

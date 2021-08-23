@@ -9,6 +9,10 @@
               "type": "string",
               "id": 1
             },
+            "error": {
+              "type": "error",
+              "id": 50
+            },
             "test": {
               "type": "test",
               "id": 100
@@ -16,6 +20,15 @@
             "testRet": {
               "type": "testRet",
               "id": 101
+            }
+          }
+        },
+        "error": {
+          "fields": {
+            "code": {
+              "rule": "required",
+              "type": "common.ErrorCode",
+              "id": 1
             }
           }
         },
