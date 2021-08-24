@@ -1,6 +1,8 @@
 const http = require('http');
 const url = require('url');
 const querystring = require('querystring');
+const Middleware = require('../base/middleware')
+
 const Property = async (ctx, next) => {
     ctx.buff = null;
     ctx.data = null;
@@ -60,7 +62,8 @@ var Server = function (host, port) {
     this.host = host
     this.port = port
 
-    this.onReceiveArr = [];
+    this.middleware = new Middleware();
+
     // 默认中间件处理
     // 增加ctx属性
     this.use(Property);
@@ -70,32 +73,21 @@ var Server = function (host, port) {
     this.use(ParseBuff);
 }
 Server.prototype.use = function (cb) {
-    this.onReceiveArr.push(cb);
+    this.middleware.use(cb);
 }
 Server.prototype.disuse = function (cb) {
-    let index = this.onReceiveArr.indexOf(cb);
-    if (index == -1) return false;
-    this.onReceiveArr.splice(index, 1);
-    return true;
+    return this.middleware.disuse(cb);
 }
 Server.prototype.next = async function (ctx, index) {
-    ctx = ctx ?? {};
-    index = index ?? 0;
-    if (index < this.onReceiveArr.length) {
-        let next = async () => {
-            await this.next(ctx, index + 1);
-        }
-        let fun = this.onReceiveArr[index];
-        await fun(ctx, next)
-    }
+    await this.middleware.next(ctx, index);
 }
 Server.prototype.listen = function (cb) {
-    this.server = http.createServer((request, response) => { this.onReceive({ request: request, response: response }) }).listen(this.port, this.host, () => {
+    this.server = http.createServer((request, response) => { this.onReceive(request, response) }).listen(this.port, this.host, () => {
         if (cb != null) cb(this);
     });
 }
-Server.prototype.onReceive = function (ctx) {
-    this.next(ctx)
+Server.prototype.onReceive = function (request, response) {
+    this.next({ request: request, response: response })
 }
 
 module.exports = Server;

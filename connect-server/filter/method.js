@@ -1,40 +1,34 @@
-const SUCCESS_CODE = Template.template_error_code.SUCCESS.id
 module.exports = async (ctx, next) => {
-    // 返回错误码函数
+    ctx.method = {};
     ctx.method.genError = function (errorCode) {
         errorCode = Template.template_error_code[errorCode.code];
         if (errorCode == null || util.equalErrorCode(errorCode, Template.template_error_code.SUCCESS)) {
             log.error(`不可设置的错误码 code:${errorCode.code}`);
             return;
         }
-        return ctx.method.send(errorCode.id, "error", { code: errorCode });
+        return ctx.method.send("error", { code: errorCode });
     }
-    // 返回函数
     ctx.method.callback = function (data) {
-        router = `${ctx.state.router}Ret`;
-
-        return ctx.method.send(SUCCESS_CODE, router, data);
+        let router = `${ctx.state.router}Ret`;
+        return ctx.method.send(router, data);
     }
-
-    ctx.method.send = function (code, router, data) {
+    ctx.method.send = function (router, data) {
         data = data ?? {};
         let dataPack = {}
         dataPack.router = router;
         dataPack[router] = data;
-        let buff = pb.encode("http.rpc", dataPack);
+        let buff = pb.encode("socket.rpc", dataPack);
 
-        if (!pb.check("http.rpc", buff, dataPack)) {
+        if (!pb.check("socket.rpc", buff, dataPack)) {
             ctx.method.genError(Template.template_error_code.RET_DATA_ERROR);
             return false;
         }
-        log.print(`[http] [s2c] >>> [${router}] ${JSON.stringify(data)}`)
-
-        ctx.response.writeHead(code, {
-            "Content-Type": "application/octet-stream;"
-        });
-        ctx.method.end(buff);
+        log.print(`[socket] [s2c] >>> [${router}] ${JSON.stringify(data)}`)
+        connectServer.server.send(ctx.socket, SOCKET_EVENT.DATA, buff)
         return true;
     }
-
+    ctx.method.kickOut = function () {
+        connectServer.server.kickOut(ctx.socket)
+    }
     await next();
 }

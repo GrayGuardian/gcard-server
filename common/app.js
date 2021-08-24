@@ -1,6 +1,6 @@
 module.exports = async function (cb) {
     global.log = require("./base/log");
-    global.util = require("./base/util");
+    global.util = require("./utils/util");
     global.Template = require("./template/template");
     global.SERVER_TYPE = require("./server/server_type");
     global.SOCKET_EVENT = require("./socket/socket_event");

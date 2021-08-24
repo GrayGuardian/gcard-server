@@ -28,5 +28,15 @@ PB.prototype.decode = function (key, data) {
         return null;
     }
 }
+PB.prototype.check = function (key, buff, data) {
+    try {
+        let str1 = JSON.stringify(this.decode(key, buff));
+        let str2 = JSON.stringify(data)
+
+        return str1 == str2;
+    } catch (error) {
+        return false;
+    }
+}
 
 module.exports = PB

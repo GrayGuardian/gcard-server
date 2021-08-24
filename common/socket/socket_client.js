@@ -2,6 +2,7 @@ const net = require('net');
 const DataBuffer = require("./dataBuffer");
 const SocketDataPack = require('./socketDataPack');
 const SOCKET_EVENT = require('./socket_event');
+const Middleware = require('../base/middleware')
 
 const HEAD_OFFSET = 2000;   //心跳包发送间隔 毫秒
 const RECONN_MAX_SUM = 3;   //最大重连次数
@@ -11,7 +12,8 @@ var SocketClient = function (host, port) {
     this.port = port
 
     this.isConnect = false;
-    this.cb = [];
+
+    this.middlewareMap = new Map();
 }
 
 SocketClient.EVENT_TYPE = {
@@ -27,33 +29,22 @@ SocketClient.EVENT_TYPE = {
 };
 
 SocketClient.prototype.use = function (type, cb) {
-    if (this.cb[type] == null) {
-        this.cb[type] = [];
+    if (this.middlewareMap.get(type) == null) {
+        this.middlewareMap.set(type, new Middleware());
     }
-    this.cb[type].push(cb);
+    this.middlewareMap.get(type).use(cb);
 }
 SocketClient.prototype.disuse = function (type, cb) {
-    let arr = this.cb[type];
-    if (arr == null) return false;
-    let index = arr.indexOf(cb);
-    if (index == -1) return false;
-    arr.splice(index, 1);
-    return true;
+    if (this.middlewareMap.get(type) == null) {
+        return false;
+    }
+    return this.middlewareMap.get(type).disuse(cb);
 }
 SocketClient.prototype.next = async function (type, ctx, index) {
-    let arr = this.cb[type];
-    if (arr == null) {
+    if (this.middlewareMap.get(type) == null) {
         return;
     }
-    ctx = ctx ?? {};
-    index = index ?? 0;
-    if (index < arr.length) {
-        let next = async () => {
-            await this.next(type, ctx, index + 1);
-        }
-        let fun = arr[index];
-        await fun(ctx, next)
-    }
+    await this.middlewareMap.get(type).next(ctx, index);
 }
 
 

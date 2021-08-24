@@ -3,6 +3,7 @@ const net = require('net')
 const DataBuffer = require("./dataBuffer");
 const SocketDataPack = require('./socketDataPack');
 const SOCKET_EVENT = require('./socket_event');
+const Middleware = require('../base/middleware')
 
 const HEAD_TIMEOUT = 5000;    // 心跳超时 毫秒
 const HEAD_CHECKTIME = 5000;   // 心跳包超时检测 毫秒
@@ -11,7 +12,7 @@ var SocketServer = function (host, port) {
     this.host = host
     this.port = port
 
-    this.cb = {};
+    this.middlewareMap = new Map();
 };
 
 SocketServer.EVENT_TYPE = {
@@ -23,34 +24,24 @@ SocketServer.EVENT_TYPE = {
 };
 
 SocketServer.prototype.use = function (type, cb) {
-    if (this.cb[type] == null) {
-        this.cb[type] = [];
+    if (this.middlewareMap.get(type) == null) {
+        this.middlewareMap.set(type, new Middleware());
     }
-    this.cb[type].push(cb);
+    this.middlewareMap.get(type).use(cb);
 }
 SocketServer.prototype.disuse = function (type, cb) {
-    let arr = this.cb[type];
-    if (arr == null) return false;
-    let index = arr.indexOf(cb);
-    if (index == -1) return false;
-    arr.splice(index, 1);
-    return true;
+    if (this.middlewareMap.get(type) == null) {
+        return false;
+    }
+    return this.middlewareMap.get(type).disuse(cb);
 }
 SocketServer.prototype.next = async function (type, ctx, index) {
-    let arr = this.cb[type];
-    if (arr == null) {
+    if (this.middlewareMap.get(type) == null) {
         return;
     }
-    ctx = ctx ?? {};
-    index = index ?? 0;
-    if (index < arr.length) {
-        let next = async () => {
-            await this.next(type, ctx, index + 1);
-        }
-        let fun = arr[index];
-        await fun(ctx, next)
-    }
+    await this.middlewareMap.get(type).next(ctx, index);
 }
+
 
 SocketServer.prototype.listen = function (cb) {
     this.clientInfoMap = new Map();
@@ -107,7 +98,7 @@ SocketServer.prototype.checkHeadTimeOut = function () {
         let offset = Date.now() - info.headTime;
         if (offset > HEAD_TIMEOUT) {
             // 超时踢出
-            console.log("超时踢出", socket);
+            // console.log("超时踢出", socket);
             this.kickOut(socket);
         }
     });

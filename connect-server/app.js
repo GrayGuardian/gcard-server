@@ -16,46 +16,11 @@ app(() => {
     //     }
     // );
 
-
-    global.socketServer = new SocketServer(SERVER_CONFIG.host, SERVER_CONFIG.port);
-    socketServer.use(SocketServer.EVENT_TYPE.OnConnect, async (ctx, next) => {
-        log.print("用户进入");
-        await next();
-    })
-
-    socketServer.use(SocketServer.EVENT_TYPE.OnDisconnect, async (ctx, next) => {
-        log.print("用户退出");
-        await next();
-    })
-
-    socketServer.use(SocketServer.EVENT_TYPE.OnReceive, async (ctx, next) => {
-        console.log("c2s", ctx.dataPack);
-        // 接收
-        let dataPack = pb.decode('socket.rpc', ctx.dataPack.data);
-        let router = dataPack.router;
-        let data = dataPack[router];
-        console.log(router, ">>>", data);
+    const ConnectServer = require("./connect/connect_server");
+    global.connectServer = new ConnectServer(SERVER_CONFIG.host, SERVER_CONFIG.port);
 
 
-        // 发送
-        data = pb.encode("socket.rpc", {
-            router: 'testRet',
-            testRet: {}
-        });
-        socketServer.send(ctx.socket, SOCKET_EVENT.SEND, data)
-
-        await next();
-    })
-    socketServer.use(SocketServer.EVENT_TYPE.OnSend, async (ctx, next) => {
-        console.log("s2c", ctx.dataPack);
-        await next();
-    })
-    socketServer.use(SocketServer.EVENT_TYPE.OnError, async (ex, next) => {
-        log.error(ex);
-        await next();
-    })
-
-    socketServer.listen(() => {
+    connectServer.listen(() => {
         log.print(`网关服务器创建成功 ${SERVER_NAME} ${SERVER_CONFIG.host}:${SERVER_CONFIG.port}`);
     });
 

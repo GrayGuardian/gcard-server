@@ -55,7 +55,7 @@ Server.prototype.send = function (s2sdata) {
     client = this.clientMap.get(s2sdata.to)
     if (client != null) {
         // 本地回发
-        this.server.send(client, SOCKET_EVENT.SEND, buff)
+        this.server.send(client, SOCKET_EVENT.DATA, buff)
     }
     else {
         // 查找对应的中心服务器二次转发
