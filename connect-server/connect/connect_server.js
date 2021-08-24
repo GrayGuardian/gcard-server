@@ -72,4 +72,7 @@ Server.prototype.send = function (socket, router, data, cb) {
 Server.prototype.kickOut = function (socket) {
     this.server.kickOut(socket);
 }
+Server.prototype.kickOutAll = function () {
+    this.server.kickOutAll();
+}
 module.exports = Server
