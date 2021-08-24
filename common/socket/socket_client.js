@@ -2,7 +2,7 @@ const net = require('net');
 const DataBuffer = require("./dataBuffer");
 const SocketDataPack = require('./socketDataPack');
 const SOCKET_EVENT = require('./socket_event');
-const Middleware = require('../base/middleware')
+const Middleware = require('../utils/middleware')
 
 const HEAD_OFFSET = 2000;   //心跳包发送间隔 毫秒
 const RECONN_MAX_SUM = 3;   //最大重连次数
