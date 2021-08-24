@@ -6,7 +6,10 @@ import "common.proto";
 message rpc {
     required string router = 1; // 路由
 
-    optional error error = 50;
+    optional error error = 20;
+
+    optional conn conn = 50;
+    optional connRet connRet = 51;
 
     optional test test = 100;
     optional testRet testRet = 101;
@@ -15,8 +18,16 @@ message error{
     required common.ErrorCode code = 1;
 }
 
+message conn {
+    required int32 pid = 1;
+    required string token = 2;
+}
+message connRet{
+    required common.ErrorCode code = 1;
+}
+
 message test{
-    
+
 }
 
 message testRet{

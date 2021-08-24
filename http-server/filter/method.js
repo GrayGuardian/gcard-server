@@ -1,9 +1,9 @@
-const SUCCESS_CODE = Template.template_error_code.SUCCESS.id
+
 module.exports = async (ctx, next) => {
     // 返回错误码函数
     ctx.method.genError = function (errorCode) {
         errorCode = Template.template_error_code[errorCode.code];
-        if (errorCode == null || util.equalErrorCode(errorCode, Template.template_error_code.SUCCESS)) {
+        if (errorCode == null || util.equalErrorCode(errorCode, SUCCESS_CODE)) {
             log.error(`不可设置的错误码 code:${errorCode.code}`);
             return;
         }
@@ -13,7 +13,7 @@ module.exports = async (ctx, next) => {
     ctx.method.callback = function (data) {
         router = `${ctx.state.router}Ret`;
 
-        return ctx.method.send(SUCCESS_CODE, router, data);
+        return ctx.method.send(SUCCESS_CODE.id, router, data);
     }
 
     ctx.method.send = function (code, router, data) {

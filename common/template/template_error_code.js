@@ -5,5 +5,6 @@ const tpl=[
 {id:603,code:'RPC_DATA_ERROR',clientTip:'参数缺省或格式错误',serverTip:'参数缺省或格式错误',desc:'服务端接收数据格式出错',},
 {id:604,code:'RET_DATA_ERROR',clientTip:'参数缺省或格式错误',serverTip:'参数缺省或格式错误',desc:'服务端回发数据格式出错',},
 {id:605,code:'TOKEN_ERROR',clientTip:'Token值错误',serverTip:'Token值错误',desc:'Token值错误',},
+{id:606,code:'REPEAT_LOGIN',clientTip:'您的账号已在其他地方登录',serverTip:'重复登录',desc:'重复登录',},
 ]
 module.exports = tpl

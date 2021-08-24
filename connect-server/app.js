@@ -1,6 +1,7 @@
 const app = require("../common/app");
 
 app(() => {
+    global.serverLogic = new (require('./common/server_logic'))();
     global.s2sRouter = new (require('./router/s2s_router'))();
 
     // const S2SClient = require("../common/s2s/s2s_client");
@@ -18,7 +19,6 @@ app(() => {
 
     const ConnectServer = require("./connect/connect_server");
     global.connectServer = new ConnectServer(SERVER_CONFIG.host, SERVER_CONFIG.port);
-
 
     connectServer.listen(() => {
         log.print(`网关服务器创建成功 ${SERVER_NAME} ${SERVER_CONFIG.host}:${SERVER_CONFIG.port}`);

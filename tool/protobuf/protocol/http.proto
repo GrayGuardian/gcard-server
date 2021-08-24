@@ -6,7 +6,7 @@ import "common.proto";
 message rpc {
     required string router = 1; // 路由
 
-    optional error error = 50;
+    optional error error = 20;
 
     optional test test = 100;
     optional testRet testRet = 101;
@@ -16,7 +16,7 @@ message error{
 }
 
 message test{
-    
+
 }
 
 message testRet{

@@ -19,7 +19,7 @@ Client.prototype.connect = function (success, error) {
     if (this.client == null) return;
     this.client.connect(() => {
         this.rpc(this.config.name, "conn", { config: SERVER_CONFIG }, (s2sdata, data) => {
-            if (util.equalErrorCode(data.code, Template.template_error_code.SUCCESS)) {
+            if (util.equalErrorCode(data.code, SUCCESS_CODE)) {
                 if (success != null) success(this);
             }
             else {

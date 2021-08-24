@@ -11,7 +11,15 @@
             },
             "error": {
               "type": "error",
+              "id": 20
+            },
+            "conn": {
+              "type": "conn",
               "id": 50
+            },
+            "connRet": {
+              "type": "connRet",
+              "id": 51
             },
             "test": {
               "type": "test",
@@ -24,6 +32,29 @@
           }
         },
         "error": {
+          "fields": {
+            "code": {
+              "rule": "required",
+              "type": "common.ErrorCode",
+              "id": 1
+            }
+          }
+        },
+        "conn": {
+          "fields": {
+            "pid": {
+              "rule": "required",
+              "type": "int32",
+              "id": 1
+            },
+            "token": {
+              "rule": "required",
+              "type": "string",
+              "id": 2
+            }
+          }
+        },
+        "connRet": {
           "fields": {
             "code": {
               "rule": "required",

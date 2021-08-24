@@ -4,6 +4,7 @@ module.exports = async function (cb) {
     global.Template = require("./template/template");
     global.SERVER_TYPE = require("./server/server_type");
     global.SOCKET_EVENT = require("./socket/socket_event");
+    global.SUCCESS_CODE = Template.template_error_code.SUCCESS
 
     global.SocketClient = require("./socket/socket_client");
     global.SocketServer = require("./socket/socket_server");
