@@ -1,11 +1,11 @@
 syntax = "proto2";
-
-// 通用 一般定义发送给客户的数据模型
-package common;
+package template;
 
 // 错误代码 template.error_code
 message ErrorCode{
     required int32 id = 1;
     required string code = 2;
     required string clientTip = 3;
+    required string serverTip = 4;
+    optional string desc = 5;
 }

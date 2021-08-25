@@ -1,0 +1,23 @@
+syntax = "proto2";
+
+// 数据库表
+package db;
+
+// 用户信息 db.game.user_info
+message UserInfo {
+    required string uid = 1;    // ID
+    required string username = 2;   // 用户名
+    required string password = 3;   // 密码 MD5
+    required int32 registerTime = 4;    // 注册时间
+    required int32 loginTime = 5;   // 登录时间
+    optional int32 lastAid = 6;     // 最后登录区服
+}
+// 服务器配置 db.game.config_server
+message ServerConfig{
+    required int32 id = 1;  // ID
+    required string name = 2;   // 服务器名
+    required int32 type = 3;    // 服务器类型 详见SERVER_TYPE.js
+    required string host = 4;   // 主机IP
+    required int32 port = 5;    // 主机端口
+    optional string desc = 6;   // 描述
+}

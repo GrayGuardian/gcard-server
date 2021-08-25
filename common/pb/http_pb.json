@@ -42,6 +42,62 @@
     },
     "common": {
       "nested": {
+        "ErrorCode": {
+          "fields": {
+            "id": {
+              "rule": "required",
+              "type": "int32",
+              "id": 1
+            },
+            "code": {
+              "rule": "required",
+              "type": "string",
+              "id": 2
+            },
+            "clientTip": {
+              "rule": "required",
+              "type": "string",
+              "id": 3
+            }
+          }
+        }
+      }
+    },
+    "db": {
+      "nested": {
+        "UserInfo": {
+          "fields": {
+            "uid": {
+              "rule": "required",
+              "type": "string",
+              "id": 1
+            },
+            "username": {
+              "rule": "required",
+              "type": "string",
+              "id": 2
+            },
+            "password": {
+              "rule": "required",
+              "type": "string",
+              "id": 3
+            },
+            "registerTime": {
+              "rule": "required",
+              "type": "int32",
+              "id": 4
+            },
+            "loginTime": {
+              "rule": "required",
+              "type": "int32",
+              "id": 5
+            },
+            "lastAid": {
+              "type": "int32",
+              "id": 6
+            }
+          }
+        },
         "ServerConfig": {
           "fields": {
             "id": {
@@ -74,7 +130,11 @@
               "id": 6
             }
           }
-        },
+        }
+      }
+    },
+    "template": {
+      "nested": {
         "ErrorCode": {
           "fields": {
             "id": {

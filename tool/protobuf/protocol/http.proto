@@ -2,6 +2,8 @@ syntax = "proto2";
 package http;
 
 import "common.proto";
+import "db.proto";
+import "template.proto";
 
 message rpc {
     required string router = 1; // 路由
