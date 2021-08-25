@@ -17,7 +17,9 @@
   },
   "homepage": "https://github.com/GrayGuardian/gcard-server#readme",
   "dependencies": {
+    "jsonwebtoken": "^8.5.1",
     "mysql": "^2.18.1",
-    "protobufjs": "^6.11.2"
+    "protobufjs": "^6.11.2",
+    "uuid": "^8.3.2"
   }
 }
