@@ -32,7 +32,7 @@ Server.prototype.onClientEnter = async function (idx, socket) {
     let client = this.clientMap[idx];
     if (client != null) {
         // 顶号处理逻辑
-        client.genError(Template.template_error_code.REPEAT_LOGIN);
+        client.genError(ERROR_CODE.REPEAT_LOGIN);
         client.kickOut();
         client.close();
 
@@ -55,8 +55,8 @@ Server.prototype.onClientLeave = async function (socket) {
     }
 }
 Server.prototype.genError = async function (socket, errorCode) {
-    errorCode = Template.template_error_code[errorCode.code];
-    if (errorCode == null || util.equalObjectValue(errorCode, SUCCESS_CODE)) {
+    errorCode = ERROR_CODE[errorCode.code];
+    if (errorCode == null || util.equalObjectValue(errorCode, ERROR_CODE.SUCCESS)) {
         log.error(`不可设置的错误码 code:${errorCode.code}`);
         return;
     }
@@ -69,7 +69,7 @@ Server.prototype.send = async function (socket, router, data) {
     dataPack[router] = data;
     let buff = pb.encode("socket.rpc", dataPack);
     if (!pb.check("socket.rpc", buff, dataPack)) {
-        this.genError(socket, Template.template_error_code.RET_DATA_ERROR);
+        this.genError(socket, ERROR_CODE.RET_DATA_ERROR);
         return null;
     }
     log.print(`[socket] [s2c] >>> [${router}] ${JSON.stringify(data)}`)

@@ -12,8 +12,7 @@ module.exports = async function (cb) {
     global.log = require("./utils/log");
     global.util = require("./utils/util");
     global.Template = require("./template/template");
-
-    global.SUCCESS_CODE = Template.template_error_code.SUCCESS
+    global.ERROR_CODE = Template.template_error_code;
 
     // 实例化对象
     global.pb = new (require("./pb/pb"))();
