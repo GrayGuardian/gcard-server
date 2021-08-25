@@ -1,7 +1,13 @@
-const S2SClient = require("./s2s_client");
 
+const S2SClient = require("./s2s_client");
+const S2S_TYPE = {
+    // S2S
+    RPC: "Rpc",
+    // Ret
+    RET: "Ret",
+}
 var Server = function (host, port) {
-    if (SERVER_CONFIG.type != SERVER_TYPE.CENTER) {
+    if (SERVER_CONFIG.type != GAME_CONST.SERVER_TYPE.CENTER) {
         log.error(`[${SERVER_NAME}]不是中心服务器，无法创建转发服务器`)
         return;
     }

@@ -1,10 +1,10 @@
 module.exports = async function (cb) {
     // 常量
     global.SOCKET_EVENT = require("./const/SOCKET_EVENT");
-    global.S2S_TYPE = require("./const/S2S_TYPE");
-    global.SERVER_TYPE = require("./const/SERVER_TYPE");
     global.BROADCAST_CODE = require("./const/BROADCAST_CODE");
     global.REGULAR_CODE = require("./const/REGULAR_CODE");
+    global.GAME_CONST = require("./const/GAME_CONST");
+
     // 类
     global.SocketClient = require("./socket/socket_client");
     global.SocketServer = require("./socket/socket_server");

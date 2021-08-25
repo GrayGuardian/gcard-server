@@ -28,7 +28,7 @@ ServerConfig.prototype.getServerFromName = function (name) {
 ServerConfig.prototype.getCenterServerFromName = function (name) {
     try {
         let config = this.configNameMap.get(name);
-        let arr = this.configTypeMap.get(SERVER_TYPE.CENTER);
+        let arr = this.configTypeMap.get(GAME_CONST.SERVER_TYPE.CENTER);
         let index = this.configTypeMap.get(config.type).indexOf(config) % arr.length;
         return arr[index];
     }

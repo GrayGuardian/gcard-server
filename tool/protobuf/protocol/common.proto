@@ -11,7 +11,14 @@ message ErrorCode{
 }
 // 用户信息 db.game.user_info
 message UserInfo {
-    required string uid = 1;    // ID
+    required string uid = 1;        // ID
     required string username = 2;   // 用户名
     optional int32 lastAid = 6;     // 最后登录区服
+}
+
+// 游戏区服信息 db.game.area_info
+message AreaInfo{
+    required int32 aid = 1;         // ID
+    required string name = 2;       // 区服名
+    required int32 state = 3;       // 区服状态 详见GAME_CONST.AREA_STATE
 }

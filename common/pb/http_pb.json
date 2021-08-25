@@ -65,6 +65,11 @@
               "rule": "required",
               "type": "string",
               "id": 2
+            },
+            "areas": {
+              "rule": "repeated",
+              "type": "common.AreaInfo",
+              "id": 3
             }
           }
         },
@@ -93,6 +98,11 @@
               "rule": "required",
               "type": "string",
               "id": 2
+            },
+            "areas": {
+              "rule": "repeated",
+              "type": "common.AreaInfo",
+              "id": 3
             }
           }
         }
@@ -134,6 +144,25 @@
             "lastAid": {
               "type": "int32",
               "id": 6
+            }
+          }
+        },
+        "AreaInfo": {
+          "fields": {
+            "aid": {
+              "rule": "required",
+              "type": "int32",
+              "id": 1
+            },
+            "name": {
+              "rule": "required",
+              "type": "string",
+              "id": 2
+            },
+            "state": {
+              "rule": "required",
+              "type": "int32",
+              "id": 3
             }
           }
         }
@@ -204,6 +233,30 @@
             "desc": {
               "type": "string",
               "id": 6
+            }
+          }
+        },
+        "AreaInfo": {
+          "fields": {
+            "aid": {
+              "rule": "required",
+              "type": "int32",
+              "id": 1
+            },
+            "name": {
+              "rule": "required",
+              "type": "string",
+              "id": 2
+            },
+            "state": {
+              "rule": "required",
+              "type": "int32",
+              "id": 3
+            },
+            "createTime": {
+              "rule": "required",
+              "type": "int32",
+              "id": 4
             }
           }
         }

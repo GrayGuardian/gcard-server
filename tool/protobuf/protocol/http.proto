@@ -26,6 +26,7 @@ message register{
 message registerRet{
     required common.UserInfo info = 1;
     required string token = 2;
+    repeated common.AreaInfo areas = 3;
 }
 message login{
     required string username = 1;
@@ -34,4 +35,5 @@ message login{
 message loginRet{
     required common.UserInfo info = 1;
     required string token = 2;
+    repeated common.AreaInfo areas = 3;
 }

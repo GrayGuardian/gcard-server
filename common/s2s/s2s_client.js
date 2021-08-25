@@ -1,4 +1,9 @@
-
+const S2S_TYPE = {
+    // S2S
+    RPC: "Rpc",
+    // Ret
+    RET: "Ret",
+}
 var Client = function (config) {
     if (config == null) {
         log.error(`未查找到[${SERVER_NAME}]的中心服务器`);
