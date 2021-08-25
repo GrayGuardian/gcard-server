@@ -20,6 +20,24 @@
               "id": 3
             }
           }
+        },
+        "UserInfo": {
+          "fields": {
+            "uid": {
+              "rule": "required",
+              "type": "string",
+              "id": 1
+            },
+            "username": {
+              "rule": "required",
+              "type": "string",
+              "id": 2
+            },
+            "lastAid": {
+              "type": "int32",
+              "id": 6
+            }
+          }
         }
       }
     }

@@ -24,12 +24,14 @@ message register{
     required string password = 2;
 }
 message registerRet{
-    required common.ErrorCode code = 1;
+    required common.UserInfo info = 1;
+    required string token = 2;
 }
 message login{
     required string username = 1;
     required string password = 2;
 }
 message loginRet{
-    required common.ErrorCode code = 1;
+    required common.UserInfo info = 1;
+    required string token = 2;
 }

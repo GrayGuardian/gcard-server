@@ -56,10 +56,15 @@
         },
         "registerRet": {
           "fields": {
-            "code": {
+            "info": {
               "rule": "required",
-              "type": "common.ErrorCode",
+              "type": "common.UserInfo",
               "id": 1
+            },
+            "token": {
+              "rule": "required",
+              "type": "string",
+              "id": 2
             }
           }
         },
@@ -79,10 +84,15 @@
         },
         "loginRet": {
           "fields": {
-            "code": {
+            "info": {
               "rule": "required",
-              "type": "common.ErrorCode",
+              "type": "common.UserInfo",
               "id": 1
+            },
+            "token": {
+              "rule": "required",
+              "type": "string",
+              "id": 2
             }
           }
         }
@@ -106,6 +116,24 @@
               "rule": "required",
               "type": "string",
               "id": 3
+            }
+          }
+        },
+        "UserInfo": {
+          "fields": {
+            "uid": {
+              "rule": "required",
+              "type": "string",
+              "id": 1
+            },
+            "username": {
+              "rule": "required",
+              "type": "string",
+              "id": 2
+            },
+            "lastAid": {
+              "type": "int32",
+              "id": 6
             }
           }
         }

@@ -5,6 +5,7 @@ var Server = function (host, port) {
     this.server = new SocketServer(host, port);
 
     const method = require("../filter/method");
+    const data = require("../filter/data");
     const router = require("../filter/router");
 
     this.server.use(SocketServer.EVENT_TYPE.OnConnect, method);
@@ -12,6 +13,7 @@ var Server = function (host, port) {
     this.server.use(SocketServer.EVENT_TYPE.OnReceive, method);
     this.server.use(SocketServer.EVENT_TYPE.OnSend, method);
 
+    this.server.use(SocketServer.EVENT_TYPE.OnReceive, data);
     this.server.use(SocketServer.EVENT_TYPE.OnReceive, router);
 
     this.server.use(SocketServer.EVENT_TYPE.OnDisconnect, async (ctx, next) => {

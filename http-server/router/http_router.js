@@ -1,14 +1,39 @@
 var Router = function () { }
 
 Router.prototype.register = async function (ctx, next) {
-    log.print("注册");
-    ctx.method.callback({ code: ERROR_CODE.SUCCESS });
+    // 校验用户名格式
+    if (!REGULAR_CODE.USERNAME_VALID(ctx.state.data.username)) {
+        ctx.method.genError(ERROR_CODE.USERNAME_NOTVALID)
+        await next();
+        return;
+    }
+    // 校验密码格式
+    if (!REGULAR_CODE.PASSWORD_VALID(ctx.state.data.password)) {
+        ctx.method.genError(ERROR_CODE.PASSWORD_NOTVALID)
+        await next();
+        return;
+    }
+    // 尝试注册
+    let info = await mySqlLogic.register(ctx.state.data.username, ctx.state.data.password);
+    if (info == null) {
+        ctx.method.genError(ERROR_CODE.USERNAME_EXIST)
+        await next();
+        return;
+    }
+    let token = util.tokenSerialize({ uid: info.uid })
+    ctx.method.callback({ info: info, token: token })
     await next();
 }
 
 Router.prototype.login = async function (ctx, next) {
-    log.print("登录");
-    ctx.method.callback({ code: ERROR_CODE.SUCCESS });
+    let info = await mySqlLogic.login(ctx.state.data.username, ctx.state.data.password);
+    if (info == null) {
+        ctx.method.genError(ERROR_CODE.PASSWORD_ERROR)
+        await next();
+        return;
+    }
+    let token = util.tokenSerialize({ uid: info.uid });
+    ctx.method.callback({ info: info, token: token })
     await next();
 }
 module.exports = Router;
