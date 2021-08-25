@@ -103,26 +103,30 @@ SocketServer.prototype.checkHeadTimeOut = function () {
     });
 
 }
-SocketServer.prototype.send = function (socket, type, data, cb) {
-    let dataPack = new SocketDataPack(type, data);
-    socket.write(dataPack.buff, "utf8", () => {
-        if (cb != null) cb(socket, dataPack);
-        this.next(SocketServer.EVENT_TYPE.OnSend, { socket: socket, dataPack: dataPack })
+SocketServer.prototype.send = function (socket, type, data) {
+    return new Promise((resolve) => {
+        let dataPack = new SocketDataPack(type, data);
+        socket.write(dataPack.buff, "utf8", () => {
+            let result = { socket: socket, dataPack: dataPack };
+            this.next(SocketServer.EVENT_TYPE.OnSend, result)
+            resolve(result);
+        });
     });
+
 }
-SocketServer.prototype.kickOut = function (socket) {
-    this.send(socket, SOCKET_EVENT.KICKOUT, null, () => {
-        this.closeClient(socket);
-    });
+SocketServer.prototype.kickOut = async function (socket) {
+    await this.send(socket, SOCKET_EVENT.KICKOUT, null);
+    this.closeClient(socket);
 }
-SocketServer.prototype.kickOutAll = function () {
+SocketServer.prototype.kickOutAll = async function () {
     var temp = [];
     this.clientInfoMap.forEach(function (value, key) {
         temp.push(key);
     });
-    temp.forEach(socket => {
-        this.kickOut(socket);
-    });
+    for (const key in temp) {
+        const socket = temp[key];
+        await this.kickOut(socket);
+    }
 
 }
 SocketServer.prototype.closeClient = function (socket) {
@@ -133,11 +137,14 @@ SocketServer.prototype.receiveHead = function (socket) {
     this.clientInfoMap.set(socket, { headTime: Date.now() });
     // console.log("更新心跳包间隔 >>> now > ", Date.now());
 }
-SocketServer.prototype.close = function (cb) {
-    if (this.headCheckInterval != null) {
-        clearInterval(this.headCheckInterval);
-    }
-    this.server.close(() => { if (cb != null) cb(); });
+SocketServer.prototype.close = function () {
+    return new Promise((resolve) => {
+        if (this.headCheckInterval != null) {
+            clearInterval(this.headCheckInterval);
+        }
+        this.server.close(() => { resolve(); });
+    });
+
 }
 SocketServer.prototype.address = function () {
     return this.server.address();

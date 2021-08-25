@@ -138,11 +138,14 @@ SocketClient.prototype.close = function () {
     }
 }
 
-SocketClient.prototype.send = function (type, data, cb) {
-    let dataPack = new SocketDataPack(type, data);
-    this.client.write(dataPack.buff, "utf8", () => {
-        if (cb != null) cb();
-        this.next(SocketClient.EVENT_TYPE.OnSend, { dataPack: dataPack });
+SocketClient.prototype.send = function (type, data) {
+    return new Promise((resolve) => {
+        let dataPack = new SocketDataPack(type, data);
+        this.client.write(dataPack.buff, "utf8", () => {
+            let result = { dataPack: dataPack }
+            this.next(SocketClient.EVENT_TYPE.OnSend, result);
+            resolve(result);
+        });
     });
 }
 

@@ -54,15 +54,15 @@ Server.prototype.onClientLeave = async function (socket) {
         client.close();
     }
 }
-Server.prototype.genError = function (socket, errorCode, cb) {
+Server.prototype.genError = async function (socket, errorCode) {
     errorCode = Template.template_error_code[errorCode.code];
     if (errorCode == null || util.equalErrorCode(errorCode, SUCCESS_CODE)) {
         log.error(`不可设置的错误码 code:${errorCode.code}`);
         return;
     }
-    return this.send(socket, "error", { code: errorCode }, cb);
+    return await this.send(socket, "error", { code: errorCode });
 }
-Server.prototype.send = function (socket, router, data, cb) {
+Server.prototype.send = async function (socket, router, data) {
     data = data ?? {};
     let dataPack = {}
     dataPack.router = router;
@@ -70,17 +70,16 @@ Server.prototype.send = function (socket, router, data, cb) {
     let buff = pb.encode("socket.rpc", dataPack);
     if (!pb.check("socket.rpc", buff, dataPack)) {
         this.genError(socket, Template.template_error_code.RET_DATA_ERROR);
-        return false;
+        return null;
     }
     log.print(`[socket] [s2c] >>> [${router}] ${JSON.stringify(data)}`)
-    this.server.send(socket, SOCKET_EVENT.DATA, buff, cb)
-    return true;
+    return await this.server.send(socket, SOCKET_EVENT.DATA, buff)
 }
-Server.prototype.kickOut = function (socket) {
-    this.server.kickOut(socket);
+Server.prototype.kickOut = async function (socket) {
+    await this.server.kickOut(socket);
 }
-Server.prototype.kickOutAll = function () {
-    this.server.kickOutAll();
+Server.prototype.kickOutAll = async function () {
+    await this.server.kickOutAll();
 }
 // 加入ID至频道
 Server.prototype.pushIDToChannel = function (key, idx) {
