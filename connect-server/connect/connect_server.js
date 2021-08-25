@@ -56,7 +56,7 @@ Server.prototype.onClientLeave = async function (socket) {
 }
 Server.prototype.genError = async function (socket, errorCode) {
     errorCode = Template.template_error_code[errorCode.code];
-    if (errorCode == null || util.equalErrorCode(errorCode, SUCCESS_CODE)) {
+    if (errorCode == null || util.equalObjectValue(errorCode, SUCCESS_CODE)) {
         log.error(`不可设置的错误码 code:${errorCode.code}`);
         return;
     }

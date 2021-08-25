@@ -1,7 +1,9 @@
 var Util = {};
-
-Util.equalErrorCode = function (code1, code2) {
-    return code1.id == code2.id;
+Date.unix = function () {
+    return Math.floor(Date.now() / 1000);
+}
+Util.equalObjectValue = function (obj1, obj2) {
+    return JSON.stringify(obj1) == JSON.stringify(obj2);
 }
 
 

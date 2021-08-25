@@ -30,10 +30,7 @@ PB.prototype.decode = function (key, data) {
 }
 PB.prototype.check = function (key, buff, data) {
     try {
-        let str1 = JSON.stringify(this.decode(key, buff));
-        let str2 = JSON.stringify(data)
-
-        return str1 == str2;
+        return util.equalObjectValue(this.decode(key, buff), data);
     } catch (error) {
         return false;
     }
