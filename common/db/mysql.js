@@ -15,7 +15,15 @@ MySQL.prototype.query = function (sql, param) {
 
 MySQL.prototype.call = function (sql, param) {
     return new Promise((resolve) => {
-        this.call(sql, param, function (result) {
+        this.client.query(sql, param, function (error, rows, fields) {
+            if (error) throw error;
+            let result;
+            if (rows.length > 0) {
+                result = rows[0];
+            }
+            else {
+                result = [];
+            }
             resolve(result);
         });
     });
