@@ -1,0 +1,324 @@
+{
+  "nested": {
+    "s2s": {
+      "nested": {
+        "rpc": {
+          "fields": {
+            "code": {
+              "rule": "required",
+              "type": "int32",
+              "id": 1
+            },
+            "from": {
+              "rule": "required",
+              "type": "string",
+              "id": 2
+            },
+            "to": {
+              "rule": "required",
+              "type": "string",
+              "id": 3
+            },
+            "router": {
+              "rule": "required",
+              "type": "string",
+              "id": 4
+            },
+            "type": {
+              "rule": "required",
+              "type": "string",
+              "id": 5
+            },
+            "conn": {
+              "type": "conn",
+              "id": 50
+            },
+            "connRet": {
+              "type": "connRet",
+              "id": 51
+            },
+            "test": {
+              "type": "test",
+              "id": 100
+            },
+            "testRet": {
+              "type": "testRet",
+              "id": 101
+            }
+          }
+        },
+        "conn": {
+          "fields": {
+            "config": {
+              "rule": "required",
+              "type": "db.ServerConfig",
+              "id": 1
+            }
+          }
+        },
+        "connRet": {
+          "fields": {
+            "code": {
+              "rule": "required",
+              "type": "template.ErrorCode",
+              "id": 1
+            }
+          }
+        },
+        "test": {
+          "fields": {}
+        },
+        "testRet": {
+          "fields": {}
+        }
+      }
+    },
+    "common": {
+      "nested": {
+        "ErrorCode": {
+          "fields": {
+            "id": {
+              "rule": "required",
+              "type": "int32",
+              "id": 1
+            },
+            "code": {
+              "rule": "required",
+              "type": "string",
+              "id": 2
+            },
+            "clientTip": {
+              "rule": "required",
+              "type": "string",
+              "id": 3
+            }
+          }
+        },
+        "UserInfo": {
+          "fields": {
+            "uid": {
+              "rule": "required",
+              "type": "string",
+              "id": 1
+            },
+            "username": {
+              "rule": "required",
+              "type": "string",
+              "id": 2
+            },
+            "lastAid": {
+              "type": "int32",
+              "id": 6
+            }
+          }
+        },
+        "AreaInfo": {
+          "fields": {
+            "aid": {
+              "rule": "required",
+              "type": "int32",
+              "id": 1
+            },
+            "name": {
+              "rule": "required",
+              "type": "string",
+              "id": 2
+            },
+            "state": {
+              "rule": "required",
+              "type": "int32",
+              "id": 3
+            }
+          }
+        }
+      }
+    },
+    "db": {
+      "nested": {
+        "UserInfo": {
+          "fields": {
+            "uid": {
+              "rule": "required",
+              "type": "string",
+              "id": 1
+            },
+            "username": {
+              "rule": "required",
+              "type": "string",
+              "id": 2
+            },
+            "password": {
+              "rule": "required",
+              "type": "string",
+              "id": 3
+            },
+            "registerTime": {
+              "rule": "required",
+              "type": "int32",
+              "id": 4
+            },
+            "loginTime": {
+              "rule": "required",
+              "type": "int32",
+              "id": 5
+            },
+            "lastAid": {
+              "type": "int32",
+              "id": 6
+            }
+          }
+        },
+        "ServerConfig": {
+          "fields": {
+            "id": {
+              "rule": "required",
+              "type": "int32",
+              "id": 1
+            },
+            "name": {
+              "rule": "required",
+              "type": "string",
+              "id": 2
+            },
+            "type": {
+              "rule": "required",
+              "type": "int32",
+              "id": 3
+            },
+            "host": {
+              "rule": "required",
+              "type": "string",
+              "id": 4
+            },
+            "port": {
+              "rule": "required",
+              "type": "int32",
+              "id": 5
+            },
+            "desc": {
+              "type": "string",
+              "id": 6
+            }
+          }
+        },
+        "AreaInfo": {
+          "fields": {
+            "aid": {
+              "rule": "required",
+              "type": "int32",
+              "id": 1
+            },
+            "name": {
+              "rule": "required",
+              "type": "string",
+              "id": 2
+            },
+            "state": {
+              "rule": "required",
+              "type": "int32",
+              "id": 3
+            },
+            "createTime": {
+              "rule": "required",
+              "type": "int32",
+              "id": 4
+            }
+          }
+        },
+        "PlayerInfo": {
+          "fields": {
+            "pid": {
+              "rule": "required",
+              "type": "string",
+              "id": 1
+            },
+            "uid": {
+              "rule": "required",
+              "type": "string",
+              "id": 2
+            },
+            "aid": {
+              "rule": "required",
+              "type": "int32",
+              "id": 3
+            },
+            "name": {
+              "rule": "required",
+              "type": "string",
+              "id": 4
+            },
+            "lv": {
+              "rule": "required",
+              "type": "int32",
+              "id": 5
+            },
+            "exp": {
+              "rule": "required",
+              "type": "int32",
+              "id": 6
+            },
+            "createTime": {
+              "rule": "required",
+              "type": "int32",
+              "id": 7
+            },
+            "loginTime": {
+              "type": "int32",
+              "id": 8
+            },
+            "logoutTime": {
+              "type": "int32",
+              "id": 9
+            },
+            "deleteTime": {
+              "type": "int32",
+              "id": 10
+            },
+            "online": {
+              "rule": "required",
+              "type": "int32",
+              "id": 11
+            },
+            "state": {
+              "rule": "required",
+              "type": "int32",
+              "id": 12
+            }
+          }
+        }
+      }
+    },
+    "template": {
+      "nested": {
+        "ErrorCode": {
+          "fields": {
+            "id": {
+              "rule": "required",
+              "type": "int32",
+              "id": 1
+            },
+            "code": {
+              "rule": "required",
+              "type": "string",
+              "id": 2
+            },
+            "clientTip": {
+              "rule": "required",
+              "type": "string",
+              "id": 3
+            },
+            "serverTip": {
+              "rule": "required",
+              "type": "string",
+              "id": 4
+            },
+            "desc": {
+              "type": "string",
+              "id": 5
+            }
+          }
+        }
+      }
+    }
+  }
+}

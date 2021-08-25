@@ -259,6 +259,99 @@
               "id": 4
             }
           }
+        },
+        "PlayerInfo": {
+          "fields": {
+            "pid": {
+              "rule": "required",
+              "type": "string",
+              "id": 1
+            },
+            "uid": {
+              "rule": "required",
+              "type": "string",
+              "id": 2
+            },
+            "aid": {
+              "rule": "required",
+              "type": "int32",
+              "id": 3
+            },
+            "name": {
+              "rule": "required",
+              "type": "string",
+              "id": 4
+            },
+            "lv": {
+              "rule": "required",
+              "type": "int32",
+              "id": 5
+            },
+            "exp": {
+              "rule": "required",
+              "type": "int32",
+              "id": 6
+            },
+            "createTime": {
+              "rule": "required",
+              "type": "int32",
+              "id": 7
+            },
+            "loginTime": {
+              "type": "int32",
+              "id": 8
+            },
+            "logoutTime": {
+              "type": "int32",
+              "id": 9
+            },
+            "deleteTime": {
+              "type": "int32",
+              "id": 10
+            },
+            "online": {
+              "rule": "required",
+              "type": "int32",
+              "id": 11
+            },
+            "state": {
+              "rule": "required",
+              "type": "int32",
+              "id": 12
+            }
+          }
+        }
+      }
+    },
+    "template": {
+      "nested": {
+        "ErrorCode": {
+          "fields": {
+            "id": {
+              "rule": "required",
+              "type": "int32",
+              "id": 1
+            },
+            "code": {
+              "rule": "required",
+              "type": "string",
+              "id": 2
+            },
+            "clientTip": {
+              "rule": "required",
+              "type": "string",
+              "id": 3
+            },
+            "serverTip": {
+              "rule": "required",
+              "type": "string",
+              "id": 4
+            },
+            "desc": {
+              "type": "string",
+              "id": 5
+            }
+          }
         }
       }
     }
