@@ -29,3 +29,19 @@ message AreaInfo{
     required int32 state = 3;       // 区服状态 详见GAME_CONST.AREA_STATE
     required int32 createTime = 4;  // 创建时间
 }
+
+// 人物信息 db.game.player_info
+message PlayerInfo{
+    required string pid = 1;         // 人物ID
+    required string uid = 1;         // 用户ID
+    required int32 aid = 2;          // 区服ID
+    required string name = 3;        // 名称
+    required int32 lv = 4;           // 等级
+    required int32 exp = 5;          // 经验
+    required int32 createTime = 6;   // 创建时间
+    optional int32 loginTime = 7;    // 登录时间
+    optional int32 logoutTime = 8;   // 登出时间
+    optional int32 deleteTime = 9;   // 删除时间
+    required int32 online = 10;      // 是否在线
+    required int32 state = 11;       // 人物状态 详见GAME_CONST.PLAYER_STATE
+}

@@ -17,4 +17,11 @@ GAME_CONST.AREA_STATE = {
     INVALID: 2, // 无效 删除/合服
 }
 
+// 玩家状态
+GAME_CONST.PLAYER_STATE = {
+    NORMAL: 0,  // 正常
+    DELETE: 1,   // 删除
+    BAN: 2, // 封号
+}
+
 module.exports = GAME_CONST;
