@@ -7,23 +7,23 @@ MySqlLogic.prototype.getAllServerConfigs = async function () {
 }
 // 用户注册
 MySqlLogic.prototype.register = async function (username, password) {
-    let rows = await mysqlMgr.db_game.call('CALL create_user(?,?,?,?)', [util.uuid(), username, util.md5(password), Date.unix()]);
+    let rows = await mysqlMgr.db_game.call('CALL create_user(?,?,?)', [util.uuid(), username, util.md5(password)]);
     if (rows.length > 0) {
         return rows[0];
     }
-    return null;
+    return { error: 'UNKNOWN_ERROR' };
 }
 // 用户登录
 MySqlLogic.prototype.login = async function (username, password) {
-    let rows = await mysqlMgr.db_game.query('SELECT * FROM user_info WHERE username = ? AND password = ?', [username, util.md5(password)]);
+    let rows = await mysqlMgr.db_game.call('CALL login_user(?,?)', [username, util.md5(password)]);
     if (rows.length > 0) {
         return rows[0];
     }
-    return null;
+    return { error: 'UNKNOWN_ERROR' };
 }
 // 更新最后登录信息
 MySqlLogic.prototype.updateLastLoginInfo = async function (aid, uid) {
-    let rows = await mysqlMgr.db_game.query('UPDATE user_info SET lastAid=? WHERE uid=?', [aid, uid]);
+    let rows = await mysqlMgr.db_game.call('UPDATE user_info SET lastAid=? WHERE uid=?', [aid, uid]);
     if (rows.length > 0) {
         return true;
     }

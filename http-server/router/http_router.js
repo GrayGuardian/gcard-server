@@ -15,8 +15,8 @@ Router.prototype.register = async function (ctx, next) {
     }
     // 尝试注册
     let info = await mySqlLogic.register(ctx.state.data.username, ctx.state.data.password);
-    if (info == null) {
-        ctx.method.genError(ERROR_CODE.USERNAME_EXIST)
+    if (info.error != null) {
+        ctx.method.genError(ERROR_CODE[info.error])
         await next();
         return;
     }
@@ -28,8 +28,8 @@ Router.prototype.register = async function (ctx, next) {
 // 登录
 Router.prototype.login = async function (ctx, next) {
     let info = await mySqlLogic.login(ctx.state.data.username, ctx.state.data.password);
-    if (info == null) {
-        ctx.method.genError(ERROR_CODE.PASSWORD_ERROR)
+    if (info.error != null) {
+        ctx.method.genError(ERROR_CODE[info.error])
         await next();
         return;
     }

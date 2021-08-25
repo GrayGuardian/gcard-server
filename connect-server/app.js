@@ -24,5 +24,5 @@ app(() => {
         log.print(`网关服务器创建成功 ${SERVER_NAME} ${SERVER_CONFIG.host}:${SERVER_CONFIG.port}`);
     });
 
-
+    console.log(Date.unix())
 });
