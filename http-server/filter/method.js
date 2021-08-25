@@ -23,7 +23,7 @@ module.exports = async (ctx, next) => {
         dataPack[router] = data;
         let buff = pb.encode("http.rpc", dataPack);
 
-        if (!pb.check("http.rpc", buff, dataPack)) {
+        if (!pb.check("http.rpc", buff)) {
             ctx.method.genError(Template.template_error_code.RET_DATA_ERROR);
             return false;
         }

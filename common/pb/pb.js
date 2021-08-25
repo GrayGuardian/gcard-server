@@ -28,9 +28,10 @@ PB.prototype.decode = function (key, data) {
         return null;
     }
 }
-PB.prototype.check = function (key, buff, data) {
+PB.prototype.check = function (key, buff) {
     try {
-        return util.equalObjectValue(this.decode(key, buff), data);
+        let data = this.decode(key, buff);
+        return util.equalObjectValue(data, this.decode(key, this.encode(key, data)));
     } catch (error) {
         return false;
     }

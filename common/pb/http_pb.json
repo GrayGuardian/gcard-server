@@ -13,13 +13,21 @@
               "type": "error",
               "id": 20
             },
-            "test": {
-              "type": "test",
+            "register": {
+              "type": "register",
               "id": 100
             },
-            "testRet": {
-              "type": "testRet",
+            "registerRet": {
+              "type": "registerRet",
               "id": 101
+            },
+            "login": {
+              "type": "login",
+              "id": 102
+            },
+            "loginRet": {
+              "type": "loginRet",
+              "id": 103
             }
           }
         },
@@ -32,11 +40,51 @@
             }
           }
         },
-        "test": {
-          "fields": {}
+        "register": {
+          "fields": {
+            "username": {
+              "rule": "required",
+              "type": "string",
+              "id": 1
+            },
+            "password": {
+              "rule": "required",
+              "type": "string",
+              "id": 2
+            }
+          }
         },
-        "testRet": {
-          "fields": {}
+        "registerRet": {
+          "fields": {
+            "code": {
+              "rule": "required",
+              "type": "common.ErrorCode",
+              "id": 1
+            }
+          }
+        },
+        "login": {
+          "fields": {
+            "username": {
+              "rule": "required",
+              "type": "string",
+              "id": 1
+            },
+            "password": {
+              "rule": "required",
+              "type": "string",
+              "id": 2
+            }
+          }
+        },
+        "loginRet": {
+          "fields": {
+            "code": {
+              "rule": "required",
+              "type": "common.ErrorCode",
+              "id": 1
+            }
+          }
         }
       }
     },

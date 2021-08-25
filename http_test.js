@@ -3,8 +3,8 @@ var pb = new (require('./common/pb/pb'))()
 var http = require('http');
 
 var post_data = {
-    router: 'test',
-    test: {}
+    router: 'register',
+    register: { username: '1', password: "dj" }
 };//这是需要提交的数据
 var content = pb.encode("http.rpc", post_data);
 var options = {

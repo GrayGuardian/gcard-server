@@ -10,17 +10,26 @@ message rpc {
 
     optional error error = 20;
 
-    optional test test = 100;
-    optional testRet testRet = 101;
+    optional register register = 100;
+    optional registerRet registerRet = 101;
+    optional login login = 102;
+    optional loginRet loginRet = 103;
 }
 message error{
     required common.ErrorCode code = 1;
 }
 
-message test{
-
+message register{
+    required string username = 1;
+    required string password = 2;
 }
-
-message testRet{
-
+message registerRet{
+    required common.ErrorCode code = 1;
+}
+message login{
+    required string username = 1;
+    required string password = 2;
+}
+message loginRet{
+    required common.ErrorCode code = 1;
 }
