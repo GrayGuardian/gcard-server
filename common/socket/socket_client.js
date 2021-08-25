@@ -1,7 +1,6 @@
 const net = require('net');
 const DataBuffer = require("./dataBuffer");
 const SocketDataPack = require('./socketDataPack');
-const SOCKET_EVENT = require('./socket_event');
 const Middleware = require('../utils/middleware')
 
 const HEAD_OFFSET = 2000;   //心跳包发送间隔 毫秒

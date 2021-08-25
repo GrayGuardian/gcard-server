@@ -1,4 +1,3 @@
-const S2SType = require("./s2s_type");
 const S2SClient = require("./s2s_client");
 
 var Server = function (host, port) {
@@ -28,14 +27,14 @@ Server.prototype.onReceive = function (socket, dataPack) {
         return;
     }
     let data = s2sdata[s2sdata.router];
-    if (s2sdata.type == S2SType.RPC && s2sdata.to == SERVER_NAME) {
+    if (s2sdata.type == S2S_TYPE.RPC && s2sdata.to == SERVER_NAME) {
         log.print(`[s2s] [${s2sdata.code}] [${s2sdata.from}] to [${s2sdata.to}] [${s2sdata.router}] >>> ${JSON.stringify(data)}`)
         // 本地操作
         let fun = s2sRouter[s2sdata.router];
         if (fun != null) {
             let next = (retdata) => {
                 let router = `${s2sdata.router}Ret`
-                let tdata = { code: s2sdata.code, from: SERVER_NAME, to: s2sdata.from, router: router, type: S2SType.RET };
+                let tdata = { code: s2sdata.code, from: SERVER_NAME, to: s2sdata.from, router: router, type: S2S_TYPE.RET };
                 tdata[router] = retdata
 
                 this.send(tdata)

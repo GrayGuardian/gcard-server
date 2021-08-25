@@ -28,16 +28,23 @@ Server.prototype.listen = function (cb) {
     this.server.listen(cb);
 }
 Server.prototype.onClientEnter = async function (idx, socket) {
+    // 判断是否已在线
     let client = this.clientMap[idx];
     if (client != null) {
         // 顶号处理逻辑
         client.genError(Template.template_error_code.REPEAT_LOGIN);
         client.kickOut();
         client.close();
-    }
-    this.clientMap[idx] = new ConnectClient(this, idx, socket)
 
-    await serverLogic.playerEnter(idx);
+        this.clientMap[idx] = new ConnectClient(this, idx, socket)
+    }
+    else {
+        this.clientMap[idx] = new ConnectClient(this, idx, socket)
+
+        await serverLogic.playerEnter(idx);
+    }
+
+    await serverLogic.playerConnect(idx);
 }
 Server.prototype.onClientLeave = async function (socket) {
     let idx = Object.keys(this.clientMap).find(key => { return this.clientMap[key].socket == socket })
@@ -74,5 +81,25 @@ Server.prototype.kickOut = function (socket) {
 }
 Server.prototype.kickOutAll = function () {
     this.server.kickOutAll();
+}
+// 加入ID至频道
+Server.prototype.pushIDToChannel = function (key, idx) {
+    if (this.clientMap[idx] == null)
+        return false;
+    return this.clientMap[idx].pushChannel(key);
+}
+// 退出ID至频道
+Server.prototype.pullIDToChannel = function (key, idx) {
+    if (this.clientMap[idx] == null)
+        return false;
+    return this.clientMap[idx].pullChannel(key);
+}
+// 发送消息至id
+Server.prototype.sendToID = function (idx, router, data) {
+    return broadcast.notify(BROADCAST_CODE.SOCKET_ID(idx), { router: router, data: data })
+}
+// 发送消息至频道
+Server.prototype.sendToChannel = function (key, router, data) {
+    return broadcast.notify(BROADCAST_CODE.SOCKET_CHANNEL(key), { router: router, data: data })
 }
 module.exports = Server

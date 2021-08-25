@@ -1,15 +1,22 @@
 module.exports = async function (cb) {
+    // 常量
+    global.SOCKET_EVENT = require("./const/SOCKET_EVENT");
+    global.S2S_TYPE = require("./const/S2S_TYPE");
+    global.SERVER_TYPE = require("./const/SERVER_TYPE");
+    global.BROADCAST_CODE = require("./const/BROADCAST_CODE");
+    // 类
+    global.SocketClient = require("./socket/socket_client");
+    global.SocketServer = require("./socket/socket_server");
+    // 静态类
     global.log = require("./utils/log");
     global.util = require("./utils/util");
     global.Template = require("./template/template");
-    global.SERVER_TYPE = require("./server/server_type");
-    global.SOCKET_EVENT = require("./socket/socket_event");
+
     global.SUCCESS_CODE = Template.template_error_code.SUCCESS
 
-    global.SocketClient = require("./socket/socket_client");
-    global.SocketServer = require("./socket/socket_server");
-
+    // 实例化对象
     global.pb = new (require("./pb/pb"))();
+    global.broadcast = new (require("./utils/broadcast"))();
 
     global.mysqlMgr = new (require("./db/mysql_mgr"))();
     global.mySqlLogic = new (require("./db/mysql_logic"))();
