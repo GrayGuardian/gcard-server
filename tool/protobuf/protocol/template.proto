@@ -1,4 +1,5 @@
 syntax = "proto2";
+// 数据模板
 package template;
 
 // 错误代码 template.error_code
