@@ -2,7 +2,6 @@ syntax = "proto2";
 
 // 通用 一般定义发送给客户的数据模型
 package common;
-
 // 错误代码 template.error_code
 message ErrorCode{
     required int32 id = 1;
@@ -13,7 +12,9 @@ message ErrorCode{
 message UserInfo {
     required string uid = 1;        // ID
     required string username = 2;   // 用户名
-    optional int32 lastAid = 6;     // 最后登录区服
+    required int32 banTime = 3;     // 封号时间
+    required int32 state = 4;       // 用户状态 详见GAME_CONST.USER_STATE
+    optional int32 lastAid = 5;     // 最后登录区服
 }
 
 // 游戏区服信息 db.game.area_info
@@ -21,4 +22,18 @@ message AreaInfo{
     required int32 aid = 1;         // ID
     required string name = 2;       // 区服名
     required int32 state = 3;       // 区服状态 详见GAME_CONST.AREA_STATE
+}
+
+// 人物信息 db.game.player_info
+message PlayerInfo{
+    required string pid = 1;         // 人物ID
+    required string uid = 2;         // 用户ID
+    required int32 aid = 3;          // 区服ID
+    required string name = 4;        // 名称
+    required int32 lv = 5;           // 等级
+    required int32 exp = 6;          // 经验
+    optional int32 loginTime = 7;    // 登录时间
+    optional int32 logoutTime = 8;   // 登出时间
+    required int32 online = 9;       // 是否在线
+    required int32 state = 10;       // 人物状态 详见GAME_CONST.PLAYER_STATE
 }

@@ -10,7 +10,10 @@ message UserInfo {
     required string password = 3;       // 密码 MD5
     required int32 registerTime = 4;    // 注册时间
     required int32 loginTime = 5;       // 登录时间
-    optional int32 lastAid = 6;         // 最后登录区服
+    required int32 banTime = 6;         // 封号时间
+    required int32 state = 7;           // 用户状态 详见GAME_CONST.USER_STATE
+    optional int32 lastAid = 8;         // 最后登录区服
+
 }
 // 服务器配置 db.game.config_server
 message ServerConfig{
@@ -41,7 +44,7 @@ message PlayerInfo{
     required int32 createTime = 7;   // 创建时间
     optional int32 loginTime = 8;    // 登录时间
     optional int32 logoutTime = 9;   // 登出时间
-    optional int32 deleteTime = 10;   // 删除时间
+    optional int32 deleteTime = 10;  // 删除时间
     required int32 online = 11;      // 是否在线
     required int32 state = 12;       // 人物状态 详见GAME_CONST.PLAYER_STATE
 }

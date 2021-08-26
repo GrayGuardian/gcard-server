@@ -29,9 +29,19 @@
               "type": "int32",
               "id": 5
             },
-            "lastAid": {
+            "banTime": {
+              "rule": "required",
               "type": "int32",
               "id": 6
+            },
+            "state": {
+              "rule": "required",
+              "type": "int32",
+              "id": 7
+            },
+            "lastAid": {
+              "type": "int32",
+              "id": 8
             }
           }
         },

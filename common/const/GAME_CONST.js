@@ -12,16 +12,20 @@ GAME_CONST.SERVER_TYPE = {
 
 // 游戏区服状态
 GAME_CONST.AREA_STATE = {
-    NORMAL: 0,  // 正常
+    NORMAL: 0,      // 正常
     MAINTAIN: 1,    // 维护
-    INVALID: 2, // 无效 删除/合服
+    INVALID: 2,     // 无效 删除/合服
 }
-
+// 用户状态
+GAME_CONST.USER_STATE = {
+    NORMAL: 0,      // 正常
+    DELETE: 1,      // 删除
+    BAN: 2,         // 封号
+}
 // 玩家状态
 GAME_CONST.PLAYER_STATE = {
-    NORMAL: 0,  // 正常
-    DELETE: 1,   // 删除
-    BAN: 2, // 封号
+    NORMAL: 0,      // 正常
+    DELETE: 1,      // 删除
 }
 
 module.exports = GAME_CONST;

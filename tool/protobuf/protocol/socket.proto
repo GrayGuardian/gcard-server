@@ -19,7 +19,6 @@ message rpc {
 message error{
     required common.ErrorCode code = 1;
 }
-
 message conn {
     required int32 pid = 1;
     required string token = 2;

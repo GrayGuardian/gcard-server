@@ -37,3 +37,10 @@ message loginRet{
     required string token = 2;
     repeated common.AreaInfo areas = 3;
 }
+message enterArea{
+    required int32 aid = 1;
+}
+message enterAreaRet{
+    required string token = 1;
+    repeated common.PlayerInfo players = 2;
+}

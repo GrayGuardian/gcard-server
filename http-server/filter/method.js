@@ -1,13 +1,17 @@
 
 module.exports = async (ctx, next) => {
     // 返回错误码函数
-    ctx.method.genError = function (errorCode) {
+    ctx.method.genError = function (errorCode, data) {
         errorCode = ERROR_CODE[errorCode.code];
         if (errorCode == null || util.equalObjectValue(errorCode, ERROR_CODE.SUCCESS)) {
             log.error(`不可设置的错误码 code:${errorCode.code}`);
             return;
         }
-        return ctx.method.send(errorCode.id, "error", { code: errorCode });
+        let dataPack = { code: errorCode }
+        if (data != null) {
+            dataPack[errorCode.code] = data
+        }
+        return ctx.method.send(errorCode.id, "error", dataPack);
     }
     // 返回函数
     ctx.method.callback = function (data) {
