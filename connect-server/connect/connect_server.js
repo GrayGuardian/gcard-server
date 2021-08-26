@@ -56,6 +56,7 @@ Server.prototype.onClientLeave = async function (socket) {
     }
 }
 Server.prototype.genError = async function (socket, info) {
+    info = info ?? ERROR_INFO.UNKNOWN_ERROR
     info = ERROR_INFO[info.code];
     if (info == null || util.equalErrorInfo(info, ERROR_INFO.SUCCESS)) {
         log.error(`不可设置的错误码 code:${info.code}`);

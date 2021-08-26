@@ -1,5 +1,5 @@
 var Router = function () { }
-// 注册
+
 Router.prototype.register = async function (ctx, next) {
     // 校验用户名格式
     if (!REGULAR_CODE.USERNAME_VALID(ctx.state.data.username)) {
@@ -25,7 +25,6 @@ Router.prototype.register = async function (ctx, next) {
     ctx.method.callback({ info: info, token: token, areas: areas })
     await next();
 }
-// 登录
 Router.prototype.login = async function (ctx, next) {
     let info = await mySqlLogic.login(ctx.state.data.username, ctx.state.data.password);
     if (info.error != null) {
@@ -33,7 +32,6 @@ Router.prototype.login = async function (ctx, next) {
         await next();
         return;
     }
-    console.log(info);
     if (info.state == GAME_CONST.USER_STATE.BAN && info.banTime != null) {
         ctx.method.genError(ERROR_INFO.USER_BAN, { time: info.banTime })
         await next();
@@ -45,4 +43,37 @@ Router.prototype.login = async function (ctx, next) {
     await next();
 }
 
+Router.prototype.enterArea = async function (ctx, next) {
+    let info = await mySqlLogic.getAreaInfo(ctx.state.data.aid);
+    // 区服是否存在
+    if (info == null || info.state == GAME_CONST.AREA_STATE.INVALID) {
+        ctx.method.genError(ERROR_INFO.DATA_NOTEXIST);
+        await next();
+        return;
+    }
+    // 区服是否维护
+    if (info.state == GAME_CONST.AREA_STATE.MAINTAIN) {
+        ctx.method.genError(ERROR_INFO.AREA_MAINTENANCE)
+        await next();
+        return;
+    }
+    let token = util.tokenSerialize({ uid: ctx.state.uid, aid: info.aid });
+    let players = await mySqlLogic.getValidPlayerInfos(ctx.state.uid, info.aid)
+    ctx.method.callback({ token: token, players: players })
+    await next();
+}
+
+Router.prototype.enterGame = async function (ctx, next) {
+    let info = await mySqlLogic.getPlayerInfo(ctx.state.data.pid);
+    // 人物是否存在
+    if (info == null || info.state != GAME_CONST.PLAYER_STATE.NORMAL) {
+        ctx.method.genError(ERROR_INFO.DATA_NOTEXIST);
+        await next();
+        return;
+    }
+    let token = util.tokenSerialize({ uid: ctx.state.uid, aid: ctx.state.aid, pid: info.pid });
+    let config = serverConfig.getConnectServerFromAid(ctx.state.aid);
+    ctx.method.callback({ token: token, config: config })
+    await next();
+}
 module.exports = Router;

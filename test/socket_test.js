@@ -1,4 +1,4 @@
-require("./common/base/global")()
+require("../common/base/global")()
 
 let client = new SocketClient('127.0.0.1', 8100)
 client.use(SocketClient.EVENT_TYPE.OnConnectSuccess, async (ctx, next) => {

@@ -2,6 +2,7 @@ module.exports = async (ctx, next) => {
     ctx.method = {};
     // 返回错误码函数
     ctx.method.genError = function (info, data) {
+        info = info ?? ERROR_INFO.UNKNOWN_ERROR
         info = ERROR_INFO[info.code];
         if (info == null || util.equalErrorInfo(info, ERROR_INFO.SUCCESS)) {
             log.error(`不可设置的错误码 code:${info.code}`);

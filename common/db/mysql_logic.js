@@ -29,14 +29,30 @@ MySqlLogic.prototype.updateLastAid = async function (uid, aid) {
     }
     return false;
 }
+// 获取区服信息
+MySqlLogic.prototype.getAreaInfo = async function (aid) {
+    let rows = await mysqlMgr.db_game.query('SELECT * FROM area_info WHERE aid = ?', [aid]);
+    if (rows.length > 0) {
+        return rows[0];
+    }
+    return null;
+}
 // 获取所有有效区服信息列表（包括维护）
 MySqlLogic.prototype.getValidAreaInfos = async function () {
     let rows = await mysqlMgr.db_game.query('SELECT * FROM area_info WHERE state != ?', [GAME_CONST.AREA_STATE.INVALID]);
     return rows;
 }
+// 获取人物信息
+MySqlLogic.prototype.getPlayerInfo = async function (pid) {
+    let rows = await mysqlMgr.db_game.query('SELECT * FROM player_info WHERE pid = ?', [pid]);
+    if (rows.length > 0) {
+        return rows[0];
+    }
+    return null;
+}
 // 获取所有有效人物信息列表
-MySqlLogic.prototype.getValidAreaInfos = async function () {
-    let rows = await mysqlMgr.db_game.query('SELECT * FROM area_info WHERE state != ?', [GAME_CONST.AREA_STATE.INVALID]);
+MySqlLogic.prototype.getValidPlayerInfos = async function (uid, aid) {
+    let rows = await mysqlMgr.db_game.query('SELECT * FROM player_info WHERE uid = ? AND aid = ? AND state != ?', [uid, aid, GAME_CONST.PLAYER_STATE.DELETE]);
     return rows;
 }
 module.exports = MySqlLogic;

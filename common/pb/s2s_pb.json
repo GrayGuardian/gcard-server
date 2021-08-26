@@ -171,6 +171,25 @@
               "id": 10
             }
           }
+        },
+        "ServerConfig": {
+          "fields": {
+            "id": {
+              "rule": "required",
+              "type": "int32",
+              "id": 1
+            },
+            "host": {
+              "rule": "required",
+              "type": "string",
+              "id": 2
+            },
+            "port": {
+              "rule": "required",
+              "type": "int32",
+              "id": 3
+            }
+          }
         }
       }
     },

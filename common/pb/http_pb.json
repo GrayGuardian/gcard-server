@@ -28,6 +28,22 @@
             "loginRet": {
               "type": "loginRet",
               "id": 103
+            },
+            "enterArea": {
+              "type": "enterArea",
+              "id": 104
+            },
+            "enterAreaRet": {
+              "type": "enterAreaRet",
+              "id": 105
+            },
+            "enterGame": {
+              "type": "enterGame",
+              "id": 106
+            },
+            "enterGameRet": {
+              "type": "enterGameRet",
+              "id": 107
             }
           }
         },
@@ -116,6 +132,29 @@
             "players": {
               "rule": "repeated",
               "type": "model.PlayerInfo",
+              "id": 2
+            }
+          }
+        },
+        "enterGame": {
+          "fields": {
+            "pid": {
+              "rule": "required",
+              "type": "string",
+              "id": 1
+            }
+          }
+        },
+        "enterGameRet": {
+          "fields": {
+            "token": {
+              "rule": "required",
+              "type": "string",
+              "id": 1
+            },
+            "config": {
+              "rule": "required",
+              "type": "model.ServerConfig",
               "id": 2
             }
           }
@@ -220,6 +259,25 @@
               "rule": "required",
               "type": "int32",
               "id": 10
+            }
+          }
+        },
+        "ServerConfig": {
+          "fields": {
+            "id": {
+              "rule": "required",
+              "type": "int32",
+              "id": 1
+            },
+            "host": {
+              "rule": "required",
+              "type": "string",
+              "id": 2
+            },
+            "port": {
+              "rule": "required",
+              "type": "int32",
+              "id": 3
             }
           }
         }

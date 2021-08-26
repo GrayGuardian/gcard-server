@@ -24,7 +24,7 @@ ServerConfig.prototype.getServerFromName = function (name) {
     }
     return null;
 }
-// 根据服务器名字获取转发服务器配置
+// 根据服务器名字获取中心服务器配置
 ServerConfig.prototype.getCenterServerFromName = function (name) {
     try {
         let config = this.configNameMap.get(name);
@@ -36,5 +36,15 @@ ServerConfig.prototype.getCenterServerFromName = function (name) {
         return null;
     }
 }
-
+// 根据区服ID选择网关服务器配置
+ServerConfig.prototype.getConnectServerFromAid = function (aid) {
+    try {
+        let arr = this.configTypeMap.get(GAME_CONST.SERVER_TYPE.CONNECT);
+        let index = aid % arr.length;
+        return arr[index];
+    }
+    catch {
+        return null;
+    }
+}
 module.exports = ServerConfig;

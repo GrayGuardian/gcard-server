@@ -33,3 +33,10 @@ message PlayerInfo{
     required int32 online = 9;       // 是否在线
     required int32 state = 10;       // 人物状态 详见GAME_CONST.PLAYER_STATE
 }
+
+// 服务器配置 db.game.config_server
+message ServerConfig{
+    required int32 id = 1;      // ID
+    required string host = 2;   // 主机IP
+    required int32 port = 3;    // 主机端口
+}
