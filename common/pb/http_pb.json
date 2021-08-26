@@ -10,7 +10,7 @@
               "id": 1
             },
             "error": {
-              "type": "error",
+              "type": "error.CError",
               "id": 20
             },
             "register": {
@@ -28,15 +28,6 @@
             "loginRet": {
               "type": "loginRet",
               "id": 103
-            }
-          }
-        },
-        "error": {
-          "fields": {
-            "code": {
-              "rule": "required",
-              "type": "common.ErrorCode",
-              "id": 1
             }
           }
         },
@@ -58,7 +49,7 @@
           "fields": {
             "info": {
               "rule": "required",
-              "type": "common.UserInfo",
+              "type": "model.UserInfo",
               "id": 1
             },
             "token": {
@@ -68,7 +59,7 @@
             },
             "areas": {
               "rule": "repeated",
-              "type": "common.AreaInfo",
+              "type": "model.AreaInfo",
               "id": 3
             }
           }
@@ -91,7 +82,7 @@
           "fields": {
             "info": {
               "rule": "required",
-              "type": "common.UserInfo",
+              "type": "model.UserInfo",
               "id": 1
             },
             "token": {
@@ -101,7 +92,7 @@
             },
             "areas": {
               "rule": "repeated",
-              "type": "common.AreaInfo",
+              "type": "model.AreaInfo",
               "id": 3
             }
           }
@@ -124,34 +115,15 @@
             },
             "players": {
               "rule": "repeated",
-              "type": "common.PlayerInfo",
+              "type": "model.PlayerInfo",
               "id": 2
             }
           }
         }
       }
     },
-    "common": {
+    "model": {
       "nested": {
-        "ErrorCode": {
-          "fields": {
-            "id": {
-              "rule": "required",
-              "type": "int32",
-              "id": 1
-            },
-            "code": {
-              "rule": "required",
-              "type": "string",
-              "id": 2
-            },
-            "clientTip": {
-              "rule": "required",
-              "type": "string",
-              "id": 3
-            }
-          }
-        },
         "UserInfo": {
           "fields": {
             "uid": {
@@ -420,7 +392,7 @@
     },
     "template": {
       "nested": {
-        "ErrorCode": {
+        "ErrorInfo": {
           "fields": {
             "id": {
               "rule": "required",
@@ -445,6 +417,105 @@
             "desc": {
               "type": "string",
               "id": 5
+            }
+          }
+        }
+      }
+    },
+    "error": {
+      "nested": {
+        "CError": {
+          "fields": {
+            "info": {
+              "rule": "required",
+              "type": "CErrorInfo",
+              "id": 1
+            },
+            "data": {
+              "type": "ErrorData",
+              "id": 2
+            }
+          }
+        },
+        "SError": {
+          "fields": {
+            "info": {
+              "rule": "required",
+              "type": "SErrorInfo",
+              "id": 1
+            },
+            "data": {
+              "type": "ErrorData",
+              "id": 2
+            }
+          }
+        },
+        "CErrorInfo": {
+          "fields": {
+            "id": {
+              "rule": "required",
+              "type": "int32",
+              "id": 1
+            },
+            "code": {
+              "rule": "required",
+              "type": "string",
+              "id": 2
+            },
+            "tip": {
+              "rule": "required",
+              "type": "string",
+              "id": 3
+            }
+          }
+        },
+        "SErrorInfo": {
+          "fields": {
+            "id": {
+              "rule": "required",
+              "type": "int32",
+              "id": 1
+            },
+            "code": {
+              "rule": "required",
+              "type": "string",
+              "id": 2
+            },
+            "tip": {
+              "rule": "required",
+              "type": "string",
+              "id": 3
+            },
+            "clientTip": {
+              "rule": "required",
+              "type": "string",
+              "id": 4
+            },
+            "serverTip": {
+              "rule": "required",
+              "type": "string",
+              "id": 5
+            },
+            "desc": {
+              "type": "string",
+              "id": 6
+            }
+          }
+        },
+        "ErrorData": {
+          "fields": {
+            "USER_BAN": {
+              "type": "USER_BAN",
+              "id": 1
+            }
+          }
+        },
+        "USER_BAN": {
+          "fields": {
+            "time": {
+              "rule": "required",
+              "type": "int32",
+              "id": 1
             }
           }
         }

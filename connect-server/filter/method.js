@@ -1,7 +1,7 @@
 module.exports = async (ctx, next) => {
     ctx.method = {};
-    ctx.method.genError = async function (errorCode, cb) {
-        return await connectServer.genError(ctx.socket, errorCode, cb)
+    ctx.method.genError = async function (info, cb) {
+        return await connectServer.genError(ctx.socket, info, cb)
     }
     ctx.method.callback = async function (data, cb) {
         let router = `${ctx.state.router}Ret`;

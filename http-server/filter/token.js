@@ -8,6 +8,6 @@ module.exports = async (ctx, next) => {
         await next();
     }
     else {
-        ctx.method.genError(ERROR_CODE.TOKEN_ERROR)
+        ctx.method.genError(ERROR_INFO.TOKEN_ERROR)
     }
 }

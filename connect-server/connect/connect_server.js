@@ -34,7 +34,7 @@ Server.prototype.onClientEnter = async function (idx, socket) {
     let client = this.clientMap[idx];
     if (client != null) {
         // 顶号处理逻辑
-        client.genError(ERROR_CODE.REPEAT_LOGIN);
+        client.genError(ERROR_INFO.REPEAT_LOGIN);
         client.kickOut();
         client.close();
 
@@ -56,13 +56,14 @@ Server.prototype.onClientLeave = async function (socket) {
         client.close();
     }
 }
-Server.prototype.genError = async function (socket, errorCode) {
-    errorCode = ERROR_CODE[errorCode.code];
-    if (errorCode == null || util.equalObjectValue(errorCode, ERROR_CODE.SUCCESS)) {
-        log.error(`不可设置的错误码 code:${errorCode.code}`);
+Server.prototype.genError = async function (socket, info) {
+    info = ERROR_INFO[info.code];
+    if (info == null || util.equalErrorInfo(info, ERROR_INFO.SUCCESS)) {
+        log.error(`不可设置的错误码 code:${info.code}`);
         return;
     }
-    return await this.send(socket, "error", { code: errorCode });
+    let dataPack = util.getError(0, info, data)
+    return await this.send(socket, "error", dataPack);
 }
 Server.prototype.send = async function (socket, router, data) {
     data = data ?? {};
@@ -71,7 +72,7 @@ Server.prototype.send = async function (socket, router, data) {
     dataPack[router] = data;
     let buff = pb.encode("socket.rpc", dataPack);
     if (!pb.check("socket.rpc", buff, dataPack)) {
-        this.genError(socket, ERROR_CODE.RET_DATA_ERROR);
+        this.genError(socket, ERROR_INFO.RET_DATA_ERROR);
         return null;
     }
     log.print(`[socket] [s2c] >>> [${router}] ${JSON.stringify(data)}`)

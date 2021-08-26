@@ -13,9 +13,10 @@ const tpl=[
 {id:704,code:'USERNAME_NOTVALID',clientTip:'用户名格式错误：6-15位的大小写字母、数字、下划线、星号',serverTip:'用户名格式错误：6-15位的大小写字母、数字、下划线、星号',desc:'用户名格式错误：6-15位的大小写字母、数字、下划线、星号',},
 {id:705,code:'PASSWORD_NOTVALID',clientTip:'密码格式错误：6-15位的大小写字母、数字、下划线、星号',serverTip:'密码格式错误：6-15位的大小写字母、数字、下划线、星号',desc:'密码格式错误：6-15位的大小写字母、数字、下划线、星号',},
 {id:706,code:'PASSWORD_ERROR',clientTip:'密码错误',serverTip:'密码错误',desc:'密码错误',},
-{id:707,code:'AREA_MAINTENANCE',clientTip:'区服正在维护',serverTip:'区服正在维护',desc:'区服正在维护',},
-{id:708,code:'GAMENAME_EXIST',clientTip:'游戏名已存在',serverTip:'游戏名已存在',desc:'游戏名已存在',},
-{id:709,code:'GAMENAME_NOTVALID',clientTip:'游戏名格式错误：2-6位的汉字、大小写字母、数字',serverTip:'游戏名格式错误：2-6位的汉字、大小写字母、数字',desc:'游戏名格式错误：2-6位的汉字、大小写字母、数字',},
-{id:710,code:'PLAYER_SUM_MAX',clientTip:'账号内游戏角色已到达上限',serverTip:'账号内游戏角色已到达上限',desc:'账号内游戏角色已到达上限',},
+{id:707,code:'USER_BAN',clientTip:'账号已被封禁',serverTip:'账号已被封禁',desc:'账号已被封禁',},
+{id:708,code:'AREA_MAINTENANCE',clientTip:'区服正在维护',serverTip:'区服正在维护',desc:'区服正在维护',},
+{id:709,code:'GAMENAME_EXIST',clientTip:'游戏名已存在',serverTip:'游戏名已存在',desc:'游戏名已存在',},
+{id:710,code:'GAMENAME_NOTVALID',clientTip:'游戏名格式错误：2-6位的汉字、大小写字母、数字',serverTip:'游戏名格式错误：2-6位的汉字、大小写字母、数字',desc:'游戏名格式错误：2-6位的汉字、大小写字母、数字',},
+{id:711,code:'PLAYER_SUM_MAX',clientTip:'账号内游戏角色已到达上限',serverTip:'账号内游戏角色已到达上限',desc:'账号内游戏角色已到达上限',},
 ]
 module.exports = tpl

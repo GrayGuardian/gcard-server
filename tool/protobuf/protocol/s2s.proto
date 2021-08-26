@@ -1,9 +1,10 @@
 syntax = "proto2";
 package s2s;
 
-import "common.proto";
+import "model.proto";
 import "db.proto";
 import "template.proto";
+import "error.proto";
 
 message rpc {
     required int32 code = 1;    // 消息code
@@ -23,9 +24,7 @@ message rpc {
 message conn {
     required db.ServerConfig config = 1;
 }
-message connRet{
-    required template.ErrorCode code = 1;
-}
+message connRet{ }
 
 message test{
 

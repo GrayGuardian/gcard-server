@@ -10,7 +10,7 @@
               "id": 1
             },
             "error": {
-              "type": "error",
+              "type": "error.CError",
               "id": 20
             },
             "conn": {
@@ -31,15 +31,6 @@
             }
           }
         },
-        "error": {
-          "fields": {
-            "code": {
-              "rule": "required",
-              "type": "common.ErrorCode",
-              "id": 1
-            }
-          }
-        },
         "conn": {
           "fields": {
             "pid": {
@@ -55,13 +46,7 @@
           }
         },
         "connRet": {
-          "fields": {
-            "code": {
-              "rule": "required",
-              "type": "common.ErrorCode",
-              "id": 1
-            }
-          }
+          "fields": {}
         },
         "test": {
           "fields": {}
@@ -71,27 +56,8 @@
         }
       }
     },
-    "common": {
+    "model": {
       "nested": {
-        "ErrorCode": {
-          "fields": {
-            "id": {
-              "rule": "required",
-              "type": "int32",
-              "id": 1
-            },
-            "code": {
-              "rule": "required",
-              "type": "string",
-              "id": 2
-            },
-            "clientTip": {
-              "rule": "required",
-              "type": "string",
-              "id": 3
-            }
-          }
-        },
         "UserInfo": {
           "fields": {
             "uid": {
@@ -360,7 +326,7 @@
     },
     "template": {
       "nested": {
-        "ErrorCode": {
+        "ErrorInfo": {
           "fields": {
             "id": {
               "rule": "required",
@@ -385,6 +351,105 @@
             "desc": {
               "type": "string",
               "id": 5
+            }
+          }
+        }
+      }
+    },
+    "error": {
+      "nested": {
+        "CError": {
+          "fields": {
+            "info": {
+              "rule": "required",
+              "type": "CErrorInfo",
+              "id": 1
+            },
+            "data": {
+              "type": "ErrorData",
+              "id": 2
+            }
+          }
+        },
+        "SError": {
+          "fields": {
+            "info": {
+              "rule": "required",
+              "type": "SErrorInfo",
+              "id": 1
+            },
+            "data": {
+              "type": "ErrorData",
+              "id": 2
+            }
+          }
+        },
+        "CErrorInfo": {
+          "fields": {
+            "id": {
+              "rule": "required",
+              "type": "int32",
+              "id": 1
+            },
+            "code": {
+              "rule": "required",
+              "type": "string",
+              "id": 2
+            },
+            "tip": {
+              "rule": "required",
+              "type": "string",
+              "id": 3
+            }
+          }
+        },
+        "SErrorInfo": {
+          "fields": {
+            "id": {
+              "rule": "required",
+              "type": "int32",
+              "id": 1
+            },
+            "code": {
+              "rule": "required",
+              "type": "string",
+              "id": 2
+            },
+            "tip": {
+              "rule": "required",
+              "type": "string",
+              "id": 3
+            },
+            "clientTip": {
+              "rule": "required",
+              "type": "string",
+              "id": 4
+            },
+            "serverTip": {
+              "rule": "required",
+              "type": "string",
+              "id": 5
+            },
+            "desc": {
+              "type": "string",
+              "id": 6
+            }
+          }
+        },
+        "ErrorData": {
+          "fields": {
+            "USER_BAN": {
+              "type": "USER_BAN",
+              "id": 1
+            }
+          }
+        },
+        "USER_BAN": {
+          "fields": {
+            "time": {
+              "rule": "required",
+              "type": "int32",
+              "id": 1
             }
           }
         }

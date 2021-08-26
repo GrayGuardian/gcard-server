@@ -1,0 +1,107 @@
+{
+  "nested": {
+    "model": {
+      "nested": {
+        "UserInfo": {
+          "fields": {
+            "uid": {
+              "rule": "required",
+              "type": "string",
+              "id": 1
+            },
+            "username": {
+              "rule": "required",
+              "type": "string",
+              "id": 2
+            },
+            "banTime": {
+              "rule": "required",
+              "type": "int32",
+              "id": 3
+            },
+            "state": {
+              "rule": "required",
+              "type": "int32",
+              "id": 4
+            },
+            "lastAid": {
+              "type": "int32",
+              "id": 5
+            }
+          }
+        },
+        "AreaInfo": {
+          "fields": {
+            "aid": {
+              "rule": "required",
+              "type": "int32",
+              "id": 1
+            },
+            "name": {
+              "rule": "required",
+              "type": "string",
+              "id": 2
+            },
+            "state": {
+              "rule": "required",
+              "type": "int32",
+              "id": 3
+            }
+          }
+        },
+        "PlayerInfo": {
+          "fields": {
+            "pid": {
+              "rule": "required",
+              "type": "string",
+              "id": 1
+            },
+            "uid": {
+              "rule": "required",
+              "type": "string",
+              "id": 2
+            },
+            "aid": {
+              "rule": "required",
+              "type": "int32",
+              "id": 3
+            },
+            "name": {
+              "rule": "required",
+              "type": "string",
+              "id": 4
+            },
+            "lv": {
+              "rule": "required",
+              "type": "int32",
+              "id": 5
+            },
+            "exp": {
+              "rule": "required",
+              "type": "int32",
+              "id": 6
+            },
+            "loginTime": {
+              "type": "int32",
+              "id": 7
+            },
+            "logoutTime": {
+              "type": "int32",
+              "id": 8
+            },
+            "online": {
+              "rule": "required",
+              "type": "int32",
+              "id": 9
+            },
+            "state": {
+              "rule": "required",
+              "type": "int32",
+              "id": 10
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,22 +1,20 @@
 syntax = "proto2";
 package http;
 
-import "common.proto";
+import "model.proto";
 import "db.proto";
 import "template.proto";
+import "error.proto";
 
 message rpc {
     required string router = 1; // 路由
 
-    optional error error = 20;
+    optional error.CError error = 20;
 
     optional register register = 100;
     optional registerRet registerRet = 101;
     optional login login = 102;
     optional loginRet loginRet = 103;
-}
-message error{
-    required common.ErrorCode code = 1;
 }
 
 message register{
@@ -24,23 +22,23 @@ message register{
     required string password = 2;
 }
 message registerRet{
-    required common.UserInfo info = 1;
+    required model.UserInfo info = 1;
     required string token = 2;
-    repeated common.AreaInfo areas = 3;
+    repeated model.AreaInfo areas = 3;
 }
 message login{
     required string username = 1;
     required string password = 2;
 }
 message loginRet{
-    required common.UserInfo info = 1;
+    required model.UserInfo info = 1;
     required string token = 2;
-    repeated common.AreaInfo areas = 3;
+    repeated model.AreaInfo areas = 3;
 }
 message enterArea{
     required int32 aid = 1;
 }
 message enterAreaRet{
     required string token = 1;
-    repeated common.PlayerInfo players = 2;
+    repeated model.PlayerInfo players = 2;
 }

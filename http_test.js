@@ -49,7 +49,8 @@ var send = async function (router, data) {
 }
 var main = async () => {
     await send('login', { username: 'vsdf123', password: '1djkfls' })
-    // await send('register', { username: 'vsdf123', password: '1djkfls' })
+    await send('register', { username: 'vsdfdf123', password: '1djkfls' })
+    await send('login', { username: 'vsdfdf123', password: '1djkfls' })
 }
 
 main();

@@ -17,8 +17,8 @@ let getMap = function (name, key) {
     return map;
 }
 
-let template_error_code = getMap('template_error_code', "code");
+let template_error_info = getMap('template_error_info', "code");
 
-Template.template_error_code = template_error_code;
+Template.template_error_info = template_error_info;
 
 module.exports = Template;

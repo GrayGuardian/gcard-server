@@ -2,7 +2,7 @@
   "nested": {
     "template": {
       "nested": {
-        "ErrorCode": {
+        "ErrorInfo": {
           "fields": {
             "id": {
               "rule": "required",

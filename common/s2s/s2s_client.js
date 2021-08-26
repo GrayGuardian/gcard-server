@@ -23,12 +23,7 @@ Client.prototype.connect = function (success, error) {
     if (this.client == null) return;
     this.client.connect(() => {
         this.rpc(this.config.name, "conn", { config: SERVER_CONFIG }, (s2sdata, data) => {
-            if (util.equalObjectValue(data.code, ERROR_CODE.SUCCESS)) {
-                if (success != null) success(this);
-            }
-            else {
-                if (error != null) error(this);
-            }
+            if (success != null) success(this);
         });
     }, () => {
         if (error != null) error(this);
@@ -73,32 +68,28 @@ Client.prototype.onReceive = function (dataPack) {
     let data = s2sdata[s2sdata.router];
 
     // 首次接收
-    if (s2sdata.type == S2S_TYPE.RPC) {
-        if (s2sdata.to == SERVER_NAME) {
-            log.print(`[s2s] [${s2sdata.code}] [${s2sdata.from}] to [${s2sdata.to}] [${s2sdata.router}] >>> ${JSON.stringify(data)}`)
-            let fun = s2sRouter[s2sdata.router];
-            if (fun != null) {
-                let next = (retdata) => {
-                    let router = `${s2sdata.router}Ret`
-                    let tdata = { code: s2sdata.code, from: SERVER_NAME, to: s2sdata.from, router: router, type: S2S_TYPE.RET };
-                    tdata[router] = retdata
+    if (s2sdata.type == S2S_TYPE.RPC && s2sdata.to == SERVER_NAME) {
+        log.print(`[s2s] [${s2sdata.code}] [${s2sdata.from}] to [${s2sdata.to}] [${s2sdata.router}] >>> ${JSON.stringify(data)}`)
+        let fun = s2sRouter[s2sdata.router];
+        if (fun != null) {
+            let next = (retdata) => {
+                let router = `${s2sdata.router}Ret`
+                let tdata = { code: s2sdata.code, from: SERVER_NAME, to: s2sdata.from, router: router, type: S2S_TYPE.RET };
+                tdata[router] = retdata
 
-                    this.send(tdata)
-                }
-                fun(this.client, s2sdata, data, next);
+                this.send(tdata)
             }
+            fun(this.client, s2sdata, data, next);
         }
         return;
     }
     // 回调
-    if (s2sdata.type == S2S_TYPE.RET) {
-        if (s2sdata.to == SERVER_NAME) {
-            log.print(`[s2s] [${s2sdata.code}] [${s2sdata.from}] to [${s2sdata.to}] [${s2sdata.router}] >>> ${JSON.stringify(data)}`)
-            let fun = this.retCbMap.get(s2sdata.code)
-            if (fun != null) {
-                fun(s2sdata, data);
-                this.retCbMap.delete(s2sdata.code);
-            }
+    if (s2sdata.type == S2S_TYPE.RET && s2sdata.to == SERVER_NAME) {
+        log.print(`[s2s] [${s2sdata.code}] [${s2sdata.from}] to [${s2sdata.to}] [${s2sdata.router}] >>> ${JSON.stringify(data)}`)
+        let fun = this.retCbMap.get(s2sdata.code)
+        if (fun != null) {
+            fun(s2sdata, data);
+            this.retCbMap.delete(s2sdata.code);
         }
         return;
     }

@@ -2,8 +2,8 @@ syntax = "proto2";
 // 数据模板
 package template;
 
-// 错误代码 template.error_code
-message ErrorCode{
+// 错误代码 template.error_info
+message ErrorInfo{
     required int32 id = 1;
     required string code = 2;
     required string clientTip = 3;
