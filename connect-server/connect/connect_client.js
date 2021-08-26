@@ -5,16 +5,16 @@ var Client = function (server, idx, socket) {
     this.socket = socket;
 
     this.channels = [];
-    this.sendEvent = (data) => { this.send(data.router, data.data, data.cb) }
+    this.sendEvent = (data) => { this.send(data.router, data.data) }
 
     // 添加pid发送广播事件
     broadcast.on(BROADCAST_CODE.SOCKET_ID(this.idx), this.sendEvent);
 }
-Client.prototype.genError = async function (info, cb) {
-    return await this.server.genError(this.socket, info, cb)
+Client.prototype.genError = async function (info, data) {
+    return await this.server.genError(this.socket, info, data)
 }
-Client.prototype.send = async function (router, data, cb) {
-    return await this.server.send(this.socket, router, data, cb)
+Client.prototype.send = async function (router, data) {
+    return await this.server.send(this.socket, router, data)
 }
 Client.prototype.kickOut = async function () {
     await this.server.kickOut(this.socket);

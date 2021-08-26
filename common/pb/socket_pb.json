@@ -20,39 +20,26 @@
             "connRet": {
               "type": "connRet",
               "id": 51
-            },
-            "test": {
-              "type": "test",
-              "id": 100
-            },
-            "testRet": {
-              "type": "testRet",
-              "id": 101
             }
           }
         },
         "conn": {
           "fields": {
-            "pid": {
-              "rule": "required",
-              "type": "int32",
-              "id": 1
-            },
             "token": {
               "rule": "required",
               "type": "string",
-              "id": 2
+              "id": 1
             }
           }
         },
         "connRet": {
-          "fields": {}
-        },
-        "test": {
-          "fields": {}
-        },
-        "testRet": {
-          "fields": {}
+          "fields": {
+            "player": {
+              "rule": "required",
+              "type": "model.PlayerInfo",
+              "id": 1
+            }
+          }
         }
       }
     },

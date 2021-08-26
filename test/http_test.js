@@ -33,7 +33,7 @@ var send = async function (router, data) {
 
                 if (data['token'] != null) {
                     token = data['token']
-                    console.log("更新token", ">>>", token)
+                    console.log("更新token", ">>>", token, util.tokenDeserialize(token))
                 }
 
                 console.log(router, ">>>", data);
@@ -50,9 +50,9 @@ var send = async function (router, data) {
 var main = async () => {
     // await send('login', { username: 'vsdf123', password: '1djkfls' })
     // await send('register', { username: 'vsdfdf123', password: '1djkfls' })
-    await send('login', { username: 'vsdfdf123', password: '1djkfls' })
-    await send('enterArea', { aid: 1 })
-    await send('enterGame', { pid: 'f43d1450-058b-11ec-988a-a30baafb095f' })
+    await send('login', { username: 'vsdf123', password: '1djkfls' })
+    await send('enterArea', { aid: 2 })
+    await send('enterGame', { pid: 'bvdf1450-058b-11ec-988a-a30baafb095f' })
 }
 
 main();

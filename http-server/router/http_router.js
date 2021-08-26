@@ -64,14 +64,8 @@ Router.prototype.enterArea = async function (ctx, next) {
 }
 
 Router.prototype.enterGame = async function (ctx, next) {
-    let info = await mySqlLogic.getPlayerInfo(ctx.state.data.pid);
-    // 人物是否存在
-    if (info == null || info.state != GAME_CONST.PLAYER_STATE.NORMAL) {
-        ctx.method.genError(ERROR_INFO.DATA_NOTEXIST);
-        await next();
-        return;
-    }
-    let token = util.tokenSerialize({ uid: ctx.state.uid, aid: ctx.state.aid, pid: info.pid });
+    // 此处不校验pid真实性，传递至网关服务器校验
+    let token = util.tokenSerialize({ uid: ctx.state.uid, aid: ctx.state.aid, pid: ctx.state.data.pid });
     let config = serverConfig.getConnectServerFromAid(ctx.state.aid);
     ctx.method.callback({ token: token, config: config })
     await next();

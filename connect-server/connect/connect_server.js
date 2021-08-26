@@ -34,7 +34,7 @@ Server.prototype.onClientEnter = async function (idx, socket) {
     let client = this.clientMap[idx];
     if (client != null) {
         // 顶号处理逻辑
-        client.genError(ERROR_INFO.REPEAT_LOGIN);
+        // client.genError(ERROR_INFO.REPEAT_LOGIN);
         client.kickOut();
         client.close();
 
@@ -55,7 +55,7 @@ Server.prototype.onClientLeave = async function (socket) {
         client.close();
     }
 }
-Server.prototype.genError = async function (socket, info) {
+Server.prototype.genError = async function (socket, info, data) {
     info = info ?? ERROR_INFO.UNKNOWN_ERROR
     info = ERROR_INFO[info.code];
     if (info == null || util.equalErrorInfo(info, ERROR_INFO.SUCCESS)) {

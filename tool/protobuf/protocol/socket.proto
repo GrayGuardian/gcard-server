@@ -13,21 +13,11 @@ message rpc {
 
     optional conn conn = 50;
     optional connRet connRet = 51;
-
-    optional test test = 100;
-    optional testRet testRet = 101;
 }
 message conn {
-    required int32 pid = 1;
-    required string token = 2;
+    required string token = 1;
 }
 message connRet{
+    required model.PlayerInfo player = 1;
 }
 
-message test{
-
-}
-
-message testRet{
-
-}
