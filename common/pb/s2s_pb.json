@@ -29,6 +29,10 @@
               "type": "string",
               "id": 5
             },
+            "error": {
+              "type": "error.SError",
+              "id": 20
+            },
             "conn": {
               "type": "conn",
               "id": 50

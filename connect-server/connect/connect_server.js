@@ -46,7 +46,6 @@ Server.prototype.onClientEnter = async function (idx, socket) {
         await serverLogic.playerEnter(idx);
     }
 
-    await serverLogic.playerConnect(idx);
 }
 Server.prototype.onClientLeave = async function (socket) {
     let idx = Object.keys(this.clientMap).find(key => { return this.clientMap[key].socket == socket })

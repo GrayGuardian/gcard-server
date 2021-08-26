@@ -13,6 +13,8 @@ message rpc {
     required string router = 4; // 路由
     required string type = 5;   //来源 - Rpc or RpcRet
 
+    optional error.SError error = 20;
+
     optional conn conn = 50;
     optional connRet connRet = 51;
 

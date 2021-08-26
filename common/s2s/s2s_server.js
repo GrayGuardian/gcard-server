@@ -1,11 +1,5 @@
 
 const S2SClient = require("./s2s_client");
-const S2S_TYPE = {
-    // S2S
-    RPC: "Rpc",
-    // Ret
-    RET: "Ret",
-}
 var Server = function (host, port) {
     if (SERVER_CONFIG.type != GAME_CONST.SERVER_TYPE.CENTER) {
         log.error(`[${SERVER_NAME}]不是中心服务器，无法创建转发服务器`)
@@ -15,8 +9,17 @@ var Server = function (host, port) {
     this.s2sClientMap = new Map();
     this.server = new SocketServer(host, port)
 
-    this.server.use(SocketServer.EVENT_TYPE.OnReceive, async (ctx, next) => { this.onReceive(ctx.socket, ctx.dataPack); await next(); });
     this.server.use(SocketServer.EVENT_TYPE.OnError, async (ex, next) => { log.error(ex); await next(); });
+
+    this.server.use(SocketServer.EVENT_TYPE.OnReceive, async (ctx, next) => {
+        ctx.send = (s2sdata) => {
+            this.send(s2sdata);
+        }
+        await next();
+    })
+    this.server.use(SocketServer.EVENT_TYPE.OnReceive, require("./filter/method"));
+    this.server.use(SocketServer.EVENT_TYPE.OnReceive, require("./filter/data"));
+    this.server.use(SocketServer.EVENT_TYPE.OnReceive, require("./filter/router_server"));
 }
 Server.prototype.listen = function (cb) {
     if (this.server == null) return;
@@ -26,33 +29,6 @@ Server.prototype.listen = function (cb) {
     });
 }
 
-Server.prototype.onReceive = function (socket, dataPack) {
-    let s2sdata = pb.decode("s2s.rpc", dataPack.data);
-    if (s2sdata == null) {
-        log.error("转发数据格式出错");
-        return;
-    }
-    let data = s2sdata[s2sdata.router];
-    if (s2sdata.type == S2S_TYPE.RPC && s2sdata.to == SERVER_NAME) {
-        log.print(`[s2s] [${s2sdata.code}] [${s2sdata.from}] to [${s2sdata.to}] [${s2sdata.router}] >>> ${JSON.stringify(data)}`)
-        // 本地操作
-        let fun = s2sRouter[s2sdata.router];
-        if (fun != null) {
-            let next = (retdata) => {
-                let router = `${s2sdata.router}Ret`
-                let tdata = { code: s2sdata.code, from: SERVER_NAME, to: s2sdata.from, router: router, type: S2S_TYPE.RET };
-                tdata[router] = retdata
-
-                this.send(tdata)
-            }
-            fun(socket, s2sdata, data, next);
-        }
-        return;
-    }
-
-    // 转发操作
-    this.send(s2sdata)
-}
 Server.prototype.send = function (s2sdata) {
     s2sdata[s2sdata.router] = s2sdata[s2sdata.router] ?? {};
     log.print(`[s2s] [${s2sdata.code}] [${s2sdata.from}] to [${s2sdata.to}] [${s2sdata.router}] >>> ${JSON.stringify(s2sdata[s2sdata.router])}`)

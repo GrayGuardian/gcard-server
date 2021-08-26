@@ -1,4 +1,4 @@
-const app = require("../common/app");
+const app = require("../common/base/app");
 
 app(() => {
     global.serverLogic = new (require('./common/server_logic'))();
@@ -10,7 +10,7 @@ app(() => {
     s2sClient.connect(
         () => {
             log.print(`转发服务器[${s2sClient.config.name}]连接成功`);
-            s2sClient.rpc("http-server1", 'test', null, () => { console.log("接收回调testRet") })
+            s2sClient.rpc("http-server1", 'test', null, (data) => { console.log("接收回调testRet", data) })
         },
         () => {
             log.error(`转发服务器[${s2sClient.config.name}]连接失败 ${s2sClient.config.host}:${s2sClient.config.port}`);
@@ -24,5 +24,4 @@ app(() => {
         log.print(`网关服务器创建成功 ${SERVER_NAME} ${SERVER_CONFIG.host}:${SERVER_CONFIG.port}`);
     });
 
-    console.log(Date.unix())
 });

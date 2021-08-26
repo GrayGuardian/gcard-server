@@ -1,4 +1,4 @@
-var pb = new (require('./common/pb/pb'))()
+require("./common/base/global")()
 var http = require('http');
 
 const HOST = '127.0.0.1'

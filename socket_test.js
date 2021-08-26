@@ -1,7 +1,4 @@
-let SocketClient = require("./common/socket/socket_client")
-global.SOCKET_EVENT = require("./common/const/SOCKET_EVENT")
-let pb = new (require("./common/pb/pb"))();
-
+require("./common/base/global")()
 
 let client = new SocketClient('127.0.0.1', 8100)
 client.use(SocketClient.EVENT_TYPE.OnConnectSuccess, async (ctx, next) => {

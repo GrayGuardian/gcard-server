@@ -1,4 +1,4 @@
-const app = require("../common/app");
+const app = require("../common/base/app");
 
 app(() => {
     global.s2sRouter = new (require('./router/s2s_router'));
