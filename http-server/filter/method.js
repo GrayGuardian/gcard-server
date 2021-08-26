@@ -9,16 +9,16 @@ module.exports = async (ctx, next) => {
             return;
         }
         let dataPack = util.getError(0, info, data)
-        return ctx.method.send(info.id, "error", dataPack);
+        return ctx.method.send("error", dataPack);
     }
     // 返回函数
     ctx.method.callback = function (data) {
         router = `${ctx.state.router}Ret`;
 
-        return ctx.method.send(ERROR_INFO.SUCCESS.id, router, data);
+        return ctx.method.send(router, data);
     }
 
-    ctx.method.send = function (code, router, data) {
+    ctx.method.send = function (router, data) {
         data = data ?? {};
         let dataPack = {}
         dataPack.router = router;
@@ -31,7 +31,7 @@ module.exports = async (ctx, next) => {
         }
         log.print(`[http] [s2c] >>> [${router}] ${JSON.stringify(data)}`)
 
-        ctx.response.writeHead(code, {
+        ctx.response.writeHead(200, {
             "Content-Type": "application/octet-stream;"
         });
         ctx.method.end(buff);

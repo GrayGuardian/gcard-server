@@ -15,7 +15,7 @@ module.exports = async function () {
     global.ERROR_INFO = Template.template_error_info;
 
     // 实例化对象
-    global.pb = new (require("../pb/pb"))();
+    global.pb = new (require("../utils/pb"))();
     global.broadcast = new (require("../utils/broadcast"))();
 
     global.mysqlMgr = new (require("../db/mysql_mgr"))();

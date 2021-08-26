@@ -27,4 +27,10 @@ app(() => {
         log.print(`Http服务器创建成功 ${SERVER_NAME} http://${SERVER_CONFIG.host}:${SERVER_CONFIG.port}`);
     })
 
+    console.log(pb.encode('http.rpc',
+        {
+            router: 'login',
+            login: { username: 'vsdf123', password: '1djkfls' }
+        }
+    ))
 });
