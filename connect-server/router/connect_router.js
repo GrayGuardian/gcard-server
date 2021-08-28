@@ -8,7 +8,7 @@ Router.prototype.conn = async function (ctx, next) {
         return;
     }
     // 校验pid
-    let player = await mySqlLogic.getPlayerInfo(token.pid);
+    let player = await mysqlLogic.getPlayerInfo(token.pid);
     if (player == null || player.state != GAME_CONST.PLAYER_STATE.NORMAL || player.uid != token.uid || player.aid != token.aid) {
         await ctx.method.kickOut();
         return;

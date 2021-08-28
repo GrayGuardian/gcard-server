@@ -8,6 +8,11 @@ module.exports = async function () {
     // 类
     global.SocketClient = require("../socket/socket_client");
     global.SocketServer = require("../socket/socket_server");
+
+    global.Model = {};
+    global.Model.Player = require("../model/player")
+    global.Model.PlayerCurrency = require("../model/player_currency");
+    global.Model.PlayerProps = require("../model/player_props");
     // 静态类
     global.log = require("../utils/log");
     global.util = require("../utils/util");
@@ -19,8 +24,20 @@ module.exports = async function () {
     global.broadcast = new (require("../utils/broadcast"))();
 
     global.mysqlMgr = new (require("../db/mysql_mgr"))();
-    global.mySqlLogic = new (require("../db/mysql_logic"))();
+    global.mysqlLogic = new (require("../db/mysql_logic"))();
 
     global.serverConfig = new (require("../server/server_config"))();
-    global.serverConfig.create(await mySqlLogic.getAllServerConfigs())
+    global.serverConfig.create(await mysqlLogic.getAllServerConfigs())
+
+    //test
+    let player = await Model.Player.create("bvdf1450-058b-11ec-988a-a30baafb095f")
+    let json = player.toJson();
+    console.log(player.currency.get_currency0())
+    let player1 = await Model.Player.jsonParse(json);
+    console.log(player1.currency.get_currency0())
+
+    console.log(player1.propsMap[30001].tpl);
+    player1.propsMap[30001].set_cnt(999);
+    player1.propsMap[30001].updateDataToDB();
+
 }

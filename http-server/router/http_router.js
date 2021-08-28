@@ -14,19 +14,19 @@ Router.prototype.register = async function (ctx, next) {
         return;
     }
     // 尝试注册
-    let info = await mySqlLogic.register(ctx.state.data.username, ctx.state.data.password);
+    let info = await mysqlLogic.register(ctx.state.data.username, ctx.state.data.password);
     if (info.error != null) {
         ctx.method.genError(ERROR_INFO[info.error])
         await next();
         return;
     }
     let token = util.tokenSerialize({ uid: info.uid })
-    let areas = await mySqlLogic.getValidAreaInfos();
+    let areas = await mysqlLogic.getValidAreaInfos();
     ctx.method.callback({ info: info, token: token, areas: areas })
     await next();
 }
 Router.prototype.login = async function (ctx, next) {
-    let info = await mySqlLogic.login(ctx.state.data.username, ctx.state.data.password);
+    let info = await mysqlLogic.login(ctx.state.data.username, ctx.state.data.password);
     if (info.error != null) {
         ctx.method.genError(ERROR_INFO[info.error])
         await next();
@@ -38,13 +38,13 @@ Router.prototype.login = async function (ctx, next) {
         return;
     }
     let token = util.tokenSerialize({ uid: info.uid });
-    let areas = await mySqlLogic.getValidAreaInfos();
+    let areas = await mysqlLogic.getValidAreaInfos();
     ctx.method.callback({ info: info, token: token, areas: areas })
     await next();
 }
 
 Router.prototype.enterArea = async function (ctx, next) {
-    let info = await mySqlLogic.getAreaInfo(ctx.state.data.aid);
+    let info = await mysqlLogic.getAreaInfo(ctx.state.data.aid);
     // 区服是否存在
     if (info == null || info.state == GAME_CONST.AREA_STATE.INVALID) {
         ctx.method.genError(ERROR_INFO.DATA_NOTEXIST);
@@ -58,7 +58,7 @@ Router.prototype.enterArea = async function (ctx, next) {
         return;
     }
     let token = util.tokenSerialize({ uid: ctx.state.uid, aid: info.aid });
-    let players = await mySqlLogic.getValidPlayerInfos(ctx.state.uid, info.aid)
+    let players = await mysqlLogic.getValidPlayerInfos(ctx.state.uid, info.aid)
     ctx.method.callback({ token: token, players: players })
     await next();
 }

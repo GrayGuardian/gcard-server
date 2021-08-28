@@ -27,5 +27,15 @@ GAME_CONST.PLAYER_STATE = {
     NORMAL: 0,      // 正常
     DELETE: 1,      // 删除
 }
+// 货币类型 对应db.game.player_currency的字段
+GAME_CONST.PLAYER_CURRENCY_TYPE = {
+    COPPER: 'currency0',    // 铜币
+    SILVER: 'currency1',    // 银币
+}
+// 道具状态
+GAME_CONST.PLAYER_PROPS_STATE = {
+    NORMAL: 0,      // 正常
+    DELETE: 1,      // 已删除
+}
 
 module.exports = GAME_CONST;

@@ -48,3 +48,21 @@ message PlayerInfo{
     required int32 online = 11;      // 是否在线
     required int32 state = 12;       // 人物状态 详见GAME_CONST.PLAYER_STATE
 }
+
+// 人物货币 db.game.player_currency
+message PlayerCurrency{
+    required string pid = 1;        // 人物ID
+    // 下列字段定义详见GAME_CONST.PLAYER_CURRENCY_TYPE
+    required int32 currency0 = 2;
+    required int32 currency1 = 3;
+}
+
+// 人物道具 db.game.player_props
+message PlayerProps{
+    required int32 propsId = 1;     // 道具ID
+    required string pid = 2;        // 人物ID
+    required int32 cnt = 3;         // 道具数量
+    required int32 createTime = 4;  // 获得时间
+    optional int32 useTime = 5;     // 使用时间
+    required int32 state = 6;       // 道具状态 详见GAME_CONST.PLAYER_PROPS_STATE
+}

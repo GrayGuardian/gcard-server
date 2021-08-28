@@ -162,6 +162,58 @@
               "id": 12
             }
           }
+        },
+        "PlayerCurrency": {
+          "fields": {
+            "pid": {
+              "rule": "required",
+              "type": "string",
+              "id": 1
+            },
+            "currency0": {
+              "rule": "required",
+              "type": "int32",
+              "id": 2
+            },
+            "currency1": {
+              "rule": "required",
+              "type": "int32",
+              "id": 3
+            }
+          }
+        },
+        "PlayerProps": {
+          "fields": {
+            "propsId": {
+              "rule": "required",
+              "type": "int32",
+              "id": 1
+            },
+            "pid": {
+              "rule": "required",
+              "type": "string",
+              "id": 2
+            },
+            "cnt": {
+              "rule": "required",
+              "type": "int32",
+              "id": 3
+            },
+            "createTime": {
+              "rule": "required",
+              "type": "int32",
+              "id": 4
+            },
+            "useTime": {
+              "type": "int32",
+              "id": 5
+            },
+            "state": {
+              "rule": "required",
+              "type": "int32",
+              "id": 6
+            }
+          }
         }
       }
     }

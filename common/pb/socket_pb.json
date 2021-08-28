@@ -13,6 +13,10 @@
               "type": "error.CError",
               "id": 20
             },
+            "updateModelData": {
+              "type": "updateModelData",
+              "id": 21
+            },
             "conn": {
               "type": "conn",
               "id": 50
@@ -20,6 +24,32 @@
             "connRet": {
               "type": "connRet",
               "id": 51
+            }
+          }
+        },
+        "updateModelData": {
+          "fields": {
+            "clsName": {
+              "rule": "required",
+              "type": "string",
+              "id": 1
+            },
+            "idx": {
+              "rule": "required",
+              "type": "int32",
+              "id": 2
+            },
+            "Player": {
+              "type": "model.PlayerInfo",
+              "id": 10
+            },
+            "PlayerCurrency": {
+              "type": "model.PlayerCurrency",
+              "id": 11
+            },
+            "PlayerProps": {
+              "type": "model.PlayerProps",
+              "id": 12
             }
           }
         },
@@ -157,6 +187,39 @@
               "id": 2
             },
             "port": {
+              "rule": "required",
+              "type": "int32",
+              "id": 3
+            }
+          }
+        },
+        "PlayerCurrency": {
+          "fields": {
+            "currency0": {
+              "rule": "required",
+              "type": "int32",
+              "id": 1
+            },
+            "currency1": {
+              "rule": "required",
+              "type": "int32",
+              "id": 2
+            }
+          }
+        },
+        "PlayerProps": {
+          "fields": {
+            "propsId": {
+              "rule": "required",
+              "type": "int32",
+              "id": 1
+            },
+            "cnt": {
+              "rule": "required",
+              "type": "int32",
+              "id": 2
+            },
+            "createTime": {
               "rule": "required",
               "type": "int32",
               "id": 3
@@ -325,6 +388,58 @@
               "rule": "required",
               "type": "int32",
               "id": 12
+            }
+          }
+        },
+        "PlayerCurrency": {
+          "fields": {
+            "pid": {
+              "rule": "required",
+              "type": "string",
+              "id": 1
+            },
+            "currency0": {
+              "rule": "required",
+              "type": "int32",
+              "id": 2
+            },
+            "currency1": {
+              "rule": "required",
+              "type": "int32",
+              "id": 3
+            }
+          }
+        },
+        "PlayerProps": {
+          "fields": {
+            "propsId": {
+              "rule": "required",
+              "type": "int32",
+              "id": 1
+            },
+            "pid": {
+              "rule": "required",
+              "type": "string",
+              "id": 2
+            },
+            "cnt": {
+              "rule": "required",
+              "type": "int32",
+              "id": 3
+            },
+            "createTime": {
+              "rule": "required",
+              "type": "int32",
+              "id": 4
+            },
+            "useTime": {
+              "type": "int32",
+              "id": 5
+            },
+            "state": {
+              "rule": "required",
+              "type": "int32",
+              "id": 6
             }
           }
         }

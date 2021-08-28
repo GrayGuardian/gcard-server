@@ -11,7 +11,7 @@ message rpc {
     required string from = 2;   //来源服务器
     required string to = 3; // 目标服务器
     required string router = 4; // 路由
-    required string type = 5;   //来源 - Rpc or RpcRet
+    required string type = 5;   //类型 - Rpc or RpcRet
 
     optional error.SError error = 20;
 

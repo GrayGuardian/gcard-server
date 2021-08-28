@@ -119,6 +119,39 @@
               "id": 3
             }
           }
+        },
+        "PlayerCurrency": {
+          "fields": {
+            "currency0": {
+              "rule": "required",
+              "type": "int32",
+              "id": 1
+            },
+            "currency1": {
+              "rule": "required",
+              "type": "int32",
+              "id": 2
+            }
+          }
+        },
+        "PlayerProps": {
+          "fields": {
+            "propsId": {
+              "rule": "required",
+              "type": "int32",
+              "id": 1
+            },
+            "cnt": {
+              "rule": "required",
+              "type": "int32",
+              "id": 2
+            },
+            "createTime": {
+              "rule": "required",
+              "type": "int32",
+              "id": 3
+            }
+          }
         }
       }
     }

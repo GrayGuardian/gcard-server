@@ -10,6 +10,38 @@ Util.equalErrorInfo = function (info1, info2) {
 Util.equalObjectValue = function (obj1, obj2) {
     return JSON.stringify(obj1) == JSON.stringify(obj2);
 }
+Util.toJson = function (object, name) {
+    var result = "";
+    function serializeInternal(o, path) {
+        for (p in o) {
+            var value = o[p];
+            if (value == null) {
+                result += "\n" + path + "[" + (isNaN(p) ? "\"" + p + "\"" : p) + "]" + "=" + "null;";
+            }
+            else {
+                if (typeof value != "object") {
+                    if (typeof value == "string") {
+                        result += "\n" + path + "[" + (isNaN(p) ? "\"" + p + "\"" : p) + "] = " + "\"" + value.replace(/\"/g, "\\\"") + "\"" + ";";
+                    } else {
+                        result += "\n" + path + "[" + (isNaN(p) ? "\"" + p + "\"" : p) + "] = " + value + ";";
+                    }
+                }
+                else {
+                    if (value instanceof Array) {
+                        result += "\n" + path + "[" + (isNaN(p) ? "\"" + p + "\"" : p) + "]" + "=" + "new Array();";
+                        serializeInternal(value, path + "[" + (isNaN(p) ? "\"" + p + "\"" : p) + "]");
+                    } else {
+                        result += "\n" + path + "[" + (isNaN(p) ? "\"" + p + "\"" : p) + "]" + "=" + "new Object();";
+                        serializeInternal(value, path + "[" + (isNaN(p) ? "\"" + p + "\"" : p) + "]");
+                    }
+                }
+            }
+        }
+    }
+    serializeInternal(object, name);
+    return result;
+}
+
 // 封装Error数据
 Util.getError = function (type, info, data) {
     info.tip = info[`${type == 0 ? 'client' : 'server'}Tip`]

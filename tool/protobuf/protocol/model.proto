@@ -40,3 +40,17 @@ message ServerConfig{
     required string host = 2;   // 主机IP
     required int32 port = 3;    // 主机端口
 }
+
+// 人物货币 db.game.player_currency
+message PlayerCurrency{
+    // 下列字段定义详见GAME_CONST.PLAYER_CURRENCY_TYPE
+    required int32 currency0 = 1;
+    required int32 currency1 = 2;
+}
+
+// 人物道具 db.game.player_props
+message PlayerProps{
+    required int32 propsId = 1;     // 道具ID
+    required int32 cnt = 2;         // 道具数量
+    required int32 createTime = 3;  // 获得时间
+}

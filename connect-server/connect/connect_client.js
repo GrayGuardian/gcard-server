@@ -7,7 +7,7 @@ var Client = function (server, idx, socket) {
     this.channels = [];
     this.sendEvent = (data) => { this.send(data.router, data.data) }
 
-    // 添加pid发送广播事件
+    // 添加id发送广播事件
     broadcast.on(BROADCAST_CODE.SOCKET_ID(this.idx), this.sendEvent);
 }
 Client.prototype.genError = async function (info, data) {
@@ -21,7 +21,7 @@ Client.prototype.kickOut = async function () {
 }
 Client.prototype.close = function () {
     // 清理发送广播事件
-    // 清理pid发送广播事件
+    // 清理id发送广播事件
     broadcast.out(BROADCAST_CODE.SOCKET_ID(this.idx), this.sendEvent);
     // 退出所有频道
     this.channels.forEach(key => {

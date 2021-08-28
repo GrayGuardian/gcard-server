@@ -13,7 +13,8 @@ xlsfile = os.getcwd()+"\\template.xlsx" # 打开指定路径中的xls文件
 book = xlrd.open_workbook(xlsfile)#得到Excel文件的book对象，实例化对象
 
 config = [
-	{"name":"error_info","sheet":"错误信息表"}
+	{"name":"error_info","sheet":"错误信息表"},
+	{"name":"props","sheet":"游戏道具表"}
 ];
 
 
