@@ -23,8 +23,10 @@ module.exports = async function () {
     global.pb = new (require("../utils/pb"))();
     global.broadcast = new (require("../utils/broadcast"))();
 
-    global.mysqlMgr = new (require("../db/mysql_mgr"))();
-    global.mysqlLogic = new (require("../db/mysql_logic"))();
+    global.mysqlMgr = new (require("../mysql/mysql_mgr"))();
+    global.mysqlLogic = new (require("../mysql/mysql_logic"))();
+    global.redisMgr = new (require("../redis/redis_mgr"))();
+    global.redisLogic = new (require("../redis/redis_logic"))();
 
     global.serverConfig = new (require("../server/server_config"))();
     global.serverConfig.create(await mysqlLogic.getAllServerConfigs())

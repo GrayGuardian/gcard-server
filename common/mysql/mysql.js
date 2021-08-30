@@ -1,7 +1,7 @@
-var MySql = require("mysql");
+var mysql = require("mysql");
 
 var MySQL = function (config) {
-    this.client = MySql.createConnection(config);
+    this.client = mysql.createConnection(config);
     this.client.connect();
 }
 MySQL.prototype.query = function (sql, param) {
