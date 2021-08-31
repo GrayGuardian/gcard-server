@@ -2,7 +2,6 @@
 const net = require('net')
 const DataBuffer = require("./dataBuffer");
 const SocketDataPack = require('./socketDataPack');
-const Middleware = require('../utils/middleware')
 
 const HEAD_TIMEOUT = 5000;    // 心跳超时 毫秒
 const HEAD_CHECKTIME = 5000;   // 心跳包超时检测 毫秒

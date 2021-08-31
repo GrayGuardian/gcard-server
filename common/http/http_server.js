@@ -1,7 +1,6 @@
 const http = require('http');
 const url = require('url');
 const querystring = require('querystring');
-const Middleware = require('../utils/middleware')
 
 const Property = async (ctx, next) => {
     ctx.buff = null;
