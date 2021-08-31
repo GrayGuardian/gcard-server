@@ -8,6 +8,8 @@ GAME_CONST.SERVER_TYPE = {
     CONNECT: 1,
     // http服务器
     HTTP: 2,
+    // 游戏服务器
+    GAME: 3,
 }
 
 // 游戏区服状态

@@ -47,4 +47,15 @@ ServerConfig.prototype.getConnectServerFromAid = function (aid) {
         return null;
     }
 }
+// 根据区服ID选择游戏服务器配置
+ServerConfig.prototype.getGameServerFromAid = function (aid) {
+    try {
+        let arr = this.configTypeMap.get(GAME_CONST.SERVER_TYPE.GAME);
+        let index = aid % arr.length;
+        return arr[index];
+    }
+    catch {
+        return null;
+    }
+}
 module.exports = ServerConfig;

@@ -8,6 +8,8 @@ module.exports = async function () {
     // 类
     global.SocketClient = require("../socket/socket_client");
     global.SocketServer = require("../socket/socket_server");
+    global.S2SServer = require("../s2s/s2s_server");
+    global.S2SClient = require("../s2s/s2s_client");
 
     global.Middleware = require('../utils/middleware')
     global.Lock = require("../utils/lock");
@@ -31,6 +33,7 @@ module.exports = async function () {
     global.mysqlLogic = new (require("../mysql/mysql_logic"))();
     global.redisMgr = new (require("../redis/redis_mgr"))();
     global.redisLogic = new (require("../redis/redis_logic"))();
+    global.s2sLogic = new (require("../s2s/s2s_logic"))();
 
     global.serverConfig = new (require("../server/server_config"))();
     global.serverConfig.create(await mysqlLogic.getAllServerConfigs())
@@ -46,22 +49,22 @@ module.exports = async function () {
     // player1.propsMap[30001].set_cnt(999);
     // player1.propsMap[30001].updateDataToDB();
 
-    new Lock('aaaaa').use((lock) => {
-        setTimeout(() => {
-            console.log("延迟操作1");
-            lock.unlock();
-        }, 1000);
-    })
-    new Lock("aaaaa").use((lock) => {
-        console.log("延迟操作2");
-        lock.unlock();
-    });
-    new Lock("aaaaa").use((lock) => {
-        console.log("延迟操作3");
-        // lock.unlock();
-    });
-    new Lock("aaaaa").use((lock) => {
-        console.log("延迟操作4");
-        lock.unlock();
-    });
+    // new Lock('aaaaa').use((lock) => {
+    //     setTimeout(() => {
+    //         console.log("延迟操作1");
+    //         lock.unlock();
+    //     }, 1000);
+    // })
+    // new Lock("aaaaa").use((lock) => {
+    //     console.log("延迟操作2");
+    //     lock.unlock();
+    // });
+    // new Lock("aaaaa").use((lock) => {
+    //     console.log("延迟操作3");
+    //     // lock.unlock();
+    // });
+    // new Lock("aaaaa").use((lock) => {
+    //     console.log("延迟操作4");
+    //     lock.unlock();
+    // });
 }

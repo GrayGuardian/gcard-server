@@ -63,12 +63,9 @@ Util.tokenSerialize = function (data, time) {
 Util.tokenDeserialize = function (token) {
     try {
         let data = JWT.verify(token, TokenKey);
-        if (data.exp < Date.unix()) {
-            //Token过期
-            return null;
-        }
         return data;
     } catch (e) {
+        // token超时过期也会报错
         return null
     }
 }

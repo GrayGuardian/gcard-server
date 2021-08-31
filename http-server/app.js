@@ -3,8 +3,6 @@ const app = require("../common/base/app");
 app(() => {
     global.s2sRouter = new (require('./router/s2s_router'))();
 
-
-    const S2SClient = require("../common/s2s/s2s_client");
     let config = serverConfig.getCenterServerFromName(SERVER_NAME);
     global.s2sClient = new S2SClient(config);
     s2sClient.connect(
@@ -27,10 +25,4 @@ app(() => {
         log.print(`Http服务器创建成功 ${SERVER_NAME} http://${SERVER_CONFIG.host}:${SERVER_CONFIG.port}`);
     })
 
-    console.log(pb.encode('http.rpc',
-        {
-            router: 'login',
-            login: { username: 'vsdf123', password: '1djkfls' }
-        }
-    ))
 });

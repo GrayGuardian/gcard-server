@@ -36,31 +36,31 @@ var Client = function (config) {
 Client.prototype.connect = function (success, error) {
     if (this.client == null) return;
     this.client.connect(() => {
-        this.rpc(this.config.name, "conn", { config: SERVER_CONFIG }, (data) => {
+        this.rpc(this.config.name, "conn", { config: SERVER_CONFIG }).then((data) => {
             if (success != null) success(this);
         });
     }, () => {
         if (error != null) error(this);
     })
 }
-Client.prototype.rpc = function (to, router, data, cb) {
-    if (this.client == null) return;
-    data = data ?? {};
-    let s2sdata = {};
-    s2sdata.code = this.code++;
-    s2sdata.from = SERVER_NAME;
-    s2sdata.to = to;
-    s2sdata.router = router;
-    s2sdata[router] = data;
-    s2sdata.type = S2S_TYPE.RPC;
+Client.prototype.rpc = function (to, router, data) {
+    return new Promise((resolve) => {
+        if (this.client == null) return;
+        data = data ?? {};
+        let s2sdata = {};
+        s2sdata.code = this.code++;
+        s2sdata.from = SERVER_NAME;
+        s2sdata.to = to;
+        s2sdata.router = router;
+        s2sdata[router] = data;
+        s2sdata.type = S2S_TYPE.RPC;
 
-    if (cb != null) {
-        this.retCbMap.set(s2sdata.code, cb);
-    }
+        this.retCbMap.set(s2sdata.code, (s2sdata) => { resolve(s2sdata); });
 
-    this.send(s2sdata);
-
+        this.send(s2sdata);
+    });
 }
+
 Client.prototype.send = function (s2sdata) {
     if (this.client == null) return;
 

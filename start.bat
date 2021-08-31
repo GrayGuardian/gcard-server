@@ -1,13 +1,14 @@
 @echo off
 ::添加Server配置项并修改长度变量
-SET SERVER_CONFIG_Length=3
+SET SERVER_CONFIG_Length=4
 SET SERVER_CONFIG[0].Type=center-server
 SET SERVER_CONFIG[0].Count=2
 SET SERVER_CONFIG[1].Type=http-server
 SET SERVER_CONFIG[1].Count=2
 SET SERVER_CONFIG[2].Type=connect-server
-SET SERVER_CONFIG[2].Count=1
-
+SET SERVER_CONFIG[2].Count=2
+SET SERVER_CONFIG[3].Type=game-server
+SET SERVER_CONFIG[3].Count=2
 cd %cd%
 
 call:startAllServer

@@ -41,13 +41,29 @@
               "type": "connRet",
               "id": 51
             },
+            "playerEnter": {
+              "type": "playerEnter",
+              "id": 100
+            },
+            "playerEnterRet": {
+              "type": "playerEnterRet",
+              "id": 101
+            },
+            "playerLeave": {
+              "type": "playerLeave",
+              "id": 102
+            },
+            "playerLeaveRet": {
+              "type": "playerLeaveRet",
+              "id": 103
+            },
             "test": {
               "type": "test",
-              "id": 100
+              "id": 200
             },
             "testRet": {
               "type": "testRet",
-              "id": 101
+              "id": 201
             }
           }
         },
@@ -61,6 +77,30 @@
           }
         },
         "connRet": {
+          "fields": {}
+        },
+        "playerEnter": {
+          "fields": {
+            "player": {
+              "rule": "required",
+              "type": "db.PlayerInfo",
+              "id": 1
+            }
+          }
+        },
+        "playerEnterRet": {
+          "fields": {}
+        },
+        "playerLeave": {
+          "fields": {
+            "pid": {
+              "rule": "required",
+              "type": "int32",
+              "id": 1
+            }
+          }
+        },
+        "playerLeaveRet": {
           "fields": {}
         },
         "test": {

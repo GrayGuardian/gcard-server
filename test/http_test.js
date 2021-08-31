@@ -51,7 +51,7 @@ var main = async () => {
     // await send('login', { username: 'vsdf123', password: '1djkfls' })
     // await send('register', { username: 'vsdfdf123', password: '1djkfls' })
     await send('login', { username: 'vsdf123', password: '1djkfls' })
-    await send('enterArea', { aid: 2 })
+    await send('enterArea', { aid: 1 })
     await send('enterGame', { pid: 'bvdf1450-058b-11ec-988a-a30baafb095f' })
 }
 
