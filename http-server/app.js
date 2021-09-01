@@ -8,6 +8,7 @@ app(() => {
     s2sClient.connect(
         () => {
             log.print(`转发服务器[${s2sClient.config.name}]连接成功`);
+            // s2sClient.rpc("http-server0", 'test', null).then((data) => { console.log("接收回调testRet", data) })
         },
         () => {
             log.error(`转发服务器[${s2sClient.config.name}]连接失败 ${s2sClient.config.host}:${s2sClient.config.port}`);

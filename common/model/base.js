@@ -48,7 +48,6 @@ Base.prototype.updateDBToData = async function () {
         log.error(`[Model] 数据不存在 Form:${this.clsName} db_table:${this.db_table} db_idxField:${this.db_idxField} db_idx:${this.db_idx}`);
         return;
     }
-
     this.refresh(row);
 }
 // 从缓存数据更新到数据库
@@ -77,7 +76,11 @@ Base.prototype.refresh = async function (data) {
         return;
     }
     if (data != null) {
-        this.baseInfo = data;
+        // 这里注意要重建一个对象，防止数据有很多隐藏字段
+        this.baseInfo = {}
+        this.db_fields.forEach(field => {
+            this.baseInfo[field] = data[field]
+        });
     }
     for (const key in this.baseInfo) {
         this[`get_${key}`] = () => {

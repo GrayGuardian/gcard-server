@@ -12,6 +12,16 @@ GAME_CONST.SERVER_TYPE = {
     GAME: 3,
 }
 
+// Model类型/clsName
+GAME_CONST.MODEL_TYPE = {
+    // 玩家
+    PLAYER: 'Player',
+    // 玩家货币
+    PLAYER_CURRENCY: "PlayerCurrency",
+    // 玩家道具
+    PLAYER_PROPS: "PlayerProps",
+}
+
 // 游戏区服状态
 GAME_CONST.AREA_STATE = {
     NORMAL: 0,      // 正常

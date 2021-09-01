@@ -37,7 +37,6 @@ Player.prototype.loadChildModel = async function () {
             if (map == null) {
                 map = {};
                 let model = new config.cls();
-                console.log(model.db_table, this.db_idxField, this.idx, model.db_fields)
                 let infos = await mysqlLogic.getTableInfosOfIdx(model.db_table, this.db_idxField, this.idx, model.db_fields)
                 for (let index = 0; index < infos.length; index++) {
                     const info = infos[index];

@@ -4,12 +4,18 @@ var Lock = function (key, outTime) {
     this.outTime = outTime || UNLOCK_TIME;
     this.isLock = false;
     this.isTrigger = false;
+    this.errorEx = null;
     this.lockTime = null;
+
+    this.successCb = null;
+    this.errorCb = null;
 
     this.onLockOut = () => {
         if (!this.isLock && !this.isTrigger) {
             // 尝试调用
             this.tryCall()
+        } else if (this.isTrigger) {
+            this.error(ERROR_INFO.TIMEOUT)
         }
     }
     this.onLockDelete = () => {
@@ -22,10 +28,25 @@ var Lock = function (key, outTime) {
     broadcast.on(BROADCAST_CODE.REDIS_KEY_DELETE(`lock:${this.key}`), this.onLockDelete);
 }
 // 注册
-Lock.prototype.use = function (cb) {
-    this.cb = cb;
-    // 尝试调用
-    this.tryCall()
+Lock.prototype.use = function (cb, error) {
+    // this.cb = cb;
+    // // 尝试调用
+    // this.tryCall()
+
+    return new Promise((resolve) => {
+        this.successCb = () => {
+            resolve(true);
+        }
+        this.errorCb = (ex) => {
+            if (error != null) error(ex);
+            resolve(false);
+        }
+        this.cb = cb;
+
+        this.tryCall();
+
+    });
+
 }
 
 // 尝试调用
@@ -48,11 +69,29 @@ Lock.prototype.tryCall = async function () {
     this.lockTime = Date.unix();
 
     if (this.cb != null) {
-        this.cb(this);
+        try {
+            await this.cb(this);
+        }
+        catch (ex) {
+            this.errorEx = ex;
+            // throw ex
+        }
     }
     return true;
 }
-
+Lock.prototype.error = function (ex) {
+    this.errorEx = ex || this.errorEx;
+    if (this.errorEx != null && this.errorCb != null) {
+        this.errorCb(this.errorEx);
+    }
+    this.unlock();
+}
+Lock.prototype.success = function () {
+    if (this.errorEx == null && this.successCb != null) {
+        this.successCb();
+    }
+    this.unlock();
+}
 Lock.prototype.unlock = async function () {
     await redisLogic.unlock(this.key);
     this.close();
@@ -74,4 +113,18 @@ Lock.prototype.extended = async function (time) {
 }
 
 
-module.exports = Lock;
+// module.exports = Lock;
+
+
+var LockMgr = {}
+LockMgr.LOCK_TYPE = {
+    SET_MODEL_PLAYER: "SET_MODEL_PLAYER"
+}
+for (const key in LockMgr.LOCK_TYPE) {
+    const value = LockMgr.LOCK_TYPE;
+    LockMgr[key] = () => {
+        return new Lock(value);
+    }
+}
+
+module.exports = LockMgr

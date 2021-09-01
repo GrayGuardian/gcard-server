@@ -1,13 +1,19 @@
-var ServerLogic = function () {
+var ServerLogic = function () { }
 
+
+
+// 获取玩家Model
+ServerLogic.prototype.getPlayerModel = async function (pid, data) {
+    let model = modelMgr.getModel(GAME_CONST.MODEL_TYPE.PLAYER, pid)
+    if (model != null) {
+        return model;
+    }
+    data = data ?? await mysqlLogic.getPlayerInfo(pid);
+    model = await Model.Player.create(pid, data)
+    modelMgr.pushModel(model.clsName, pid, model);
+    return model
 }
-// 玩家进入触发 顶号不触发 用于处理数据
-ServerLogic.prototype.playerEnter = async function (player) {
-    log.print(`玩家进入 >> ${JSON.stringify(player)}`)
-}
-// 玩家退出触发 顶号不触发 用于处理数据
-ServerLogic.prototype.playerLeave = async function (pid) {
-    log.print(`玩家离开 >> ${pid}`)
-}
+
+
 
 module.exports = ServerLogic;

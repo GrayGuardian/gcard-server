@@ -12,7 +12,7 @@ message rpc {
     required string to = 3; // 目标服务器
     required string router = 4; // 路由
     required string type = 5;   //类型 - Rpc or RpcRet
-
+    // 下方命名规则：对应访问的router
     optional error.SError error = 20;
 
     optional conn conn = 50;
@@ -22,6 +22,10 @@ message rpc {
     optional playerEnterRet playerEnterRet = 101;
     optional playerLeave playerLeave = 102;
     optional playerLeaveRet playerLeaveRet = 103;
+    optional getPlayerAid getPlayerAid = 104;
+    optional getPlayerAidRet getPlayerAidRet = 105;
+    optional getPlayerModel getPlayerModel = 106;
+    optional getPlayerModelRet getPlayerModelRet = 107;
 
     optional test test = 200;
     optional testRet testRet = 201;
@@ -38,9 +42,23 @@ message playerEnter {
 }
 message playerEnterRet {}
 message playerLeave {
-    required int32 pid = 1;
+    required string pid = 1;
 }
 message playerLeaveRet {}
+
+message getPlayerAid {
+    required string pid = 1;
+}
+message getPlayerAidRet {
+    required string aid = 1;
+}
+message getPlayerModel{
+    required string pid = 1;
+    optional db.PlayerInfo data = 2;
+}
+message getPlayerModelRet{
+    required bytes jsonBuff = 1;
+}
 
 message test{
 

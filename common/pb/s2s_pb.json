@@ -57,6 +57,22 @@
               "type": "playerLeaveRet",
               "id": 103
             },
+            "getPlayerAid": {
+              "type": "getPlayerAid",
+              "id": 104
+            },
+            "getPlayerAidRet": {
+              "type": "getPlayerAidRet",
+              "id": 105
+            },
+            "getPlayerModel": {
+              "type": "getPlayerModel",
+              "id": 106
+            },
+            "getPlayerModelRet": {
+              "type": "getPlayerModelRet",
+              "id": 107
+            },
             "test": {
               "type": "test",
               "id": 200
@@ -95,13 +111,53 @@
           "fields": {
             "pid": {
               "rule": "required",
-              "type": "int32",
+              "type": "string",
               "id": 1
             }
           }
         },
         "playerLeaveRet": {
           "fields": {}
+        },
+        "getPlayerAid": {
+          "fields": {
+            "pid": {
+              "rule": "required",
+              "type": "string",
+              "id": 1
+            }
+          }
+        },
+        "getPlayerAidRet": {
+          "fields": {
+            "aid": {
+              "rule": "required",
+              "type": "string",
+              "id": 1
+            }
+          }
+        },
+        "getPlayerModel": {
+          "fields": {
+            "pid": {
+              "rule": "required",
+              "type": "string",
+              "id": 1
+            },
+            "data": {
+              "type": "db.PlayerInfo",
+              "id": 2
+            }
+          }
+        },
+        "getPlayerModelRet": {
+          "fields": {
+            "jsonBuff": {
+              "rule": "required",
+              "type": "bytes",
+              "id": 1
+            }
+          }
         },
         "test": {
           "fields": {}
