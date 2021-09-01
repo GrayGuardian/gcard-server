@@ -24,6 +24,14 @@
             "connRet": {
               "type": "connRet",
               "id": 51
+            },
+            "test": {
+              "type": "test",
+              "id": 200
+            },
+            "testRet": {
+              "type": "testRet",
+              "id": 201
             }
           }
         },
@@ -70,6 +78,12 @@
               "id": 1
             }
           }
+        },
+        "test": {
+          "fields": {}
+        },
+        "testRet": {
+          "fields": {}
         }
       }
     },

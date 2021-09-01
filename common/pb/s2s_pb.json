@@ -57,29 +57,29 @@
               "type": "playerLeaveRet",
               "id": 103
             },
+            "socketRpc": {
+              "type": "socketRpc",
+              "id": 104
+            },
+            "socketRpcRet": {
+              "type": "socketRpcRet",
+              "id": 105
+            },
             "getPlayerAid": {
               "type": "getPlayerAid",
-              "id": 104
+              "id": 200
             },
             "getPlayerAidRet": {
               "type": "getPlayerAidRet",
-              "id": 105
+              "id": 201
             },
             "getPlayerModel": {
               "type": "getPlayerModel",
-              "id": 106
+              "id": 300
             },
             "getPlayerModelRet": {
               "type": "getPlayerModelRet",
-              "id": 107
-            },
-            "test": {
-              "type": "test",
-              "id": 200
-            },
-            "testRet": {
-              "type": "testRet",
-              "id": 201
+              "id": 301
             }
           }
         },
@@ -159,11 +159,23 @@
             }
           }
         },
-        "test": {
-          "fields": {}
+        "socketRpc": {
+          "fields": {
+            "data": {
+              "rule": "required",
+              "type": "socket.rpc",
+              "id": 1
+            }
+          }
         },
-        "testRet": {
-          "fields": {}
+        "socketRpcRet": {
+          "fields": {
+            "data": {
+              "rule": "required",
+              "type": "socket.rpc",
+              "id": 1
+            }
+          }
         }
       }
     },
@@ -667,6 +679,93 @@
               "id": 1
             }
           }
+        }
+      }
+    },
+    "socket": {
+      "nested": {
+        "rpc": {
+          "fields": {
+            "router": {
+              "rule": "required",
+              "type": "string",
+              "id": 1
+            },
+            "error": {
+              "type": "error.CError",
+              "id": 20
+            },
+            "updateModelData": {
+              "type": "updateModelData",
+              "id": 21
+            },
+            "conn": {
+              "type": "conn",
+              "id": 50
+            },
+            "connRet": {
+              "type": "connRet",
+              "id": 51
+            },
+            "test": {
+              "type": "test",
+              "id": 200
+            },
+            "testRet": {
+              "type": "testRet",
+              "id": 201
+            }
+          }
+        },
+        "updateModelData": {
+          "fields": {
+            "clsName": {
+              "rule": "required",
+              "type": "string",
+              "id": 1
+            },
+            "idx": {
+              "rule": "required",
+              "type": "int32",
+              "id": 2
+            },
+            "Player": {
+              "type": "model.PlayerInfo",
+              "id": 10
+            },
+            "PlayerCurrency": {
+              "type": "model.PlayerCurrency",
+              "id": 11
+            },
+            "PlayerProps": {
+              "type": "model.PlayerProps",
+              "id": 12
+            }
+          }
+        },
+        "conn": {
+          "fields": {
+            "token": {
+              "rule": "required",
+              "type": "string",
+              "id": 1
+            }
+          }
+        },
+        "connRet": {
+          "fields": {
+            "player": {
+              "rule": "required",
+              "type": "model.PlayerInfo",
+              "id": 1
+            }
+          }
+        },
+        "test": {
+          "fields": {}
+        },
+        "testRet": {
+          "fields": {}
         }
       }
     }

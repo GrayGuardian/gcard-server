@@ -14,6 +14,9 @@ message rpc {
 
     optional conn conn = 50;
     optional connRet connRet = 51;
+
+    optional test test = 200;
+    optional testRet testRet = 201;
 }
 
 message updateModelData {
@@ -32,3 +35,9 @@ message connRet{
     required model.PlayerInfo player = 1;
 }
 
+message test {
+
+}
+message testRet{
+
+}

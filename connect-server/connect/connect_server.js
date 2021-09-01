@@ -48,7 +48,7 @@ Server.prototype.onClientEnter = async function (idx, socket) {
 
 }
 Server.prototype.onClientLeave = async function (socket) {
-    let idx = Object.keys(this.clientMap).find(key => { return this.clientMap[key].socket == socket })
+    let idx = this.getIdxOfSocket(socket);
     let client = this.clientMap[idx]
     if (idx != null && client != null) {
         await serverLogic.playerLeave(idx);
@@ -77,6 +77,9 @@ Server.prototype.send = async function (socket, router, data) {
     }
     log.print(`[socket] [s2c] >>> [${router}] ${JSON.stringify(data)}`)
     return await this.server.send(socket, SOCKET_EVENT.DATA, buff)
+}
+Server.prototype.getIdxOfSocket = function (socket) {
+    return Object.keys(this.clientMap).find(key => { return this.clientMap[key].socket == socket })
 }
 Server.prototype.kickOut = async function (socket) {
     await this.server.kickOut(socket);

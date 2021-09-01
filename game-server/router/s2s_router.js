@@ -16,7 +16,7 @@ Router.prototype.playerEnter = async function (ctx, next) {
     // 由于大部分情况都是通过aid分配服务器的，所以此处将aid存储在redis上，所有节点均可直接访问
     await redisLogic.setPlayerAid(model.get_pid(), model.get_aid());
     // 上线数据处理逻辑
-    await lock.SET_MODEL_PLAYER().use(function (lock) {
+    await lock.SET_MODEL_PLAYER().use(async (lock) => {
         model.set_loginTime(Date.unix())
         model.set_online(1);
         await model.updateDataToDB();
@@ -39,7 +39,7 @@ Router.prototype.playerLeave = async function (ctx, next) {
     // await redisLogic.deletePlayerAid(pid);
 
     // 离线数据处理逻辑
-    await lock.SET_MODEL_PLAYER().use(function (lock) {
+    await lock.SET_MODEL_PLAYER().use(async (lock) => {
         model.set_logoutTime(Date.unix())
         model.set_online(0);
         await model.updateDataToDB();

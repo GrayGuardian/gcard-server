@@ -5,6 +5,7 @@ import "model.proto";
 import "db.proto";
 import "template.proto";
 import "error.proto";
+import "socket.proto";
 
 message rpc {
     required int32 code = 1;    // 消息code
@@ -22,13 +23,14 @@ message rpc {
     optional playerEnterRet playerEnterRet = 101;
     optional playerLeave playerLeave = 102;
     optional playerLeaveRet playerLeaveRet = 103;
-    optional getPlayerAid getPlayerAid = 104;
-    optional getPlayerAidRet getPlayerAidRet = 105;
-    optional getPlayerModel getPlayerModel = 106;
-    optional getPlayerModelRet getPlayerModelRet = 107;
+    optional socketRpc socketRpc = 104;
+    optional socketRpcRet socketRpcRet = 105;
 
-    optional test test = 200;
-    optional testRet testRet = 201;
+    optional getPlayerAid getPlayerAid = 200;
+    optional getPlayerAidRet getPlayerAidRet = 201;
+
+    optional getPlayerModel getPlayerModel = 300;
+    optional getPlayerModelRet getPlayerModelRet = 301;
 }
 
 
@@ -60,9 +62,9 @@ message getPlayerModelRet{
     required bytes jsonBuff = 1;
 }
 
-message test{
-
+message socketRpc{
+    required socket.rpc data = 1;
 }
-
-message testRet{
+message socketRpcRet{
+    required socket.rpc data = 1;
 }
