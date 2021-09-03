@@ -80,10 +80,22 @@
           }
         },
         "test": {
-          "fields": {}
+          "fields": {
+            "text": {
+              "rule": "required",
+              "type": "string",
+              "id": 1
+            }
+          }
         },
         "testRet": {
-          "fields": {}
+          "fields": {
+            "text": {
+              "rule": "required",
+              "type": "string",
+              "id": 2
+            }
+          }
         }
       }
     },

@@ -7,6 +7,7 @@ module.exports = async (ctx, next) => {
         ctx.method.genError(ERROR_INFO.RPC_DATA_ERROR)
         return;
     }
+    ctx.state.dataPack = dataPack;
     ctx.state.router = dataPack.router;
     ctx.state.data = dataPack[ctx.state.router];
     if (ctx.state.data == null) {
@@ -18,6 +19,7 @@ module.exports = async (ctx, next) => {
         ctx.method.genError(ERROR_INFO.TOKEN_ERROR)
         return;
     }
+    ctx.state.aid = await redisLogic.getPlayerAid(ctx.state.pid);
 
     await next();
 }

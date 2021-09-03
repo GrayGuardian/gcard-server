@@ -8,7 +8,7 @@ set protocol_dir=%cd%\protocol\
 set json_pb_dir=../../common/pb/
 set lua_pb_dir=../../../gcard-client/Assets/Resources/AssetBundles/lua/pb/
 
-for /R %protocol_dir% %%f in (*.proto) do ( 
+for /R %protocol_dir% %%f in (*.proto) do (
 	echo Json PB === %json_pb_dir%%%~nf_pb.json
 	node %pbjs% %%f > %json_pb_dir%%%~nf_pb.json
 	echo Lua PB === %lua_pb_dir%%%~nf_pb.lua

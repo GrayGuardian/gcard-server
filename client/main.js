@@ -35,7 +35,7 @@ var mian = async function () {
         );
     }).use((ctx, next) => {
         // 连上的操作
-        socketClient.send("test", {});
+        socketClient.send("test", { text: "我是客户端发送的测试消息" });
     }).next();
 }
 

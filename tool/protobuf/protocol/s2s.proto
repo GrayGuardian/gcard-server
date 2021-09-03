@@ -52,7 +52,7 @@ message getPlayerAid {
     required string pid = 1;
 }
 message getPlayerAidRet {
-    required string aid = 1;
+    required int32 aid = 1;
 }
 message getPlayerModel{
     required string pid = 1;
@@ -64,6 +64,8 @@ message getPlayerModelRet{
 
 message socketRpc{
     required socket.rpc data = 1;
+    optional string pid = 2;
+    optional int32 aid = 3;
 }
 message socketRpcRet{
     required socket.rpc data = 1;

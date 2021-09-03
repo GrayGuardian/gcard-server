@@ -132,7 +132,7 @@
           "fields": {
             "aid": {
               "rule": "required",
-              "type": "string",
+              "type": "int32",
               "id": 1
             }
           }
@@ -165,6 +165,14 @@
               "rule": "required",
               "type": "socket.rpc",
               "id": 1
+            },
+            "pid": {
+              "type": "string",
+              "id": 2
+            },
+            "aid": {
+              "type": "int32",
+              "id": 3
             }
           }
         },
@@ -762,10 +770,22 @@
           }
         },
         "test": {
-          "fields": {}
+          "fields": {
+            "text": {
+              "rule": "required",
+              "type": "string",
+              "id": 1
+            }
+          }
         },
         "testRet": {
-          "fields": {}
+          "fields": {
+            "text": {
+              "rule": "required",
+              "type": "string",
+              "id": 2
+            }
+          }
         }
       }
     }

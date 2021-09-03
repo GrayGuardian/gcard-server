@@ -36,8 +36,8 @@ message connRet{
 }
 
 message test {
-
+    required string text = 1;
 }
 message testRet{
-
+    required string text = 2;
 }

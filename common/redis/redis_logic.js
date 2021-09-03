@@ -17,18 +17,14 @@ RedisLogic.prototype.existLock = async function (key) {
     return await redisMgr.db_game.exist(`lock:${key}`)
 }
 // 获取玩家区服
-RedisLogic.prototype.getPlayerAid = async function (pid, isOnline) {
-    isOnline = isOnline == null ? false : isOnline;  //是否只查询在线玩家，不在线需要从Sql数据库查询，此处为减轻数据库压力而细分
+RedisLogic.prototype.getPlayerAid = async function (pid) {
     let aid = await redisMgr.db_game.get(`pid=${pid}:aid`)
     if (aid != null) {
         return aid;
     }
-    if (!isOnline) {
-        let info = await mysqlLogic.getPlayerInfo(pid);
-        if (info != null) {
-            await this.setPlayerAid(pid, info.aid, 60)   //临时获取设置过期时间
-            return info.aid;
-        }
+    let info = await mysqlLogic.getPlayerInfo(pid);
+    if (info != null) {
+        return info.aid;
     }
     return -1;
 }
