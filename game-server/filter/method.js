@@ -14,6 +14,8 @@ module.exports = async function (ctx, next) {
     ctx.method.callback = async function (data) {
         await ctx.method.send(`${ctx.state.router}Ret`, data);
     }
-
+    ctx.method.kickOut = async function () {
+        return await s2sLogic.kickOutFromIdx(ctx.state.pid)
+    }
     await next();
 }

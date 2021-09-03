@@ -121,7 +121,7 @@ LockMgr.LOCK_TYPE = {
     SET_MODEL_PLAYER: "SET_MODEL_PLAYER"
 }
 for (const key in LockMgr.LOCK_TYPE) {
-    const value = LockMgr.LOCK_TYPE;
+    const value = LockMgr.LOCK_TYPE[key];
     LockMgr[key] = () => {
         return new Lock(value);
     }

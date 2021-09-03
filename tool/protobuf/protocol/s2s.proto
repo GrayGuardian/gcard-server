@@ -25,6 +25,16 @@ message rpc {
     optional playerLeaveRet playerLeaveRet = 103;
     optional socketRpc socketRpc = 104;
     optional socketRpcRet socketRpcRet = 105;
+    optional kickOutFromIdx kickOutFromIdx = 106;
+    optional kickOutFromIdxRet kickOutFromIdxRet = 107;
+    optional pushIDToChannel pushIDToChannel = 108;
+    optional pushIDToChannelRet pushIDToChannelRet = 109;
+    optional pullIDToChannel pullIDToChannel = 110;
+    optional pullIDToChannelRet pullIDToChannelRet = 111;
+    optional sendToID sendToID = 112;
+    optional sendToIDRet sendToIDRet = 113;
+    optional sendToChannel sendToChannel = 114;
+    optional sendToChannelRet sendToChannelRet = 115;
 
     optional getPlayerAid getPlayerAid = 200;
     optional getPlayerAidRet getPlayerAidRet = 201;
@@ -69,4 +79,39 @@ message socketRpc{
 }
 message socketRpcRet{
     required socket.rpc data = 1;
+}
+
+message kickOutFromIdx{
+    required string idx = 1;
+}
+message kickOutFromIdxRet{
+    required bool flag = 1;
+}
+message pushIDToChannel {
+    required string key = 1;
+    required string idx = 2;
+}
+message pushIDToChannelRet {
+    required bool flag = 1;
+}
+message pullIDToChannel {
+    required string key = 1;
+    required string idx = 2;
+}
+message pullIDToChannelRet {
+    required bool flag = 1;
+}
+message sendToID{
+    required string idx = 1;
+    required socket.rpc data = 2;
+}
+message sendToIDRet{
+    required bool flag = 1;
+}
+message sendToChannel{
+    required string key = 1;
+    required socket.rpc data = 2;
+}
+message sendToChannelRet{
+    required int32 count = 1;
 }

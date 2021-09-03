@@ -65,6 +65,46 @@
               "type": "socketRpcRet",
               "id": 105
             },
+            "kickOutFromIdx": {
+              "type": "kickOutFromIdx",
+              "id": 106
+            },
+            "kickOutFromIdxRet": {
+              "type": "kickOutFromIdxRet",
+              "id": 107
+            },
+            "pushIDToChannel": {
+              "type": "pushIDToChannel",
+              "id": 108
+            },
+            "pushIDToChannelRet": {
+              "type": "pushIDToChannelRet",
+              "id": 109
+            },
+            "pullIDToChannel": {
+              "type": "pullIDToChannel",
+              "id": 110
+            },
+            "pullIDToChannelRet": {
+              "type": "pullIDToChannelRet",
+              "id": 111
+            },
+            "sendToID": {
+              "type": "sendToID",
+              "id": 112
+            },
+            "sendToIDRet": {
+              "type": "sendToIDRet",
+              "id": 113
+            },
+            "sendToChannel": {
+              "type": "sendToChannel",
+              "id": 114
+            },
+            "sendToChannelRet": {
+              "type": "sendToChannelRet",
+              "id": 115
+            },
             "getPlayerAid": {
               "type": "getPlayerAid",
               "id": 200
@@ -181,6 +221,116 @@
             "data": {
               "rule": "required",
               "type": "socket.rpc",
+              "id": 1
+            }
+          }
+        },
+        "kickOutFromIdx": {
+          "fields": {
+            "idx": {
+              "rule": "required",
+              "type": "string",
+              "id": 1
+            }
+          }
+        },
+        "kickOutFromIdxRet": {
+          "fields": {
+            "flag": {
+              "rule": "required",
+              "type": "bool",
+              "id": 1
+            }
+          }
+        },
+        "pushIDToChannel": {
+          "fields": {
+            "key": {
+              "rule": "required",
+              "type": "string",
+              "id": 1
+            },
+            "idx": {
+              "rule": "required",
+              "type": "string",
+              "id": 2
+            }
+          }
+        },
+        "pushIDToChannelRet": {
+          "fields": {
+            "flag": {
+              "rule": "required",
+              "type": "bool",
+              "id": 1
+            }
+          }
+        },
+        "pullIDToChannel": {
+          "fields": {
+            "key": {
+              "rule": "required",
+              "type": "string",
+              "id": 1
+            },
+            "idx": {
+              "rule": "required",
+              "type": "string",
+              "id": 2
+            }
+          }
+        },
+        "pullIDToChannelRet": {
+          "fields": {
+            "flag": {
+              "rule": "required",
+              "type": "bool",
+              "id": 1
+            }
+          }
+        },
+        "sendToID": {
+          "fields": {
+            "idx": {
+              "rule": "required",
+              "type": "string",
+              "id": 1
+            },
+            "data": {
+              "rule": "required",
+              "type": "socket.rpc",
+              "id": 2
+            }
+          }
+        },
+        "sendToIDRet": {
+          "fields": {
+            "flag": {
+              "rule": "required",
+              "type": "bool",
+              "id": 1
+            }
+          }
+        },
+        "sendToChannel": {
+          "fields": {
+            "key": {
+              "rule": "required",
+              "type": "string",
+              "id": 1
+            },
+            "data": {
+              "rule": "required",
+              "type": "socket.rpc",
+              "id": 2
+            }
+          }
+        },
+        "sendToChannelRet": {
+          "fields": {
+            "count": {
+              "rule": "required",
+              "type": "int32",
               "id": 1
             }
           }

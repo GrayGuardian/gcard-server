@@ -14,7 +14,7 @@ module.exports = async (ctx, next) => {
         ctx.method.genError(ERROR_INFO.RPC_DATA_ERROR)
         return;
     }
-    ctx.state.pid = connectServer.getIdxOfSocket(ctx.socket);
+    ctx.state.pid = connectServer.getIdxFromSocket(ctx.socket);
     if (ctx.state.pid == null && NOTLOGIN_ROUTER.indexOf(ctx.state.router) == -1) {
         ctx.method.genError(ERROR_INFO.TOKEN_ERROR)
         return;

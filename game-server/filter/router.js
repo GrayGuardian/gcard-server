@@ -8,7 +8,7 @@ module.exports = async function (ctx, next) {
         return;
     }
     // 转发
-    // let s2sdata = ctx.state.s2sdata
+    // let dataPack = ctx.state.s2sdata
 
     await next();
 }
