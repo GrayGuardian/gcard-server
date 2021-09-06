@@ -33,7 +33,7 @@ Router.prototype.playerEnter = async function (ctx, next) {
     log.print(`玩家进入 >> ${player.pid}`)
 
     // 上线数据处理逻辑
-    await lock.SET_MODEL_PLAYER().use(async (lock) => {
+    await lock.MODEL_PLAYER().use(async (lock) => {
         // 获取玩家Model
         let model = await serverLogic.getPlayerModel(player.pid, player)
         // 由于大部分情况都是通过aid分配服务器的，所以此处将aid存储在redis上，所有节点均可直接访问
@@ -56,7 +56,7 @@ Router.prototype.playerLeave = async function (ctx, next) {
     log.print(`玩家离开 >> ${pid}`)
 
 
-    await lock.SET_MODEL_PLAYER().use(async (lock) => {
+    await lock.MODEL_PLAYER().use(async (lock) => {
         let model = await serverLogic.getPlayerModel(pid)
         // 清理数据 （此处暂时不清理数据，建议以定期清理的方式清理离线过久的玩家缓存）
         // 清理玩家Model

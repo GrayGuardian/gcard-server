@@ -98,8 +98,6 @@ Server.prototype.kickOutAll = async function () {
 // 踢出指定idx连接
 Server.prototype.kickOutFromIdx = async function (idx) {
     let socket = this.getSocketFromIdx(idx);
-    console.log(idx);
-    console.log(socket)
     if (socket == null) {
         log.error("kickOutFromIdx Error >> Socket Not Exist")
         return false;

@@ -4,6 +4,7 @@ Base.inherits(this, Player, Base);
 
 Player.create = async function (pid, data) {
     let model = new Player();
+
     await model.init(pid, pid, data);
     return model;
 }

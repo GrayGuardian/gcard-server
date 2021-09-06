@@ -21,7 +21,6 @@ Util.toJson = function (object, name) {
             else {
                 if (typeof value != "object") {
                     if (typeof value == "string") {
-                        console.log(path, p, value);
                         result += "\n" + path + "[" + (isNaN(p) ? "\"" + p + "\"" : p) + "] = " + "\"" + value.replace(/\"/g, "\\\"") + "\"" + ";";
                     } else {
                         result += "\n" + path + "[" + (isNaN(p) ? "\"" + p + "\"" : p) + "] = " + value + ";";

@@ -68,7 +68,7 @@ S2SLogic.prototype.sendToID = async function (idx, router, data) {
     let result = (await s2sClient.rpc(config.name, 'sendToID', { idx: idx, data: dataPack })).data;
     return result.flag;
 }
-
+// all to connect-server >>> 发送消息至Channel
 S2SLogic.prototype.sendToChannel = async function (key, router, data, servers) {
     let serverConfigs = null;
     if (servers == null) {

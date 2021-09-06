@@ -67,7 +67,8 @@ Base.prototype.updateClientData = async function () {
 
     log.print(`[Model] 更新数据到客户端 Form:${this.clsName} idx:${this.idx} data:${JSON.stringify(this.baseInfo)}`);
 
-    log.print(`向Channel[${`${this.db_idxField}=${this.idx}`}]发送数据>>>${JSON.stringify(dataPack)}`)
+    // log.print(`向Channel[${`${this.db_idxField}=${this.idx}`}]发送数据>>>${JSON.stringify(dataPack)}`)
+    await s2sLogic.sendToID(this.net_idx, 'updateModelData', dataPack)
 }
 // 更新数据
 Base.prototype.refresh = async function (data) {
@@ -77,6 +78,7 @@ Base.prototype.refresh = async function (data) {
     }
     if (data != null) {
         // 这里注意要重建一个对象，防止数据有很多隐藏字段
+        data = JSON.parse(JSON.stringify(data));
         this.baseInfo = {}
         this.db_fields.forEach(field => {
             this.baseInfo[field] = data[field]

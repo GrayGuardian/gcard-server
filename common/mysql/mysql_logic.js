@@ -50,7 +50,6 @@ MySqlLogic.prototype.setTableInfoOfIdx = async function (table, idxFiled, idx, v
         arr.push(`${field}=${this.toSqlData(value)}`);
     });
     let sql = `UPDATE ${table} SET ${arr.toString()} WHERE ${idxFiled}=?`
-
     let row = await mysqlMgr.db_game.query(sql, [idx]);
     if (row.affectedRows > 0) {
         return true;

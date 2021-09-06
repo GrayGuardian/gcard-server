@@ -1,3 +1,14 @@
+var LockMgr = {}
+LockMgr.LOCK_TYPE = {
+    MODEL_PLAYER: "MODEL_PLAYER"
+}
+for (const key in LockMgr.LOCK_TYPE) {
+    const value = LockMgr.LOCK_TYPE[key];
+    LockMgr[key] = () => {
+        return new Lock(value);
+    }
+}
+
 const UNLOCK_TIME = 10;         //自动解锁默认时长 单位：s
 var Lock = function (key, outTime) {
     this.key = key;
@@ -116,15 +127,6 @@ Lock.prototype.extended = async function (time) {
 // module.exports = Lock;
 
 
-var LockMgr = {}
-LockMgr.LOCK_TYPE = {
-    SET_MODEL_PLAYER: "SET_MODEL_PLAYER"
-}
-for (const key in LockMgr.LOCK_TYPE) {
-    const value = LockMgr.LOCK_TYPE[key];
-    LockMgr[key] = () => {
-        return new Lock(value);
-    }
-}
+
 
 module.exports = LockMgr
