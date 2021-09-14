@@ -8,27 +8,34 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 # Excel文件所在目录
 excelDir = os.getcwd()
-excelDir += "\\test"
 # Excel文件扩展名 不同版本的xlrd支持的扩展名不同
-excelExtension = ".xls"
+excelExtension = ".xlsx"
 # Excel表对象字典
 excelSheetDic = {}
 # Excel表格字段类型字典 = {}
 excelFieldTypeDic = {}
+# Excel表格黑名单目录
+excelBlackList = ['test','test1']
 # 导出JS_DATA目录
-buildJSDataDir = excelDir
+buildJSDataDir = "../../common/template/data"
+# 导出JS_TYTE目录
+buildJSTypeDir = "../../common/template/type"
 # 导出LUA_DATA目录
 buildLUADataDir = excelDir
+
 # 遍历得到所有Excel文件
 for root, dirs, files in os.walk(excelDir):
 	for file in files:
+		excelName = os.path.splitext(file)[0]
+		# 判断黑名单
+		if excelBlackList.count(excelName)>0 :
+			continue;
 		# 判断扩展名
 		if file.endswith(excelExtension):
 			if(excelSheetDic.has_key(file)):
 				# 重复的Excel表格，抛出异常
 				raise Exception("Repetition ExcelFile [{}]".format(file))
 			fullPath = root + "\\" + file;
-			excelName = os.path.splitext(file)[0]
 			book = xlrd.open_workbook(fullPath)
 			sheet = book.sheet_by_name("Sheet1")
 			nrows = sheet.nrows
@@ -44,7 +51,6 @@ for root, dirs, files in os.walk(excelDir):
 
 # 将Excel字段值转为代码字符串
 def getDataCode(name,typeStr,valueStr,formatArray,formatTable,formatKeyAndValue):
-
 	if typeStr == "int":
 		return str(int(valueStr)) 
 	elif typeStr == "float":
@@ -101,8 +107,8 @@ def getDataCode(name,typeStr,valueStr,formatArray,formatTable,formatKeyAndValue)
 			raise Exception("array format error [{}] [{}] [{}]".format(name,typeStr,valueStr))
 
 	return 'null'
-# 获取Js代码
-def getJsData(name,sheet):
+# 获取Js数据代码
+def getJsDataCode(name,sheet):
 	# 根据Excel内容生成
 	fields = sheet.row_values(1)
 	types = sheet.row_values(2)
@@ -127,8 +133,8 @@ module.exports = tpl
 
 	return content.format(dataContent)
 
-# 获取Json数据
-def getLuaData(name,sheet):
+# 获取Lua数据代码
+def getLuaDataCode(name,sheet):
 	# 根据Excel内容生成
 	fields = sheet.row_values(1)
 	types = sheet.row_values(2)
@@ -153,17 +159,57 @@ return tpl
 '''
 	return content.format(dataContent)
 
+
+# 获取Js类型代码
+def getJsTypeCode(name):
+	typeContent = ''
+	for key in excelFieldTypeDic[name]:
+		value = excelFieldTypeDic[name][key]
+		typeContent += '\t{}:"{}",\n'.format(key,value);
+
+	content = '''
+// 该文件通过工具生成，请勿更改
+
+const type = {{
+{}}}
+
+module.exports = type
+'''
+
+	return content.format(typeContent)
+
+# 获取Lua类型代码
+def getLuaTypeCode(name):
+	typeContent = ''
+	for key in excelFieldTypeDic[name]:
+		value = excelFieldTypeDic[name][key]
+		typeContent += '\t{}="{}",\n'.format(key,value);
+
+	content = '''
+// 该文件通过工具生成，请勿更改
+
+local type = {{
+{}}}
+
+return type
+'''
+	return content.format(typeContent)
+
 for (name,sheet) in excelSheetDic.items():
 	filepath = "{}\\{}.{}".format(buildJSDataDir,name,'js')
 	file = open(filepath, "w")
-	file.write(getJsData(name,sheet));
+	file.write(getJsDataCode(name,sheet));
 	print("Build JS_DATA_FILE [{}] >>> [{}]".format(name,filepath));
-	filepath = "{}\\{}.{}".format(buildLUADataDir,name,'lua')
-	file = open(filepath, "w")
-	file.write(getLuaData(name,sheet));
-	print("Build LUA_DATA_FILE [{}] >>> [{}]".format(name,filepath));
 
-	# open("{}\\{}.{}".format(jsonDataDir,name,'js'), "w")
-	# print(getJsData(name,sheet))
-	# print(getLuaData(name,sheet))
+	filepath = "{}\\{}.{}".format(buildJSTypeDir,name,'js')
+	file = open(filepath, "w")
+	file.write(getJsTypeCode(name,sheet));
+	print("Build JS_TYPE_FILE [{}] >>> [{}]".format(name,filepath));
+
+	# filepath = "{}\\{}.{}".format(buildLUADataDir,name,'lua')
+	# file = open(filepath, "w")
+	# file.write(getLuaDataCode(name,sheet));
+	# print("Build LUA_DATA_FILE [{}] >>> [{}]".format(name,filepath));
+
+	# print(getLuaTypeCode(name))
 
