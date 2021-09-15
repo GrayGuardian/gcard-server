@@ -17,14 +17,12 @@ excelFieldTypeDic = {}
 # Excel表格黑名单目录
 # excelBlackList = ['test','test1']	# 放置了两个模板Excel 忽略生成
 excelBlackList = []
-# 导出JS_DATA目录
-buildJSDataDir = "../../common/template/data"
-# 导出JS_TYTE目录
-buildJSTypeDir = "../../common/template/type"
+# 导出JS_Tpl目录
+buildJSTplDir = "../../common/template/template"
 # 导出JS_MODEL目录
 buildJSModelDir = "../../common/template/model"
-# 导出LUA_DATA目录
-buildLUADataDir = excelDir
+# 导出LUA_Tpl目录
+buildLUATplDir = excelDir
 
 # 遍历得到所有Excel文件
 for root, dirs, files in os.walk(excelDir):
@@ -111,7 +109,7 @@ def getDataCode(name,typeStr,valueStr,formatArray,formatTable,formatKeyAndValue)
 
 	return 'null'
 # 获取Js数据代码
-def getJsDataCode(name,sheet):
+def getJsTplCode(name,sheet):
 	# 根据Excel内容生成
 	fields = sheet.row_values(1)
 	types = sheet.row_values(2)
@@ -125,19 +123,31 @@ def getJsDataCode(name,sheet):
 			dataStr += " {}:{},".format(field,getDataCode(name,types[j],value,"[{} ]","{{{} }}"," {}:{},"))
 		dataContent += "\t{{{} }},\n".format(dataStr);	
 
+	fileContent = '"{}"'.format('","'.join(fields));
+
+	typeContent = ''
+	for i in xrange(0,len(fields)):
+		typeContent += '\t{}:"{}",\n'.format(fields[i],types[i]);
+
 	content = '''
 // 该文件通过工具生成，请勿更改
 
-const tpl = [
+let tpl = {{}}
+
+tpl.fields = [{}]
+
+tpl.types = {{
+{}}}
+
+tpl.data = [
 {}]
 
 module.exports = tpl
 '''
-
-	return content.format(dataContent)
+	return content.format(fileContent,typeContent,dataContent)
 
 # 获取Lua数据代码
-def getLuaDataCode(name,sheet):
+def getLuaTplCode(name,sheet):
 	# 根据Excel内容生成
 	fields = sheet.row_values(1)
 	types = sheet.row_values(2)
@@ -151,52 +161,30 @@ def getLuaDataCode(name,sheet):
 			dataStr += " {}={},".format(field,getDataCode(name,types[j],value,"{{{} }}","{{{} }}"," {}={},"))
 		dataContent += "\t{{{} }},\n".format(dataStr);
 
+		fileContent = '"{}"'.format('","'.join(fields));
+
+		typeContent = ''
+		for i in xrange(0,len(fields)):
+			typeContent += '\t{}="{}",\n'.format(fields[i],types[i]);
 
 	content = '''
 -- 该文件通过工具生成，请勿更改
 
-local tpl = {{
+local tpl = {{}}
+
+tpl.fields = {{{}}}
+
+tpl.types = {{
+{}}}
+
+tpl.data = {{
 {}}}
 
 return tpl
 '''
-	return content.format(dataContent)
+	return content.format(fileContent,typeContent,dataContent)
 
 
-# 获取Js类型代码
-def getJsTypeCode(name):
-	typeContent = ''
-	for key in excelFieldTypeDic[name]:
-		value = excelFieldTypeDic[name][key]
-		typeContent += '\t{}:"{}",\n'.format(key,value);
-
-	content = '''
-// 该文件通过工具生成，请勿更改
-
-const type = {{
-{}}}
-
-module.exports = type
-'''
-
-	return content.format(typeContent)
-
-# 获取Lua类型代码
-def getLuaTypeCode(name):
-	typeContent = ''
-	for key in excelFieldTypeDic[name]:
-		value = excelFieldTypeDic[name][key]
-		typeContent += '\t{}="{}",\n'.format(key,value);
-
-	content = '''
-// 该文件通过工具生成，请勿更改
-
-local type = {{
-{}}}
-
-return type
-'''
-	return content.format(typeContent)
 
 # 获取Js实体类代码
 def getJsModelCode(name,code):
@@ -236,15 +224,11 @@ module.exports = Model
 
 
 for (name,sheet) in excelSheetDic.items():
-	filepath = "{}\\{}.{}".format(buildJSDataDir,name,'js')
+	# Js
+	filepath = "{}\\{}.{}".format(buildJSTplDir,name,'js')
 	file = open(filepath, "w")
-	file.write(getJsDataCode(name,sheet));
-	print("Build JS_DATA_FILE [{}] >>> [{}]".format(name,filepath));
-
-	filepath = "{}\\{}.{}".format(buildJSTypeDir,name,'js')
-	file = open(filepath, "w")
-	file.write(getJsTypeCode(name));
-	print("Build JS_TYPE_FILE [{}] >>> [{}]".format(name,filepath));
+	file.write(getJsTplCode(name,sheet));
+	print("Build JS_Tpl_FILE [{}] >>> [{}]".format(name,filepath));
 
 	filepath = "{}\\{}.{}".format(buildJSModelDir,name,'js')
 	code = ''
@@ -255,11 +239,11 @@ for (name,sheet) in excelSheetDic.items():
 	getJsModelCode(name,code)
 	file.write(getJsModelCode(name,code));
 
-	
-	# filepath = "{}\\{}.{}".format(buildLUADataDir,name,'lua')
+	# Lua	
+	# filepath = "{}\\{}.{}".format(buildLUATplDir,name,'lua')
 	# file = open(filepath, "w")
-	# file.write(getLuaDataCode(name,sheet));
-	# print("Build LUA_DATA_FILE [{}] >>> [{}]".format(name,filepath));
+	# file.write(getLuaTplCode(name,sheet));
+	# print("Build LUA_Tpl_FILE [{}] >>> [{}]".format(name,filepath));
 
 	# print(getLuaTypeCode(name))
 

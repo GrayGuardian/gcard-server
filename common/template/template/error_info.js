@@ -1,7 +1,18 @@
 
 // 该文件通过工具生成，请勿更改
 
-const tpl = [
+let tpl = {}
+
+tpl.fields = ["code","clientTip","serverTip","desc"]
+
+tpl.types = {
+	code:"string",
+	clientTip:"string",
+	serverTip:"string",
+	desc:"string",
+}
+
+tpl.data = [
 	{ code:"SUCCESS", clientTip:"成功", serverTip:"成功", desc:"成功", },
 	{ code:"UNKNOWN_ERROR", clientTip:"未知错误", serverTip:"未知错误", desc:"未知错误", },
 	{ code:"TIMEOUT", clientTip:"超时", serverTip:"超时", desc:"超时", },
