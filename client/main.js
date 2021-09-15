@@ -1,4 +1,6 @@
 var mian = async function () {
+    global.Template = require("../common/template/template");
+    return;
     await require("../common/base/global")();
 
     const HOST = '127.0.0.1'
