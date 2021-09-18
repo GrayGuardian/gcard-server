@@ -1,7 +1,6 @@
-
 // 该文件通过工具生成，只可以修改可编辑区块中的内容
 
-const Base = require('./base');
+const Base = require('../base/model');
 
 Base.inherits(this, Model, Base);
 
@@ -12,12 +11,9 @@ Model.create = function (data) {
 }
 
 function Model() {
-    this.tplName = 'error_info'
+    this.name = 'test'
 }
-
 // ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ 可编辑区块 ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
 // ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ 可编辑区块 ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
-
 module.exports = Model
-	

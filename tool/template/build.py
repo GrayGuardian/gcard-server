@@ -15,14 +15,55 @@ excelSheetDic = {}
 # Excel表格字段类型字典 = {}
 excelFieldTypeDic = {}
 # Excel表格黑名单目录
-# excelBlackList = ['test','test1']	# 放置了两个模板Excel 忽略生成
+# excelBlackList = ['template_test','template_test1']	# 放置了两个模板Excel 忽略生成
 excelBlackList = []
-# 导出JS_Tpl目录
-buildJSTplDir = "../../common/template/template"
+# 导出JS_DATA目录
+BUILD_DIR_JS_DATA = "../../common/template/data"
 # 导出JS_MODEL目录
-buildJSModelDir = "../../common/template/model"
-# 导出LUA_Tpl目录
-buildLUATplDir = excelDir
+BUILD_DIR_JS_MODEL = "../../common/template/model"
+# 导出JS_MANAGER目录
+BUILD_DIR_JS_MANAGER = "../../common/template/manager"
+# 导出JS_TEMPLATE文件
+BUILD_FILE_JS_TEMPLATE = "../../common/template/template.js"
+# 导出LUA_DATA目录
+BUILD_DIR_LUA_DATA = excelDir
+
+# 获取文件文本
+def readFileText(filepath):
+	if(os.path.exists(filepath)):
+		file = open(filepath, "r+")
+	 	return file.read()
+	return ''
+# 字符串解析
+def format(str,table,cnt=None):
+	result = str
+	for key in table:
+		value = table[key]
+		if(cnt==None):
+			result = result.replace('{{{}}}'.format(key), value)
+		else:
+			result = result.replace('{{{}}}'.format(key), value,cnt)
+		
+	return result
+
+# 代码模板 - JS
+CODE_TEMPLATE_JS = {
+	"DATA":readFileText("{}\\{}".format(os.getcwd(),"code_template\\code_template_js_data.txt")),
+	"MODEL":readFileText("{}\\{}".format(os.getcwd(),"code_template\\code_template_js_model.txt")),
+	"MANAGER":readFileText("{}\\{}".format(os.getcwd(),"code_template\\code_template_js_manager.txt")),
+	"EDITOR":readFileText("{}\\{}".format(os.getcwd(),"code_template\\code_template_js_editor.txt")),
+	"NOTEDITOR":readFileText("{}\\{}".format(os.getcwd(),"code_template\\code_template_js_noteditor.txt")),
+};
+for key in CODE_TEMPLATE_JS:
+	CODE_TEMPLATE_JS[key] = format(CODE_TEMPLATE_JS[key],CODE_TEMPLATE_JS)
+# 代码模板 - Lua
+CODE_TEMPLATE_LUA = {
+	"DATA":readFileText("{}\\{}".format(os.getcwd(),"code_template\\code_template_lua_data.txt")),
+	"EDITOR":readFileText("{}\\{}".format(os.getcwd(),"code_template\\code_template_lua_editor.txt")),
+};
+for key in CODE_TEMPLATE_LUA:
+	CODE_TEMPLATE_LUA[key] = format(CODE_TEMPLATE_LUA[key],CODE_TEMPLATE_LUA)
+
 
 # 遍历得到所有Excel文件
 for root, dirs, files in os.walk(excelDir):
@@ -108,12 +149,43 @@ def getDataCode(name,typeStr,valueStr,formatArray,formatTable,formatKeyAndValue)
 			raise Exception("array format error [{}] [{}] [{}]".format(name,typeStr,valueStr))
 
 	return 'null'
-# 获取Js数据代码
-def getJsTplCode(name,sheet):
+# 根据模板生成并保留可编辑区块代码
+# code_template 生成代码模板
+# code 可编辑区块代码获取源代码
+# editor_template 可编辑区块代码模板
+def createEditorCode(code_template,code,editor_template):
+	result = code_template
+	regular = format(editor_template,{'code':'(.*?)'})
+	codes = re.compile(regular,re.DOTALL).findall(code)
+	if(len(codes)>0):
+		for i in xrange(0,len(codes)):
+			code = codes[i]
+			result = format(result,{"code":code},1)
+	else:
+		result = format(result,{"code":''})
+	return result;
+# 现有代码生成不可编辑区块代码
+# code 现有代码
+# notEditor_codes 生成代码数组
+# notEditor_template 不可编辑区块代码模板
+def createNotEditorCode(code,notEditor_codes,notEditor_template):
+	result = code;
+	regular = format(notEditor_template,{'code':'(.*?)'})
+	codes = re.compile(regular,re.DOTALL).findall(code)
+	if(len(codes)>0):
+		for i in xrange(0,len(codes)):
+			old = format(notEditor_template,{'code':codes[i]})
+			new = format(notEditor_template,{'code':notEditor_codes[i]})
+			result = result.replace(old,new,1)
+	return result
+
+# 生成代码 - JS
+# 生成Js数据代码
+def createJsDataCode(name,sheet):
 	# 根据Excel内容生成
 	fields = sheet.row_values(1)
 	types = sheet.row_values(2)
-	dataContent = ''
+	dataCode = ''
 	for i in xrange(3,sheet.nrows):
 		dataStr = '';
 		values = sheet.row_values(i);
@@ -121,37 +193,43 @@ def getJsTplCode(name,sheet):
 			field = fields[j]
 			value = values[j]
 			dataStr += " {}:{},".format(field,getDataCode(name,types[j],value,"[{} ]","{{{} }}"," {}:{},"))
-		dataContent += "\t{{{} }},\n".format(dataStr);	
+		dataCode += "\t{{{} }},\n".format(dataStr);	
+	dataCode = dataCode.strip('\n')
 
-	fileContent = '"{}"'.format('","'.join(fields));
+	fileCode = '"{}"'.format('","'.join(fields));
 
-	typeContent = ''
+	typeCode = ''
 	for i in xrange(0,len(fields)):
-		typeContent += '\t{}:"{}",\n'.format(fields[i],types[i]);
+		typeCode += '\t{}:"{}",\n'.format(fields[i],types[i]);
+	typeCode = typeCode.strip('\n')
 
-	content = '''
-// 该文件通过工具生成，请勿更改
-
-let tpl = {{}}
-
-tpl.fields = [{}]
-
-tpl.types = {{
-{}}}
-
-tpl.data = [
-{}]
-
-module.exports = tpl
-'''
-	return content.format(fileContent,typeContent,dataContent)
-
-# 获取Lua数据代码
-def getLuaTplCode(name,sheet):
+	return format(CODE_TEMPLATE_JS['DATA'],{"fileCode":fileCode,"typeCode":typeCode,"dataCode":dataCode})
+# 生成Js实体类代码
+def createJsModelCode(name,code):
+	result = createEditorCode(CODE_TEMPLATE_JS['MODEL'],code,CODE_TEMPLATE_JS['EDITOR'])
+	return format(result,{"name":name});
+# 生成Js管理类代码
+def createJsManagerCode(name,code):
+	result = createEditorCode(CODE_TEMPLATE_JS['MANAGER'],code,CODE_TEMPLATE_JS['EDITOR'])
+	return format(result,{"name":name});
+# 生成Js总管理类代码
+def createJsTemplateCode(code):
+	code1 = ''
+	code2 = ''
+	for name in excelSheetDic:
+		code1 += format("let template_{name} = require('./manager/template_{name}').create()\n",{"name":name})
+		code2 += format("Template.template_{name} = template_{name}\n",{"name":name})
+	code1 = code1.strip('\n')
+	code2 = code2.strip('\n')
+	result = createNotEditorCode(code,[code1,code2],CODE_TEMPLATE_JS['NOTEDITOR'])
+	return result
+# 生成代码 - Lua
+# 生成Lua数据代码
+def createLuaDataCode(name,sheet):
 	# 根据Excel内容生成
 	fields = sheet.row_values(1)
 	types = sheet.row_values(2)
-	dataContent = ''
+	dataCode = ''
 	for i in xrange(3,sheet.nrows):
 		dataStr = '';
 		values = sheet.row_values(i);
@@ -159,91 +237,47 @@ def getLuaTplCode(name,sheet):
 			field = fields[j]
 			value = values[j]
 			dataStr += " {}={},".format(field,getDataCode(name,types[j],value,"{{{} }}","{{{} }}"," {}={},"))
-		dataContent += "\t{{{} }},\n".format(dataStr);
+		dataCode += "\t{{{} }},\n".format(dataStr);
+	dataCode = dataCode.strip('\n')
 
-		fileContent = '"{}"'.format('","'.join(fields));
+	fileCode = '"{}"'.format('","'.join(fields));
 
-		typeContent = ''
-		for i in xrange(0,len(fields)):
-			typeContent += '\t{}="{}",\n'.format(fields[i],types[i]);
+	typeCode = ''
+	for i in xrange(0,len(fields)):
+		typeCode += '\t{}="{}",\n'.format(fields[i],types[i]);
+	typeCode = typeCode.strip('\n')
 
-	content = '''
--- 该文件通过工具生成，请勿更改
-
-local tpl = {{}}
-
-tpl.fields = {{{}}}
-
-tpl.types = {{
-{}}}
-
-tpl.data = {{
-{}}}
-
-return tpl
-'''
-	return content.format(fileContent,typeContent,dataContent)
-
-
-
-# 获取Js实体类代码
-def getJsModelCode(name,code):
-	editorCode = '''
-// ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ 可编辑区块 ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
-{}
-// ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ 可编辑区块 ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
-'''
-	temp = re.compile(editorCode.format("(.*?)"),re.DOTALL).findall(code)
-	if len(temp)>0:
-		editorCode = editorCode.format(temp[0])
-	else:
-		editorCode = editorCode.format('')
-
-
-	content = '''
-// 该文件通过工具生成，只可以修改可编辑区块中的内容
-
-const Base = require('./base');
-
-Base.inherits(this, Model, Base);
-
-Model.create = function (data) {{
-    let model = new Model();
-    model.init(data);
-    return model;
-}}
-
-function Model() {{
-    this.tplName = '{}'
-}}
-{}
-module.exports = Model
-	'''
-
-	return content.format(name,editorCode);
+	return format(CODE_TEMPLATE_LUA['DATA'],{"fileCode":fileCode,"typeCode":typeCode,"dataCode":dataCode})
 
 
 for (name,sheet) in excelSheetDic.items():
 	# Js
-	filepath = "{}\\{}.{}".format(buildJSTplDir,name,'js')
+	filepath = "{}\\{}.{}".format(BUILD_DIR_JS_DATA,"template_{}".format(name),'js')
 	file = open(filepath, "w")
-	file.write(getJsTplCode(name,sheet));
-	print("Build JS_Tpl_FILE [{}] >>> [{}]".format(name,filepath));
+	file.write(createJsDataCode(name,sheet));
+	print("Build JS_Data_FILE [{}] >>> [{}]".format(name,filepath));
 
-	filepath = "{}\\{}.{}".format(buildJSModelDir,name,'js')
-	code = ''
-	if(os.path.exists(filepath)):
-		file = open(filepath, "r+")
-		code = file.read()
+	filepath = "{}\\{}.{}".format(BUILD_DIR_JS_MODEL,"template_{}Model".format(name),'js')
+	code = readFileText(filepath)
 	file = open(filepath, "w")
-	getJsModelCode(name,code)
-	file.write(getJsModelCode(name,code));
+	file.write(createJsModelCode(name,code));
+	print("Build JS_Model_FILE [{}] >>> [{}]".format(name,filepath));
+
+	filepath = "{}\\{}.{}".format(BUILD_DIR_JS_MANAGER,"template_{}Manager".format(name),'js')
+	code = readFileText(filepath)
+	file = open(filepath, "w")
+	file.write(createJsManagerCode(name,code));
+	print("Build JS_Manager_FILE [{}] >>> [{}]".format(name,filepath));
 
 	# Lua	
-	# filepath = "{}\\{}.{}".format(buildLUATplDir,name,'lua')
+	# filepath = "{}\\{}.{}".format(BUILD_DIR_LUA_DATA,"template_{}Model".format(name),'lua')
 	# file = open(filepath, "w")
-	# file.write(getLuaTplCode(name,sheet));
-	# print("Build LUA_Tpl_FILE [{}] >>> [{}]".format(name,filepath));
+	# file.write(createLuaDataCode(name,sheet));
+	# print("Build LUA_Data_FILE [{}] >>> [{}]".format(name,filepath));
 
-	# print(getLuaTypeCode(name))
+# Js
+filepath = BUILD_FILE_JS_TEMPLATE
+code = readFileText(filepath);
+file = open(filepath, "w")
+file.write(createJsTemplateCode(code));
 

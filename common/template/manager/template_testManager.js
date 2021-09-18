@@ -1,23 +1,19 @@
-
 // 该文件通过工具生成，只可以修改可编辑区块中的内容
 
-const Base = require('./base');
+const Base = require('../base/mananger');
 
-Base.inherits(this, Model, Base);
+Base.inherits(this, Mgr, Base);
 
-Model.create = function (data) {
-    let model = new Model();
-    model.init(data);
-    return model;
+Mgr.create = function () {
+    let mgr = new Mgr();
+    mgr.init();
+    return mgr;
 }
 
-function Model() {
-    this.tplName = 'test1'
+function Mgr() {
+    this.name = 'test'
 }
-
 // ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ 可编辑区块 ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
 // ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ 可编辑区块 ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
-
 module.exports = Model
-	

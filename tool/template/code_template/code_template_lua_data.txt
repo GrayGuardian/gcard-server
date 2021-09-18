@@ -1,0 +1,15 @@
+-- 该文件通过工具生成，请勿更改
+
+local tpl = {}
+
+tpl.fields = {{fileCode}}
+
+tpl.types = {
+{typeCode}
+}
+
+tpl.data = {
+{dataCode}
+}
+
+return tpl

@@ -1,0 +1,15 @@
+// 该文件通过工具生成，请勿更改
+
+let tpl = {}
+
+tpl.fields = [{fileCode}]
+
+tpl.types = {
+{typeCode}
+}
+
+tpl.data = [
+{dataCode}
+]
+
+module.exports = tpl

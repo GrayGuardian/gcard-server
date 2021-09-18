@@ -1,5 +1,12 @@
 var Template = {};
 
+// ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ 工具生成代码 ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
+let template_test = require('./manager/template_test').create()
+let template_test1 = require('./manager/template_test1').create()
+let template_props = require('./manager/template_props').create()
+let template_error_info = require('./manager/template_error_info').create()
+// ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ 工具生成代码 ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
+
 let modelMap = {};
 
 let getDatas = function (name) {
@@ -50,10 +57,11 @@ Template.getData = function (name, tag) {
     return null;
 }
 
-let error_info = getMap('error_info', "code");
-let props = getMap("props", 'id');
-
-Template.error_info = error_info;
-Template.props = props;
+// ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ 工具生成代码 ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
+Template.template_test = template_test
+Template.template_test1 = template_test1
+Template.template_props = template_props
+Template.template_error_info = template_error_info
+// ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ 工具生成代码 ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
 
 module.exports = Template;
