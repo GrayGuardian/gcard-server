@@ -51,6 +51,7 @@ CODE_TEMPLATE_JS = {
 	"DATA":readFileText("{}\\{}".format(os.getcwd(),"code_template\\code_template_js_data.txt")),
 	"MODEL":readFileText("{}\\{}".format(os.getcwd(),"code_template\\code_template_js_model.txt")),
 	"MANAGER":readFileText("{}\\{}".format(os.getcwd(),"code_template\\code_template_js_manager.txt")),
+	"TEMPLATE":readFileText("{}\\{}".format(os.getcwd(),"code_template\\code_template_js_template.txt")),
 	"EDITOR":readFileText("{}\\{}".format(os.getcwd(),"code_template\\code_template_js_editor.txt")),
 	"NOTEDITOR":readFileText("{}\\{}".format(os.getcwd(),"code_template\\code_template_js_noteditor.txt")),
 };
@@ -106,16 +107,8 @@ def getDataCode(name,typeStr,valueStr,formatArray,formatTable,formatKeyAndValue)
 		return str("\""+valueStr+"\"")
 
 	# 复杂参数处理
-	# 判断是否是表格关联字段
-	temp = typeStr.split('$')
-	if len(temp) > 1:
-		# 关联其他表	这里只是去获取对应表字段的类型序列化 具体关联需要在使用逻辑层去处理关联
-		try:
-			return getDataCode(name,excelFieldTypeDic[temp[0]][temp[1]],valueStr,formatArray,formatTable,formatKeyAndValue)
-		except:
-			raise Exception("tbl format error [{}] [{}] [{}]".format(name,typeStr,valueStr))
 	# 正则判断是否是table
-	temp = re.match(r'table\[(.*?)\]$', typeStr)
+	temp = re.match(r'^table\[(.*?)\]$', typeStr)
 	if(temp!=None):
 		# table处理
 		try:
@@ -136,7 +129,7 @@ def getDataCode(name,typeStr,valueStr,formatArray,formatTable,formatKeyAndValue)
 		except:
 			raise Exception("table format error [{}] [{}] [{}]".format(name,typeStr,valueStr))
 	# 正则判断是否是array
-	temp = re.match(r'array\[(.*?)\]$', typeStr)
+	temp = re.match(r'^array\[(.*?)\]$', typeStr)
 	if(temp!=None):
 		# array处理
 		try:
@@ -147,7 +140,15 @@ def getDataCode(name,typeStr,valueStr,formatArray,formatTable,formatKeyAndValue)
 			return formatArray.format(arrayStr);
 		except:
 			raise Exception("array format error [{}] [{}] [{}]".format(name,typeStr,valueStr))
-
+	# 判断是否是表格关联字段
+	temp = typeStr.split('$')
+	if len(temp) > 1:
+		# 关联其他表	这里只是去获取对应表字段的类型序列化 具体关联需要在使用逻辑层去处理关联
+		try:
+			return getDataCode(name,excelFieldTypeDic[temp[0]][temp[1]],valueStr,formatArray,formatTable,formatKeyAndValue)
+		except:
+			raise Exception("tbl format error [{}] [{}] [{}]".format(name,typeStr,valueStr))
+			
 	return 'null'
 # 根据模板生成并保留可编辑区块代码
 # code_template 生成代码模板
@@ -209,19 +210,21 @@ def createJsModelCode(name,code):
 	result = createEditorCode(CODE_TEMPLATE_JS['MODEL'],code,CODE_TEMPLATE_JS['EDITOR'])
 	return format(result,{"name":name});
 # 生成Js管理类代码
-def createJsManagerCode(name,code):
+def createJsManagerCode(name,field,code):
 	result = createEditorCode(CODE_TEMPLATE_JS['MANAGER'],code,CODE_TEMPLATE_JS['EDITOR'])
-	return format(result,{"name":name});
+
+	return format(result,{"name":name,"field":field});
 # 生成Js总管理类代码
-def createJsTemplateCode(code):
+def createJsTemplateCode():
 	code1 = ''
 	code2 = ''
 	for name in excelSheetDic:
-		code1 += format("let template_{name} = require('./manager/template_{name}').create()\n",{"name":name})
-		code2 += format("Template.template_{name} = template_{name}\n",{"name":name})
+		code1 += format("Template.template_{name} = require('./manager/template_{name}Manager').create()\n",{"name":name})
+		code2 += format("\tTemplate.template_{name}.refresh()\n",{"name":name})
 	code1 = code1.strip('\n')
 	code2 = code2.strip('\n')
-	result = createNotEditorCode(code,[code1,code2],CODE_TEMPLATE_JS['NOTEDITOR'])
+
+	result = format(CODE_TEMPLATE_JS['TEMPLATE'],{"code1":code1,"code2":code2})
 	return result
 # 生成代码 - Lua
 # 生成Lua数据代码
@@ -251,6 +254,7 @@ def createLuaDataCode(name,sheet):
 
 
 for (name,sheet) in excelSheetDic.items():
+	field = excelSheetDic[name].row_values(1)[0]
 	# Js
 	filepath = "{}\\{}.{}".format(BUILD_DIR_JS_DATA,"template_{}".format(name),'js')
 	file = open(filepath, "w")
@@ -263,10 +267,11 @@ for (name,sheet) in excelSheetDic.items():
 	file.write(createJsModelCode(name,code));
 	print("Build JS_Model_FILE [{}] >>> [{}]".format(name,filepath));
 
+
 	filepath = "{}\\{}.{}".format(BUILD_DIR_JS_MANAGER,"template_{}Manager".format(name),'js')
 	code = readFileText(filepath)
 	file = open(filepath, "w")
-	file.write(createJsManagerCode(name,code));
+	file.write(createJsManagerCode(name,field,code));
 	print("Build JS_Manager_FILE [{}] >>> [{}]".format(name,filepath));
 
 	# Lua	
@@ -277,7 +282,6 @@ for (name,sheet) in excelSheetDic.items():
 
 # Js
 filepath = BUILD_FILE_JS_TEMPLATE
-code = readFileText(filepath);
 file = open(filepath, "w")
-file.write(createJsTemplateCode(code));
+file.write(createJsTemplateCode());
 

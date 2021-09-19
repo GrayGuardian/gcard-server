@@ -1,3 +1,4 @@
+
 module.exports = async function () {
     // 常量
     global.SOCKET_EVENT = require("../const/SOCKET_EVENT");
@@ -21,8 +22,8 @@ module.exports = async function () {
     global.log = require("../utils/log");
     global.util = require("../utils/util");
     global.lock = require("../utils/lock");
-
     global.Template = require("../template/template");
+    global.Template.refresh()
     global.ERROR_INFO = Template.template_error_info;
 
     // 实例化对象

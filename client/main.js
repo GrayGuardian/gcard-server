@@ -1,5 +1,12 @@
+
 var mian = async function () {
     global.Template = require("../common/template/template");
+    global.Template.refresh()
+    let test = Template.template_error_info["GAMENAME_NOTVALID"];
+
+    console.log(test.baseInfo.code)
+    console.log(test.get_code())
+    console.log(test["code"])
     return;
     await require("../common/base/global")();
 

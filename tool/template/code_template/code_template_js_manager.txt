@@ -12,6 +12,9 @@ Mgr.create = function () {
 
 function Mgr() {
     this.name = '{name}'
+    this.field = '{field}'
 }
+
 {EDITOR}
-module.exports = Model
+
+module.exports = Mgr

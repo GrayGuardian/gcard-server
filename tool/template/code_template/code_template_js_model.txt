@@ -13,5 +13,7 @@ Model.create = function (data) {
 function Model() {
     this.name = '{name}'
 }
+
 {EDITOR}
+
 module.exports = Model

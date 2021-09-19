@@ -12,8 +12,11 @@ Mgr.create = function () {
 
 function Mgr() {
     this.name = 'props'
+    this.field = 'id'
 }
+
 // ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ 可编辑区块 ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
 // ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ 可编辑区块 ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
-module.exports = Model
+
+module.exports = Mgr

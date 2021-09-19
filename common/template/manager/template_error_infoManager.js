@@ -12,8 +12,11 @@ Mgr.create = function () {
 
 function Mgr() {
     this.name = 'error_info'
+    this.field = 'code'
 }
+
 // ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ 可编辑区块 ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
 // ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ 可编辑区块 ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
-module.exports = Model
+
+module.exports = Mgr
