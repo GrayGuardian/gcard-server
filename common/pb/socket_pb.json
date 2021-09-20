@@ -10,7 +10,7 @@
               "id": 1
             },
             "error": {
-              "type": "error.CError",
+              "type": "error.Error",
               "id": 20
             },
             "updateModelData": {
@@ -471,45 +471,13 @@
         }
       }
     },
-    "template": {
-      "nested": {
-        "ErrorInfo": {
-          "fields": {
-            "id": {
-              "rule": "required",
-              "type": "int32",
-              "id": 1
-            },
-            "code": {
-              "rule": "required",
-              "type": "string",
-              "id": 2
-            },
-            "clientTip": {
-              "rule": "required",
-              "type": "string",
-              "id": 3
-            },
-            "serverTip": {
-              "rule": "required",
-              "type": "string",
-              "id": 4
-            },
-            "desc": {
-              "type": "string",
-              "id": 5
-            }
-          }
-        }
-      }
-    },
     "error": {
       "nested": {
-        "CError": {
+        "Error": {
           "fields": {
             "info": {
               "rule": "required",
-              "type": "CErrorInfo",
+              "type": "ErrorInfo",
               "id": 1
             },
             "data": {
@@ -518,68 +486,17 @@
             }
           }
         },
-        "SError": {
+        "ErrorInfo": {
           "fields": {
-            "info": {
-              "rule": "required",
-              "type": "SErrorInfo",
-              "id": 1
-            },
-            "data": {
-              "type": "ErrorData",
-              "id": 2
-            }
-          }
-        },
-        "CErrorInfo": {
-          "fields": {
-            "id": {
-              "rule": "required",
-              "type": "int32",
-              "id": 1
-            },
             "code": {
               "rule": "required",
               "type": "string",
-              "id": 2
+              "id": 1
             },
             "tip": {
               "rule": "required",
               "type": "string",
-              "id": 3
-            }
-          }
-        },
-        "SErrorInfo": {
-          "fields": {
-            "id": {
-              "rule": "required",
-              "type": "int32",
-              "id": 1
-            },
-            "code": {
-              "rule": "required",
-              "type": "string",
               "id": 2
-            },
-            "tip": {
-              "rule": "required",
-              "type": "string",
-              "id": 3
-            },
-            "clientTip": {
-              "rule": "required",
-              "type": "string",
-              "id": 4
-            },
-            "serverTip": {
-              "rule": "required",
-              "type": "string",
-              "id": 5
-            },
-            "desc": {
-              "type": "string",
-              "id": 6
             }
           }
         },

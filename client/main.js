@@ -1,15 +1,9 @@
 
 var mian = async function () {
-    global.Template = require("../common/template/template");
-    global.Template.refresh()
-    let test = Template.template_error_info["GAMENAME_NOTVALID"];
+    // await require("../common/base/global")();
 
-    console.log(test.baseInfo.code)
-    console.log(test.get_code())
-    console.log(test["code"])
-    return;
-    await require("../common/base/global")();
-
+    // log.print({ sadghas: 123 }, { fdsajjl: 12345 }, "sjdlsjdkl")
+    // return;
     const HOST = '127.0.0.1'
     const PORT = 8200
 

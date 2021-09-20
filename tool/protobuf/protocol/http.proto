@@ -3,13 +3,12 @@ package http;
 
 import "model.proto";
 import "db.proto";
-import "template.proto";
 import "error.proto";
 
 message rpc {
     required string router = 1; // 路由
     // 下方命名规则：对应访问的router
-    optional error.CError error = 20;
+    optional error.Error error = 20;
 
     optional register register = 100;
     optional registerRet registerRet = 101;

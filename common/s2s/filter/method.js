@@ -1,15 +1,14 @@
 module.exports = async (ctx, next) => {
     ctx.method = {};
     // 返回错误码函数
-    ctx.method.genError = function (info, data) {
-        info = info ?? ERROR_INFO.UNKNOWN_ERROR
-        info = ERROR_INFO[info.code];
-        if (info == null || util.equalErrorInfo(info, ERROR_INFO.SUCCESS)) {
-            log.error(`不可设置的错误码 code:${info.code}`);
+    ctx.method.genError = function (model, data) {
+        model = model ?? ERROR_INFO.UNKNOWN_ERROR
+        if (model == null || model.equal(ERROR_INFO.SUCCESS)) {
+            log.error(`不可设置的错误码 code:${model.get_code()}`);
             return;
         }
-        let error = util.getError(1, info, data)
-        return ctx.method.send("error", error);
+        let dataPack = model.getServerErrorPackage(data);
+        return ctx.method.send("error", dataPack);
     }
     // 返回函数
     ctx.method.callback = function (data) {

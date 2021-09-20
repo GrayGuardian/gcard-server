@@ -10,8 +10,8 @@ var Client = function (server, idx, socket) {
     // 添加id发送广播事件
     broadcast.on(BROADCAST_CODE.SOCKET_ID(this.idx), this.sendEvent);
 }
-Client.prototype.genError = async function (info, data) {
-    return await this.server.genError(this.socket, info, data)
+Client.prototype.genError = async function (model, data) {
+    return await this.server.genError(this.socket, model, data)
 }
 Client.prototype.send = async function (router, data) {
     return await this.server.send(this.socket, router, data)

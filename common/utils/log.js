@@ -1,5 +1,7 @@
 var Log = {};
 
+const STACK_CNT = 3
+
 let getStackInfo = function (offset) {
     offset = offset ?? 0;
     function getException() {
@@ -40,38 +42,43 @@ let getDateInfo = function () {
 }
 
 
-Log.print = function (text, stackCnt) {
-    stackCnt = stackCnt ?? 3;
+Log.print = function (...args) {
     let arr = [];
     arr.push({ color: "90", text: `[${getDateInfo()}]` });
     arr.push({ color: "37", text: "[Print]" });
-    for (let index = 0; index < stackCnt; index++) {
+    for (let index = 0; index < STACK_CNT; index++) {
         arr.push({ color: "35", text: `[${getStackInfo(index)}]` });
     }
-    arr.push({ color: "37", text: text });
+    args.forEach(arg => {
+        arr.push({ color: "37", text: arg });
+    });
     arr.push({ color: "37", text: '' });
 
-    let logText = '';
+    let logTextArr = []
     arr.forEach(info => {
-        logText += `\x1B[${info.color}m${info.text} `
+        logTextArr.push(`\x1B[${typeof (info.text) == 'string' ? info.color : "37"}m`)
+        logTextArr.push(info.text);
     });
-    console.log(logText);
+    console.log(...logTextArr);
 }
-Log.error = function (text, stackCnt) {
-    stackCnt = stackCnt ?? 3;
+Log.error = function (...args) {
     let arr = [];
     arr.push({ color: "90", text: `[${getDateInfo()}]` });
     arr.push({ color: "31", text: "[Error]" });
-    for (let index = 0; index < stackCnt; index++) {
+    for (let index = 0; index < STACK_CNT; index++) {
         arr.push({ color: "35", text: `[${getStackInfo(index)}]` });
     }
-    arr.push({ color: "31", text: text });
+    args.forEach(arg => {
+        arr.push({ color: "31", text: arg });
+    });
     arr.push({ color: "37", text: '' });
 
-    let logText = '';
+
+    let logTextArr = []
     arr.forEach(info => {
-        logText += `\x1B[${info.color}m${info.text} `
+        logTextArr.push(`\x1B[${typeof (info.text) == 'string' ? info.color : "37"}m`)
+        logTextArr.push(info.text);
     });
-    console.log(logText);
+    console.log(...logTextArr);
 }
 module.exports = Log

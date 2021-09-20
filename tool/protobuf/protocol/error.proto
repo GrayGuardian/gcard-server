@@ -3,27 +3,14 @@ syntax = "proto2";
 // 错误代码
 package error;
 
-message CError{
-    required CErrorInfo info = 1;
-    optional ErrorData data = 2;
-}
-message SError{
-    required SErrorInfo info = 1;
+message Error{
+    required ErrorInfo info = 1;
     optional ErrorData data = 2;
 }
 
-message CErrorInfo{
-    required int32 id = 1;
-    required string code = 2;
-    required string tip = 3;
-}
-message SErrorInfo{
-    required int32 id = 1;
-    required string code = 2;
-    required string tip = 3;
-    required string clientTip = 4;
-    required string serverTip = 5;
-    optional string desc = 6;
+message ErrorInfo{
+    required string code = 1;
+    required string tip = 2;
 }
 
 message ErrorData {

@@ -64,7 +64,6 @@ Base.prototype.refresh = function (data) {
     });
     for (const key in this.baseInfo) {
         const value = this.baseInfo[key];
-        this[key] = value
         this[`get_${key}`] = () => {
             return this.baseInfo[key];
         };

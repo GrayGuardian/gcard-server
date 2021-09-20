@@ -55,14 +55,13 @@ Server.prototype.onClientLeave = async function (socket) {
         client.close();
     }
 }
-Server.prototype.genError = async function (socket, info, data) {
-    info = info ?? ERROR_INFO.UNKNOWN_ERROR
-    info = ERROR_INFO[info.code];
-    if (info == null || util.equalErrorInfo(info, ERROR_INFO.SUCCESS)) {
-        log.error(`不可设置的错误码 code:${info.code}`);
+Server.prototype.genError = async function (socket, model, data) {
+    model = model ?? ERROR_INFO.UNKNOWN_ERROR
+    if (model == null || model.equal(ERROR_INFO.SUCCESS)) {
+        log.error(`不可设置的错误码 code:${model.get_code()}`);
         return;
     }
-    let dataPack = util.getError(0, info, data)
+    let dataPack = model.getClientErrorPackage(data);
     return await this.send(socket, "error", dataPack);
 }
 Server.prototype.send = async function (socket, router, data) {
