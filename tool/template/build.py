@@ -9,25 +9,34 @@ sys.setdefaultencoding('utf-8')
 # Excel文件所在目录
 excelDir = os.getcwd()
 # Excel文件扩展名 不同版本的xlrd支持的扩展名不同
-excelExtension = ".xlsx"
+excelExtension = ".xls"
 # Excel表对象字典
 excelSheetDic = {}
 # Excel表格字段类型字典 = {}
 excelFieldTypeDic = {}
 # Excel表格黑名单目录
-# excelBlackList = ['template_test','template_test1']	# 放置了两个模板Excel 忽略生成
-excelBlackList = []
+excelBlackList = ['test','test1']	# 放置了两个模板Excel 忽略生成
+# excelBlackList = []
+# 导出JS根目录
+BUILD_DIR_JS_ROOT = "../../common/tool/template/"
 # 导出JS_DATA目录
-BUILD_DIR_JS_DATA = "../../common/template/data"
+BUILD_DIR_JS_DATA = BUILD_DIR_JS_ROOT + "data"
 # 导出JS_MODEL目录
-BUILD_DIR_JS_MODEL = "../../common/template/model"
+BUILD_DIR_JS_MODEL = BUILD_DIR_JS_ROOT + "model"
 # 导出JS_MANAGER目录
-BUILD_DIR_JS_MANAGER = "../../common/template/manager"
+BUILD_DIR_JS_MANAGER = BUILD_DIR_JS_ROOT + "manager"
 # 导出JS_TEMPLATE文件
-BUILD_FILE_JS_TEMPLATE = "../../common/template/template.js"
+BUILD_FILE_JS_TEMPLATE = BUILD_DIR_JS_ROOT + "template.js"
+# 导出LUA根目录
+BUILD_DIR_LUA_ROOT = "D:\\testtttt\\Assets\\Resources\\AssetBundles\\lua\\tool\\template\\"
 # 导出LUA_DATA目录
-BUILD_DIR_LUA_DATA = excelDir
-
+BUILD_DIR_LUA_DATA = BUILD_DIR_LUA_ROOT + "data"
+# 导出LUA_MODEL目录
+BUILD_DIR_LUA_MODEL = BUILD_DIR_LUA_ROOT + "model"
+# 导出LUA_MANAGER目录
+BUILD_DIR_LUA_MANAGER = BUILD_DIR_LUA_ROOT + "manager"
+# 导出LUA_TEMPLATE文件
+BUILD_FILE_LUA_TEMPLATE = BUILD_DIR_LUA_ROOT + "template.lua.txt"
 # 获取文件文本
 def readFileText(filepath):
 	if(os.path.exists(filepath)):
@@ -60,7 +69,11 @@ for key in CODE_TEMPLATE_JS:
 # 代码模板 - Lua
 CODE_TEMPLATE_LUA = {
 	"DATA":readFileText("{}\\{}".format(os.getcwd(),"code_template\\code_template_lua_data.txt")),
+	"MODEL":readFileText("{}\\{}".format(os.getcwd(),"code_template\\code_template_lua_model.txt")),
+	"MANAGER":readFileText("{}\\{}".format(os.getcwd(),"code_template\\code_template_lua_manager.txt")),
+	"TEMPLATE":readFileText("{}\\{}".format(os.getcwd(),"code_template\\code_template_lua_template.txt")),
 	"EDITOR":readFileText("{}\\{}".format(os.getcwd(),"code_template\\code_template_lua_editor.txt")),
+	"NOTEDITOR":readFileText("{}\\{}".format(os.getcwd(),"code_template\\code_template_lua_noteditor.txt")),
 };
 for key in CODE_TEMPLATE_LUA:
 	CODE_TEMPLATE_LUA[key] = format(CODE_TEMPLATE_LUA[key],CODE_TEMPLATE_LUA)
@@ -251,7 +264,26 @@ def createLuaDataCode(name,sheet):
 	typeCode = typeCode.strip('\n')
 
 	return format(CODE_TEMPLATE_LUA['DATA'],{"fileCode":fileCode,"typeCode":typeCode,"dataCode":dataCode})
+# 生成Js实体类代码
+def createLuaModelCode(clsName,name,code):
+	result = createEditorCode(CODE_TEMPLATE_LUA['MODEL'],code,CODE_TEMPLATE_LUA['EDITOR'])
+	return format(result,{"clsName":clsName,"name":name});
+# 生成Js管理类代码
+def createLuaManagerCode(clsName,name,field,code):
+	result = createEditorCode(CODE_TEMPLATE_LUA['MANAGER'],code,CODE_TEMPLATE_LUA['EDITOR'])
+	return format(result,{"clsName":clsName,"name":name,"field":field});
+# 生成Lua总管理类代码
+def createLuaTemplateCode():
+	code1 = ''
+	code2 = ''
+	for name in excelSheetDic:
+		code1 += format("Template.template_{name} = require('template_{name}Manager'):new()\n",{"name":name})
+		code2 += format("\tTemplate.template_{name}:refresh()\n",{"name":name})
+	code1 = code1.strip('\n')
+	code2 = code2.strip('\n')
 
+	result = format(CODE_TEMPLATE_LUA['TEMPLATE'],{"code1":code1,"code2":code2})
+	return result
 
 for (name,sheet) in excelSheetDic.items():
 	field = excelSheetDic[name].row_values(1)[0]
@@ -259,29 +291,46 @@ for (name,sheet) in excelSheetDic.items():
 	filepath = "{}\\{}.{}".format(BUILD_DIR_JS_DATA,"template_{}".format(name),'js')
 	file = open(filepath, "w")
 	file.write(createJsDataCode(name,sheet));
-	print("Build JS_Data_FILE [{}] >>> [{}]".format(name,filepath));
+	print("Build JS_Data_File [{}] >>> [{}]".format(name,filepath));
 
 	filepath = "{}\\{}.{}".format(BUILD_DIR_JS_MODEL,"template_{}Model".format(name),'js')
 	code = readFileText(filepath)
 	file = open(filepath, "w")
 	file.write(createJsModelCode(name,code));
-	print("Build JS_Model_FILE [{}] >>> [{}]".format(name,filepath));
+	print("Build JS_Model_File [{}] >>> [{}]".format(name,filepath));
 
 
 	filepath = "{}\\{}.{}".format(BUILD_DIR_JS_MANAGER,"template_{}Manager".format(name),'js')
 	code = readFileText(filepath)
 	file = open(filepath, "w")
 	file.write(createJsManagerCode(name,field,code));
-	print("Build JS_Manager_FILE [{}] >>> [{}]".format(name,filepath));
+	print("Build JS_Manager_File [{}] >>> [{}]".format(name,filepath));
 
 	# Lua	
-	# filepath = "{}\\{}.{}".format(BUILD_DIR_LUA_DATA,"template_{}Model".format(name),'lua')
-	# file = open(filepath, "w")
-	# file.write(createLuaDataCode(name,sheet));
-	# print("Build LUA_Data_FILE [{}] >>> [{}]".format(name,filepath));
+	filepath = "{}\\{}.{}".format(BUILD_DIR_LUA_DATA,"template_{}".format(name),'lua.txt')
+	file = open(filepath, "w")
+	file.write(createLuaDataCode(name,sheet));
+	print("Build LUA_Data_File [{}] >>> [{}]".format(name,filepath));
+
+	clsName = "template_{}Model".format(name)
+	filepath = "{}\\{}.{}".format(BUILD_DIR_LUA_MODEL,clsName,'lua.txt')
+	code = readFileText(filepath)
+	file = open(filepath, "w")
+	file.write(createLuaModelCode(clsName,name,code));
+	print("Build LUA_Model_File [{}] >>> [{}]".format(name,filepath));
+
+	clsName = "template_{}Manager".format(name)
+	filepath = "{}\\{}.{}".format(BUILD_DIR_LUA_MANAGER,clsName,'lua.txt')
+	code = readFileText(filepath)
+	file = open(filepath, "w")
+	file.write(createLuaManagerCode(clsName,name,field,code));
+	print("Build LUA_Manager_File [{}] >>> [{}]".format(name,filepath));
 
 # Js
 filepath = BUILD_FILE_JS_TEMPLATE
 file = open(filepath, "w")
 file.write(createJsTemplateCode());
-
+# Lua
+filepath = BUILD_FILE_LUA_TEMPLATE
+file = open(filepath, "w")
+file.write(createLuaTemplateCode());

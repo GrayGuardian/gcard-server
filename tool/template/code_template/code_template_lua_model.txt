@@ -1,0 +1,12 @@
+-- 该文件通过工具生成，只可以修改可编辑区块中的内容
+local Base = require('template_model_base')
+local Model = class('{clsName}', Base)
+
+function Model:ctor(data)
+    self.name = '{name}'
+    self:init(data)
+end
+
+{EDITOR}
+
+return Model

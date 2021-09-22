@@ -49,15 +49,15 @@ Base.prototype.getTplInfo = function (keyTable) {
     return null;
 }
 Base.prototype.getTplModel = function (keyTable) {
-    if (this.tplModelMap.has(keyTable)) {
-        console.log("缓存中查询")
-        return this.tplModelMap.get(keyTable);
+    let key = JSON.stringify(keyTable);
+    if (this.tplModelMap.has(key)) {
+        return this.tplModelMap.get(key);
     }
-    return this.createTplModel(this.getTplInfo(keyTable));
+    let model = this.Model.create(this.getTplInfo(keyTable))
+    this.tplModelMap.set(key, model);
+    return model;
 }
-Base.prototype.createTplModel = function (data) {
-    return this.Model.create(data);
-}
+
 
 
 module.exports = Base;

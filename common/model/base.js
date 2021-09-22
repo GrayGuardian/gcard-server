@@ -19,7 +19,7 @@ Base.jsonParse = async function (str) {
 }
 
 Base.prototype.toJson = function () {
-    return util.toJson(this, 'this');
+    return string.toJson(this, 'this');
 }
 // ----------------- 子类重写 -----------------
 // 初始化函数

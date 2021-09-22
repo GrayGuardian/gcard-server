@@ -5,7 +5,7 @@ cd %cd%
 set pbjs=../../node_modules/protobufjs/bin/pbjs
 set lua_plugin_dir=%cd%\plugins\protobuf-lua\
 set protocol_dir=%cd%\protocol\
-set json_pb_dir=../../common/pb/
+set json_pb_dir=../../common/tool/pb/data/
 set lua_pb_dir=../../../gcard-client/Assets/Resources/AssetBundles/lua/pb/
 
 for /R %protocol_dir% %%f in (*.proto) do (

@@ -34,7 +34,7 @@ HttpClient.prototype.send = async function (router, data) {
 
                 if (data['token'] != null) {
                     this.token = data['token']
-                    // log.print(`更新token >>> ${JSON.stringify(util.tokenDeserialize(token))}`)
+                    // log.print(`更新token >>> ${JSON.stringify(jwt.decode(token))}`)
                 }
 
                 // log.print(`HttpClient 接收到数据 >>> ${router} ${JSON.stringify(data)}`)

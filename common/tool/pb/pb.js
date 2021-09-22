@@ -5,7 +5,7 @@ var PB = function () { }
 
 PB.prototype.getMessage = function (key) {
     let keys = key.split('.')
-    let json = require(`../pb/${keys[0]}_pb.json`);
+    let json = require(`./data/${keys[0]}_pb.json`);
     let root = pbroot.fromJSON(json);
     let Message = root.lookupType(keys[1]);
     return Message
@@ -31,7 +31,8 @@ PB.prototype.decode = function (key, data) {
 PB.prototype.check = function (key, buff) {
     try {
         let data = this.decode(key, buff);
-        return util.equalObjectValue(data, this.decode(key, this.encode(key, data)));
+
+        return JSON.stringify(data) == JSON.stringify(this.decode(key, this.encode(key, data)))
     } catch (error) {
         return false;
     }

@@ -10,7 +10,6 @@ Base.inherits = function (self, cls, superCls) {
     }
 }
 Base.prototype.init = function (data) {
-    this.manager = Template[`template_${this.name}`]
     this.Data = require(`../data/template_${this.name}`)
 
     this.refresh(data);
@@ -22,24 +21,23 @@ Base.prototype.getFieldValue = function (type, value) {
     temp = type.match(/^table\[(.*?)\]$/)
     if (temp != null) {
         // table处理
-        // console.log(value);
         let tarr = temp[1].split('&')
         let data = {}
         tarr.forEach(element => {
             let temp = element.split('=')
             let field = temp[0]
             let type = temp[1]
-            if (value[field] != null) {
-                data[field] = this.getFieldValue(type, value[field])
+            let val = value[field]
+            if (val != null) {
+                data[field] = this.getFieldValue(type, val)
             }
         });
-        // console.log(data)
         return data;
     }
     temp = type.match(/^array\[(.*?)\]$/)
     if (temp != null) {
         // array处理
-        type = temp[1];
+        let type = temp[1];
         let datas = []
         value.forEach(data => {
             datas.push(this.getFieldValue(type, data));

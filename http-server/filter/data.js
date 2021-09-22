@@ -12,7 +12,7 @@ module.exports = async (ctx, next) => {
         return;
     }
     if (ctx.request.headers.token != '') {
-        ctx.state.token = util.tokenDeserialize(ctx.request.headers.token)
+        ctx.state.token = jwt.decode(ctx.request.headers.token)
     }
     if (ctx.state.token != null) {
         ctx.state.uid = ctx.state.token.uid;

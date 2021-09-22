@@ -15,7 +15,7 @@ app(() => {
         }
     );
 
-    const HttpServer = require("../common/http/http_server")
+    const HttpServer = require("../common/net/http/http_server")
     global.httpServer = new HttpServer(SERVER_CONFIG.host, SERVER_CONFIG.port);
     httpServer.use(require('./filter/method'));
     httpServer.use(require('./filter/data'));

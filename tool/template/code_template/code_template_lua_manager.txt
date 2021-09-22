@@ -1,0 +1,13 @@
+-- 该文件通过工具生成，只可以修改可编辑区块中的内容
+local Base = require('template_manager_base')
+local Manager = class('{clsName}', Base)
+
+function Manager:ctor()
+    self.name = '{name}'
+    self.field = '{field}'
+    self:init()
+end
+
+{EDITOR}
+
+return Manager

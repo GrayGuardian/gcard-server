@@ -1,12 +1,5 @@
-var Util = {};
-Date.unix = function () {
-    return Math.floor(Date.now() / 1000);
-}
-
-Util.equalObjectValue = function (obj1, obj2) {
-    return JSON.stringify(obj1) == JSON.stringify(obj2);
-}
-Util.toJson = function (object, name) {
+global.string = {}
+string.toJson = function (object, name) {
     var result = "";
     function serializeInternal(o, path) {
         for (p in o) {
@@ -38,32 +31,13 @@ Util.toJson = function (object, name) {
     return result;
 }
 
-const JWT = require('jsonwebtoken');
-const TokenKey = '851a028465fc4f62bc4f8451347c9eff'
-Util.tokenSerialize = function (data, time) {
-    time = time == null ? '1d' : time;
-    return JWT.sign(data, TokenKey, { expiresIn: time })
-}
-Util.tokenDeserialize = function (token) {
-    try {
-        let data = JWT.verify(token, TokenKey);
-        return data;
-    } catch (e) {
-        // token超时过期也会报错
-        return null
-    }
-}
-
 const MD5 = require('md5-node')
-Util.md5 = function (content) {
+string.md5 = function (content) {
     content = typeof (content) == 'string' ? content : JSON.stringify(content);
     return MD5(content);
 }
 
 const UUID = require('uuid');
-Util.uuid = function () {
+string.uuid = function () {
     return UUID.v1();
 }
-
-
-module.exports = Util;

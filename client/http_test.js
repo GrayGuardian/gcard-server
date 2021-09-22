@@ -33,7 +33,7 @@ var send = async function (router, data) {
 
                 if (data['token'] != null) {
                     token = data['token']
-                    console.log("更新token", ">>>", token, util.tokenDeserialize(token))
+                    console.log("更新token", ">>>", token, jwt.decode(token))
                 }
 
                 console.log(router, ">>>", data);

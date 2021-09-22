@@ -1,0 +1,11 @@
+-- 该文件通过工具生成，请勿更改
+
+local Template = {};
+
+{code1}
+
+Template.refresh = function ()
+{code2}
+end
+
+return Template;

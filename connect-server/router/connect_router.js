@@ -1,7 +1,7 @@
 var Router = function () { }
 Router.prototype.conn = async function (ctx, next) {
     // 校验token
-    let token = util.tokenDeserialize(ctx.state.data.token);
+    let token = jwt.decode(ctx.state.data.token);
     if (token == null || token.uid == null || token.aid == null || token.pid == null) {
         await ctx.method.kickOut();
         return;

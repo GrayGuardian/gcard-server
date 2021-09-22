@@ -1,9 +1,7 @@
 
 var mian = async function () {
-    // await require("../common/base/global")();
+    await require("../common/base/global")();
 
-    // log.print({ sadghas: 123 }, { fdsajjl: 12345 }, "sjdlsjdkl")
-    // return;
     const HOST = '127.0.0.1'
     const PORT = 8200
 
