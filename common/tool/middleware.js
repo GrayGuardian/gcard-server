@@ -12,11 +12,11 @@ Middleware.prototype.disuse = function (cb) {
     return true;
 }
 Middleware.prototype.next = async function (ctx, index) {
-    ctx = ctx ?? {};
-    index = index ?? 0;
+    ctx = ctx || {};
+    index = index || 0;
     if (index < this.actionArr.length) {
         let next = async (i) => {
-            i = i ?? (index + 1)
+            i = i || (index + 1)
             await this.next(ctx, i);
         }
         let fun = this.actionArr[index];

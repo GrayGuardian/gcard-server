@@ -2,7 +2,7 @@
 module.exports = async (ctx, next) => {
     // 返回错误码函数
     ctx.method.genError = function (model, data) {
-        model = model ?? ERROR_INFO.UNKNOWN_ERROR
+        model = model || ERROR_INFO.UNKNOWN_ERROR
         if (model == null || model.equal(ERROR_INFO.SUCCESS)) {
             log.error(`不可设置的错误码 code:${model.get_code()}`);
             return;
@@ -18,7 +18,7 @@ module.exports = async (ctx, next) => {
     }
 
     ctx.method.send = function (router, data) {
-        data = data ?? {};
+        data = data || {};
         let dataPack = {}
         dataPack.router = router;
         dataPack[router] = data;

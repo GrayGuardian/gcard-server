@@ -2,8 +2,15 @@ var Log = {};
 
 const STACK_CNT = 3
 
+const COLOR = {
+    WHITE: "37",
+    GRAY: "90",
+    RED: "31",
+    PURPLE: "35",
+}
+
 let getStackInfo = function (offset) {
-    offset = offset ?? 0;
+    offset = offset || 0;
     function getException() {
         try {
             throw Error('');
@@ -11,14 +18,14 @@ let getStackInfo = function (offset) {
             return ex;
         }
     }
-
+    let START = 3   // 初始底层堆栈数量
     let ex = getException();
     let stack = ex.stack;
     let stackArr = stack.split('\n');
     let index = -1;
     for (let i = 0; i < stackArr.length; i++) {
-        if (stackArr[i].indexOf('getStackInfo') != -1 && i + 2 + offset < stackArr.length) {
-            index = i + 2 + offset;
+        if (stackArr[i].indexOf('getStackInfo') != -1 && i + START + offset < stackArr.length) {
+            index = i + START + offset;
         }
     }
     if (index == -1) {
@@ -26,6 +33,7 @@ let getStackInfo = function (offset) {
     }
     let stackStr = stackArr[index];
     let str = stackStr.substring(stackStr.lastIndexOf('\\') + 1, stackStr.lastIndexOf(':'))
+    str = str.substring(str.lastIndexOf('/') + 1, str.lastIndexOf(':'))
     str = str.substring(str.indexOf('(') + 1)
 
     return str;
@@ -40,45 +48,40 @@ let getDateInfo = function () {
     var second = date.getSeconds();
     return `${year}年${month}月${day}日 ${hour}:${minute}:${second}`;
 }
-
+let getTopText = function (tag, color) {
+    let arr = [];
+    // 时间
+    arr.push({ color: COLOR.GRAY, text: `[${getDateInfo()}]` });
+    // 标签
+    arr.push({ color: color, text: `[${tag}]` });
+    // 堆栈信息
+    for (let index = 0; index < STACK_CNT; index++) {
+        arr.push({ color: COLOR.PURPLE, text: `[${getStackInfo(index)}]` });
+    }
+    let str = ''
+    arr.forEach(info => {
+        str += `\x1B[${info.color}m${info.text} `
+    });
+    str.slice(0, str.Length - 1)
+    return str
+}
 
 Log.print = function (...args) {
-    let arr = [];
-    arr.push({ color: "90", text: `[${getDateInfo()}]` });
-    arr.push({ color: "37", text: "[Print]" });
-    for (let index = 0; index < STACK_CNT; index++) {
-        arr.push({ color: "35", text: `[${getStackInfo(index)}]` });
-    }
+    let arr = []
     args.forEach(arg => {
-        arr.push({ color: "37", text: arg });
+        arr.push(`\x1B[${COLOR.WHITE}m`)
+        arr.push(arg);
     });
-    arr.push({ color: "37", text: '' });
-
-    let logTextArr = []
-    arr.forEach(info => {
-        logTextArr.push(`\x1B[${typeof (info.text) == 'string' ? info.color : "37"}m`)
-        logTextArr.push(info.text);
-    });
-    console.log(...logTextArr);
+    arr.push(`\x1B[${COLOR.WHITE}m`)
+    console.log(getTopText('Print', COLOR.WHITE), ...arr);
 }
 Log.error = function (...args) {
-    let arr = [];
-    arr.push({ color: "90", text: `[${getDateInfo()}]` });
-    arr.push({ color: "31", text: "[Error]" });
-    for (let index = 0; index < STACK_CNT; index++) {
-        arr.push({ color: "35", text: `[${getStackInfo(index)}]` });
-    }
+    let arr = []
     args.forEach(arg => {
-        arr.push({ color: "31", text: arg });
+        arr.push(`\x1B[${COLOR.RED}m`)
+        arr.push(arg);
     });
-    arr.push({ color: "37", text: '' });
-
-
-    let logTextArr = []
-    arr.forEach(info => {
-        logTextArr.push(`\x1B[${typeof (info.text) == 'string' ? info.color : "37"}m`)
-        logTextArr.push(info.text);
-    });
-    console.log(...logTextArr);
+    arr.push(`\x1B[${COLOR.WHITE}m`)
+    console.log(getTopText('Error', COLOR.RED), ...arr);
 }
 module.exports = Log

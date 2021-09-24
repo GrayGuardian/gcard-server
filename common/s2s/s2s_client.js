@@ -46,7 +46,7 @@ Client.prototype.connect = function (success, error) {
 Client.prototype.rpc = function (to, router, data) {
     return new Promise((resolve) => {
         if (this.client == null) return;
-        data = data ?? {};
+        data = data || {};
         let s2sdata = {};
         s2sdata.code = this.code++;
         s2sdata.from = SERVER_NAME;
@@ -64,7 +64,7 @@ Client.prototype.rpc = function (to, router, data) {
 Client.prototype.send = function (s2sdata) {
     if (this.client == null) return;
 
-    s2sdata[s2sdata.router] = s2sdata[s2sdata.router] ?? {};
+    s2sdata[s2sdata.router] = s2sdata[s2sdata.router] || {};
     log.print(`[s2s] [${s2sdata.code}] [${s2sdata.from}] to [${s2sdata.to}] [${s2sdata.router}] >>> ${JSON.stringify(s2sdata[s2sdata.router])}`)
 
     let buff = pb.encode("s2s.rpc", s2sdata);

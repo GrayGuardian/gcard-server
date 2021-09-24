@@ -30,7 +30,7 @@ Server.prototype.listen = function (cb) {
 }
 
 Server.prototype.send = function (s2sdata) {
-    s2sdata[s2sdata.router] = s2sdata[s2sdata.router] ?? {};
+    s2sdata[s2sdata.router] = s2sdata[s2sdata.router] || {};
     log.print(`[s2s] [${s2sdata.code}] [${s2sdata.from}] to [${s2sdata.to}] [${s2sdata.router}] >>> ${JSON.stringify(s2sdata[s2sdata.router])}`)
     let buff = pb.encode("s2s.rpc", s2sdata);
     client = this.clientMap.get(s2sdata.to)

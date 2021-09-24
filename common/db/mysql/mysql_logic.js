@@ -44,7 +44,7 @@ MySqlLogic.prototype.getTableInfosOfIdx = async function (table, idxFiled, idx, 
 // 通过idx修改表数据
 MySqlLogic.prototype.setTableInfoOfIdx = async function (table, idxFiled, idx, valueMap, fields) {
     let arr = [];
-    fields = fields ?? Object.keys(valueMap);
+    fields = fields || Object.keys(valueMap);
     fields.forEach(field => {
         let value = valueMap[field];
         arr.push(`${field}=${this.toSqlData(value)}`);

@@ -8,7 +8,7 @@ ServerLogic.prototype.getPlayerModel = async function (pid, data) {
     if (model != null) {
         return model;
     }
-    data = data ?? await mysqlLogic.getPlayerInfo(pid);
+    data = data || await mysqlLogic.getPlayerInfo(pid);
     model = await Model.Player.create(pid, data)
     modelMgr.pushModel(model.clsName, pid, model);
     return model
