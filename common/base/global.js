@@ -23,12 +23,12 @@ module.exports = async function () {
     // 静态类
     global.log = require("../tool/log");
     global.lock = require("../tool/lock");
-    global.Template = require("../tool/template/template");
+    global.Template = require("../template/template");
     global.Template.refresh()
     global.ERROR_INFO = Template.template_error_info;
 
     // 实例化对象
-    global.pb = new (require("../tool/pb/pb"))();
+    global.pb = new (require("../pb/pb"))();
     global.jwt = new (require("../tool/jwt"))();
     global.broadcast = new (require("../tool/broadcast"))();
 

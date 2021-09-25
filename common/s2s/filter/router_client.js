@@ -12,7 +12,7 @@ module.exports = async (ctx, next) => {
     // 回调
     if (s2sdata.type == S2S_TYPE.RET && s2sdata.to == SERVER_NAME) {
         log.print(`[s2s] [${s2sdata.code}] [${s2sdata.from}] to [${s2sdata.to}] [${s2sdata.router}] >>> ${JSON.stringify(ctx.state.data)}`)
-        ctx.onRetCb(s2sdata);
+        ctx.onRetFunc(s2sdata);
         return;
     }
 

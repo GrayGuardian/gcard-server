@@ -18,7 +18,7 @@ excelFieldTypeDic = {}
 excelBlackList = ['test','test1']	# 放置了两个模板Excel 忽略生成
 # excelBlackList = []
 # 导出JS根目录
-BUILD_DIR_JS_ROOT = "../../common/tool/template/"
+BUILD_DIR_JS_ROOT = "../../common/template/"
 # 导出JS_DATA目录
 BUILD_DIR_JS_DATA = BUILD_DIR_JS_ROOT + "data"
 # 导出JS_MODEL目录
@@ -28,7 +28,7 @@ BUILD_DIR_JS_MANAGER = BUILD_DIR_JS_ROOT + "manager"
 # 导出JS_TEMPLATE文件
 BUILD_FILE_JS_TEMPLATE = BUILD_DIR_JS_ROOT + "template.js"
 # 导出LUA根目录
-BUILD_DIR_LUA_ROOT = "D:\\testtttt\\Assets\\Resources\\AssetBundles\\lua\\tool\\template\\"
+BUILD_DIR_LUA_ROOT = "D:\\testtttt\\Assets\\Resources\\AssetBundles\\lua\\template\\"
 # 导出LUA_DATA目录
 BUILD_DIR_LUA_DATA = BUILD_DIR_LUA_ROOT + "data"
 # 导出LUA_MODEL目录

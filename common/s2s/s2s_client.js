@@ -5,7 +5,7 @@ var Client = function (config) {
     }
     this.code = 0;
     this.config = config;
-    this.retCbMap = new Map();
+    this.retFuncMap = new Map();
 
     this.client = new SocketClient(this.config.host, this.config.port)
 
@@ -13,14 +13,14 @@ var Client = function (config) {
 
 
     this.client.use(SocketClient.EVENT_TYPE.OnReceive, async (ctx, next) => {
-        ctx.onRetCb = (s2sdata) => {
+        ctx.onRetFunc = (s2sdata) => {
             let code = s2sdata.code;
             let router = s2sdata.router;
             let data = s2sdata[router];
-            let fun = this.retCbMap.get(code)
+            let fun = this.retFuncMap.get(code)
             if (fun != null) {
                 fun({ code: code, router: router, data: data, s2sdata: s2sdata });
-                this.retCbMap.delete(code);
+                this.retFuncMap.delete(code);
             }
         }
         ctx.send = (s2sdata) => {
@@ -55,7 +55,7 @@ Client.prototype.rpc = function (to, router, data) {
         s2sdata[router] = data;
         s2sdata.type = S2S_TYPE.RPC;
 
-        this.retCbMap.set(s2sdata.code, (s2sdata) => { resolve(s2sdata); });
+        this.retFuncMap.set(s2sdata.code, (s2sdata) => { resolve(s2sdata); });
 
         this.send(s2sdata);
     });

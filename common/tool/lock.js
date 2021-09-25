@@ -23,8 +23,8 @@ var Lock = function (key, outTime) {
     this.errorEx = null;
     this.lockTime = null;
 
-    this.successCb = null;
-    this.errorCb = null;
+    this.successFunc = null;
+    this.errorFunc = null;
 
     this.onLockOut = () => {
         if (!this.isLock && !this.isTrigger) {
@@ -50,10 +50,10 @@ Lock.prototype.use = function (cb, error) {
     // this.tryCall()
 
     return new Promise((resolve) => {
-        this.successCb = () => {
+        this.successFunc = () => {
             resolve(true);
         }
-        this.errorCb = (ex) => {
+        this.errorFunc = (ex) => {
             if (error != null) error(ex);
             resolve(false);
         }
@@ -97,14 +97,14 @@ Lock.prototype.tryCall = async function () {
 }
 Lock.prototype.error = function (ex) {
     this.errorEx = ex || this.errorEx;
-    if (this.errorEx != null && this.errorCb != null) {
-        this.errorCb(this.errorEx);
+    if (this.errorEx != null && this.errorFunc != null) {
+        this.errorFunc(this.errorEx);
     }
     this.unlock();
 }
 Lock.prototype.success = function () {
-    if (this.errorEx == null && this.successCb != null) {
-        this.successCb();
+    if (this.errorEx == null && this.successFunc != null) {
+        this.successFunc();
     }
     this.unlock();
 }
@@ -127,11 +127,6 @@ Lock.prototype.extended = async function (time) {
     if (offset < 0) return false;
     return await redisLogic.extendedLock(this.key, offset + time);
 }
-
-
-// module.exports = Lock;
-
-
 
 
 module.exports = LockMgr
