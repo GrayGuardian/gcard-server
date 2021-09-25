@@ -1,10 +1,15 @@
 var LockMgr = {}
 LockMgr.LOCK_TYPE = {
-    MODEL_PLAYER: "MODEL_PLAYER"
+    MODEL_PLAYER: function (pid) {
+        return `MODEL_PLAYER_${pid}`
+    }
 }
 for (const key in LockMgr.LOCK_TYPE) {
-    const value = LockMgr.LOCK_TYPE[key];
-    LockMgr[key] = () => {
+    let value = LockMgr.LOCK_TYPE[key];
+    LockMgr[key] = (arg1, arg2, arg3, arg4) => {
+        if (typeof (value) == 'function') {
+            value = value(arg1, arg2, arg3, arg4);
+        }
         return new Lock(value);
     }
 }
