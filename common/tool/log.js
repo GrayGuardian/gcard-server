@@ -7,6 +7,7 @@ const COLOR = {
     GRAY: "90",
     RED: "31",
     PURPLE: "35",
+    YELLOW: "33",
 }
 
 let getStackInfo = function (offset) {
@@ -83,5 +84,14 @@ Log.error = function (...args) {
     });
     arr.push(`\x1B[${COLOR.WHITE}m`)
     console.log(getTopText('Error', COLOR.RED), ...arr);
+}
+Log.warn = function (...args) {
+    let arr = []
+    args.forEach(arg => {
+        arr.push(`\x1B[${COLOR.YELLOW}m`)
+        arr.push(arg);
+    });
+    arr.push(`\x1B[${COLOR.WHITE}m`)
+    console.log(getTopText('Warn', COLOR.YELLOW), ...arr);
 }
 module.exports = Log
