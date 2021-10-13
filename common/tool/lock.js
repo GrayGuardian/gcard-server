@@ -26,22 +26,24 @@ var Lock = function (key, outTime) {
     this.successFunc = null;
     this.errorFunc = null;
 
-    this.onLockOut = () => {
-        if (!this.isLock && !this.isTrigger) {
-            // 尝试调用
-            this.tryCall()
-        } else if (this.isTrigger) {
-            this.error(ERROR_INFO.TIMEOUT)
-        }
-    }
-    this.onLockDelete = () => {
-        if (!this.isLock && !this.isTrigger) {
-            // 尝试调用
-            this.tryCall()
-        }
-    }
     broadcast.on(BROADCAST_CODE.REDIS_KEY_OUT(`lock:${this.key}`), this.onLockOut);
     broadcast.on(BROADCAST_CODE.REDIS_KEY_DELETE(`lock:${this.key}`), this.onLockDelete);
+}
+// onLockOut过期回调
+Lock.prototype.onLockOut = function () {
+    if (!this.isLock && !this.isTrigger) {
+        // 尝试调用
+        this.tryCall()
+    } else if (this.isTrigger) {
+        this.error(ERROR_INFO.TIMEOUT)
+    }
+}
+// Lock键值删除回调
+Lock.prototype.onLockDelete = function () {
+    if (!this.isLock && !this.isTrigger) {
+        // 尝试调用
+        this.tryCall()
+    }
 }
 // 注册
 Lock.prototype.use = function (cb, error) {
