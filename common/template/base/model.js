@@ -21,6 +21,7 @@ Base.prototype.getFieldValue = function (type, value) {
     temp = type.match(/^table\[(.*?)\]$/)
     if (temp != null) {
         // table处理
+        if (value == null) return value
         let tarr = temp[1].split('&')
         let data = {}
         tarr.forEach(element => {
@@ -37,6 +38,7 @@ Base.prototype.getFieldValue = function (type, value) {
     temp = type.match(/^array\[(.*?)\]$/)
     if (temp != null) {
         // array处理
+        if (value == null) return value
         let type = temp[1];
         let datas = []
         value.forEach(data => {
@@ -46,6 +48,7 @@ Base.prototype.getFieldValue = function (type, value) {
     }
     temp = type.split('$')
     if (temp.length > 1) {
+        if (value == null) return value
         let manager = Template[`template_${temp[0]}`]
         let keyTable = {}
         keyTable[temp[1]] = value;

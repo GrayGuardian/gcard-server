@@ -4,10 +4,10 @@ module.exports = async (ctx, next) => {
     ctx.method.genError = function (model, data) {
         model = model || ERROR_INFO.UNKNOWN_ERROR
         if (model == null || model.equal(ERROR_INFO.SUCCESS)) {
-            log.error(`不可设置的错误码 code:${model.get_code()}`);
+            log.error(`不可设置的错误码 id:${model.get_id()}`);
             return;
         }
-        let dataPack = model.getServerErrorPackage(data);
+        let dataPack = model.getDataPack(data);
         return ctx.method.send("error", dataPack);
     }
     // 返回函数

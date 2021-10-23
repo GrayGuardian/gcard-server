@@ -4,27 +4,13 @@
       "nested": {
         "Error": {
           "fields": {
-            "info": {
+            "id": {
               "rule": "required",
-              "type": "ErrorInfo",
+              "type": "string",
               "id": 1
             },
             "data": {
               "type": "ErrorData",
-              "id": 2
-            }
-          }
-        },
-        "ErrorInfo": {
-          "fields": {
-            "code": {
-              "rule": "required",
-              "type": "string",
-              "id": 1
-            },
-            "tip": {
-              "rule": "required",
-              "type": "string",
               "id": 2
             }
           }

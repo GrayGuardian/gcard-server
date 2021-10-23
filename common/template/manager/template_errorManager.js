@@ -11,8 +11,8 @@ Mgr.create = function () {
 }
 
 function Mgr() {
-    this.name = 'error_info'
-    this.field = 'code'
+    this.name = 'error'
+    this.field = 'id'
 }
 
 // ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ 可编辑区块 ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓

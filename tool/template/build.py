@@ -16,7 +16,8 @@ excelSheetDic = {}
 excelFieldTypeDic = {}
 # Excel表格黑名单目录
 excelBlackList = ['test','test1']	# 放置了两个模板Excel 忽略生成
-# excelBlackList = []
+# Excel表格头部参数列数
+excelTopParamCount = 3
 # 导出JS根目录
 BUILD_DIR_JS_ROOT = "../../common/template/"
 # 导出JS_DATA目录
@@ -37,6 +38,11 @@ BUILD_DIR_LUA_MODEL = BUILD_DIR_LUA_ROOT + "model"
 BUILD_DIR_LUA_MANAGER = BUILD_DIR_LUA_ROOT + "manager"
 # 导出LUA_TEMPLATE文件
 BUILD_FILE_LUA_TEMPLATE = BUILD_DIR_LUA_ROOT + "template.lua.txt"
+# 配置文件导出源枚举
+TEMPLATE_BUILD_TO = {
+	"Client":"C",
+	"Server":"S"	
+};
 # 获取文件文本
 def readFileText(filepath):
 	if(os.path.exists(filepath)):
@@ -78,7 +84,6 @@ CODE_TEMPLATE_LUA = {
 for key in CODE_TEMPLATE_LUA:
 	CODE_TEMPLATE_LUA[key] = format(CODE_TEMPLATE_LUA[key],CODE_TEMPLATE_LUA)
 
-
 # 遍历得到所有Excel文件
 for root, dirs, files in os.walk(excelDir):
 	for file in files:
@@ -95,7 +100,7 @@ for root, dirs, files in os.walk(excelDir):
 			book = xlrd.open_workbook(fullPath)
 			sheet = book.sheet_by_name("Sheet1")
 			nrows = sheet.nrows
-			if nrows <= 3:
+			if nrows <= excelTopParamCount:
 				# 行数太少，基础信息不全，抛出异常
 				raise Exception("Configs Missing [{}]".format(file))
 			excelSheetDic[excelName] = sheet;
@@ -106,11 +111,11 @@ for root, dirs, files in os.walk(excelDir):
 				excelFieldTypeDic[excelName][fields[i]] = types[i]
 
 # 将Excel字段值转为代码字符串
-def getDataCode(name,typeStr,valueStr,formatArray,formatTable,formatKeyAndValue):
+def getDataCode(name,typeStr,valueStr,formatArray,formatTable,formatKeyAndValue,nullCode):
 	if typeStr == "int":
-		return str(int(valueStr)) 
+		return str(int(valueStr if valueStr!="" else 0)) 
 	elif typeStr == "float":
-		return str(float(valueStr))
+		return str(float(valueStr if valueStr!="" else 0))
 	elif typeStr == "bool":
 		try:
 			return "true" if 0!=int(valueStr) else 'false';
@@ -124,6 +129,8 @@ def getDataCode(name,typeStr,valueStr,formatArray,formatTable,formatKeyAndValue)
 	temp = re.match(r'^table\[(.*?)\]$', typeStr)
 	if(temp!=None):
 		# table处理
+		if valueStr == "":
+			return nullCode
 		try:
 			tarr = temp.group(1).split('&')
 			tableStr = ''
@@ -136,7 +143,7 @@ def getDataCode(name,typeStr,valueStr,formatArray,formatTable,formatKeyAndValue)
 				key = temp[0];
 				value = temp[1];
 
-				tableStr += formatKeyAndValue.format(key,getDataCode(name,typeDic[key],value,formatArray,formatTable,formatKeyAndValue));
+				tableStr += formatKeyAndValue.format(key,getDataCode(name,typeDic[key],value,formatArray,formatTable,formatKeyAndValue,nullCode));
 
 			return formatTable.format(tableStr);
 		except:
@@ -145,10 +152,12 @@ def getDataCode(name,typeStr,valueStr,formatArray,formatTable,formatKeyAndValue)
 	temp = re.match(r'^array\[(.*?)\]$', typeStr)
 	if(temp!=None):
 		# array处理
+		if valueStr == "":
+			return nullCode
 		try:
 			arrayStr = ''
 			for v in valueStr.split(','):
-				arrayStr += " {},".format(getDataCode(name,temp.group(1),v,formatArray,formatTable,formatKeyAndValue));
+				arrayStr += " {},".format(getDataCode(name,temp.group(1),v,formatArray,formatTable,formatKeyAndValue,nullCode));
 
 			return formatArray.format(arrayStr);
 		except:
@@ -157,12 +166,14 @@ def getDataCode(name,typeStr,valueStr,formatArray,formatTable,formatKeyAndValue)
 	temp = typeStr.split('$')
 	if len(temp) > 1:
 		# 关联其他表	这里只是去获取对应表字段的类型序列化 具体关联需要在使用逻辑层去处理关联
+		if valueStr == "":
+			return nullCode
 		try:
-			return getDataCode(name,excelFieldTypeDic[temp[0]][temp[1]],valueStr,formatArray,formatTable,formatKeyAndValue)
+			return getDataCode(name,excelFieldTypeDic[temp[0]][temp[1]],valueStr,formatArray,formatTable,formatKeyAndValue,nullCode)
 		except:
 			raise Exception("tbl format error [{}] [{}] [{}]".format(name,typeStr,valueStr))
 			
-	return 'null'
+	return nullCode
 # 根据模板生成并保留可编辑区块代码
 # code_template 生成代码模板
 # code 可编辑区块代码获取源代码
@@ -197,24 +208,34 @@ def createNotEditorCode(code,notEditor_codes,notEditor_template):
 # 生成Js数据代码
 def createJsDataCode(name,sheet):
 	# 根据Excel内容生成
+	BUILD_TO = TEMPLATE_BUILD_TO["Server"]
 	fields = sheet.row_values(1)
 	types = sheet.row_values(2)
+	tos = sheet.row_values(3)
 	dataCode = ''
-	for i in xrange(3,sheet.nrows):
+	for i in xrange(excelTopParamCount+1,sheet.nrows):
 		dataStr = '';
 		values = sheet.row_values(i);
 		for j in xrange(len(values)):
 			field = fields[j]
 			value = values[j]
-			dataStr += " {}:{},".format(field,getDataCode(name,types[j],value,"[{} ]","{{{} }}"," {}:{},"))
+			to = tos[j]
+			if(to.find(BUILD_TO)==-1):
+				continue
+			dataStr += " {}:{},".format(field,getDataCode(name,types[j],value,"[{} ]","{{{} }}"," {}:{},","null"))
 		dataCode += "\t{{{} }},\n".format(dataStr);	
 	dataCode = dataCode.strip('\n')
 
-	fileCode = '"{}"'.format('","'.join(fields));
-
+	fieldArr = []
 	typeCode = ''
 	for i in xrange(0,len(fields)):
+		to = tos[i]
+		if(to.find(BUILD_TO)==-1):
+			continue
+		fieldArr.append(fields[i])
 		typeCode += '\t{}:"{}",\n'.format(fields[i],types[i]);
+
+	fileCode = '"{}"'.format('","'.join(fieldArr));
 	typeCode = typeCode.strip('\n')
 
 	return format(CODE_TEMPLATE_JS['DATA'],{"fileCode":fileCode,"typeCode":typeCode,"dataCode":dataCode})
@@ -243,24 +264,33 @@ def createJsTemplateCode():
 # 生成Lua数据代码
 def createLuaDataCode(name,sheet):
 	# 根据Excel内容生成
+	BUILD_TO = TEMPLATE_BUILD_TO["Client"]
 	fields = sheet.row_values(1)
 	types = sheet.row_values(2)
+	tos = sheet.row_values(3)
 	dataCode = ''
-	for i in xrange(3,sheet.nrows):
+	for i in xrange(excelTopParamCount+1,sheet.nrows):
 		dataStr = '';
 		values = sheet.row_values(i);
 		for j in xrange(len(values)):
 			field = fields[j]
 			value = values[j]
-			dataStr += " {}={},".format(field,getDataCode(name,types[j],value,"{{{} }}","{{{} }}"," {}={},"))
+			to = tos[j]
+			if(to.find(BUILD_TO)==-1):
+				continue
+			dataStr += " {}={},".format(field,getDataCode(name,types[j],value,"{{{} }}","{{{} }}"," {}={},","nil"))
 		dataCode += "\t{{{} }},\n".format(dataStr);
 	dataCode = dataCode.strip('\n')
 
-	fileCode = '"{}"'.format('","'.join(fields));
-
+	fieldArr = []
 	typeCode = ''
 	for i in xrange(0,len(fields)):
+		to = tos[i]
+		if(to.find(BUILD_TO)==-1):
+			continue
+		fieldArr.append(fields[i])
 		typeCode += '\t{}="{}",\n'.format(fields[i],types[i]);
+	fileCode = '"{}"'.format('","'.join(fieldArr));
 	typeCode = typeCode.strip('\n')
 
 	return format(CODE_TEMPLATE_LUA['DATA'],{"fileCode":fileCode,"typeCode":typeCode,"dataCode":dataCode})
@@ -288,49 +318,56 @@ def createLuaTemplateCode():
 for (name,sheet) in excelSheetDic.items():
 	field = excelSheetDic[name].row_values(1)[0]
 	# Js
-	filepath = "{}\\{}.{}".format(BUILD_DIR_JS_DATA,"template_{}".format(name),'js')
+	filename = "template_{}.{}".format(name,'js')
+	filepath = "{}\\{}".format(BUILD_DIR_JS_DATA,filename)
 	file = open(filepath, "w")
 	file.write(createJsDataCode(name,sheet));
-	print("Build JS_Data_File [{}] >>> [{}]".format(name,filepath));
+	print("Build JS_Data_File [{}] >>> [{}]".format(filename,filepath));
 
-	filepath = "{}\\{}.{}".format(BUILD_DIR_JS_MODEL,"template_{}Model".format(name),'js')
+	filename = "template_{}Model.{}".format(name,'js')
+	filepath = "{}\\{}".format(BUILD_DIR_JS_MODEL,filename)
 	code = readFileText(filepath)
 	file = open(filepath, "w")
 	file.write(createJsModelCode(name,code));
-	print("Build JS_Model_File [{}] >>> [{}]".format(name,filepath));
+	print("Build JS_Model_File [{}] >>> [{}]".format(filename,filepath));
 
-
-	filepath = "{}\\{}.{}".format(BUILD_DIR_JS_MANAGER,"template_{}Manager".format(name),'js')
+	filename = "template_{}Manager.{}".format(name,'js')
+	filepath = "{}\\{}".format(BUILD_DIR_JS_MANAGER,filename)
 	code = readFileText(filepath)
 	file = open(filepath, "w")
 	file.write(createJsManagerCode(name,field,code));
-	print("Build JS_Manager_File [{}] >>> [{}]".format(name,filepath));
+	print("Build JS_Manager_File [{}] >>> [{}]".format(filename,filepath));
 
 	# Lua	
-	filepath = "{}\\{}.{}".format(BUILD_DIR_LUA_DATA,"template_{}".format(name),'lua.txt')
+	filename = "template_{}.{}".format(name,'lua.txt')
+	filepath = "{}\\{}".format(BUILD_DIR_LUA_DATA,filename)
 	file = open(filepath, "w")
 	file.write(createLuaDataCode(name,sheet));
-	print("Build LUA_Data_File [{}] >>> [{}]".format(name,filepath));
+	print("Build LUA_Data_File [{}] >>> [{}]".format(filename,filepath));
 
 	clsName = "template_{}Model".format(name)
-	filepath = "{}\\{}.{}".format(BUILD_DIR_LUA_MODEL,clsName,'lua.txt')
+	filename = "{}.{}".format(clsName,'lua.txt')
+	filepath = "{}\\{}".format(BUILD_DIR_LUA_MODEL,filename)
 	code = readFileText(filepath)
 	file = open(filepath, "w")
 	file.write(createLuaModelCode(clsName,name,code));
-	print("Build LUA_Model_File [{}] >>> [{}]".format(name,filepath));
+	print("Build LUA_Model_File [{}] >>> [{}]".format(filename,filepath));
 
 	clsName = "template_{}Manager".format(name)
-	filepath = "{}\\{}.{}".format(BUILD_DIR_LUA_MANAGER,clsName,'lua.txt')
+	filename = "{}.{}".format(clsName,'lua.txt')
+	filepath = "{}\\{}".format(BUILD_DIR_LUA_MANAGER,filename)
 	code = readFileText(filepath)
 	file = open(filepath, "w")
 	file.write(createLuaManagerCode(clsName,name,field,code));
-	print("Build LUA_Manager_File [{}] >>> [{}]".format(name,filepath));
+	print("Build LUA_Manager_File [{}] >>> [{}]".format(filename,filepath));
 
 # Js
 filepath = BUILD_FILE_JS_TEMPLATE
 file = open(filepath, "w")
 file.write(createJsTemplateCode());
+print("Build JS_Manager >>> [{}]".format(filepath));
 # Lua
 filepath = BUILD_FILE_LUA_TEMPLATE
 file = open(filepath, "w")
 file.write(createLuaTemplateCode());
+print("Build LUA_Manager >>> [{}]".format(filepath));

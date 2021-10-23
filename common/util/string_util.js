@@ -30,7 +30,16 @@ string.toJson = function (object, name) {
     serializeInternal(object, name);
     return result;
 }
-
+string.formatTable = function (formatText, t) {
+    let result = formatText
+    if (t == null) {
+        return result
+    }
+    Object.keys(t).forEach(function (key) {
+        result = result.replace(`{${key}}`, t[key])
+    })
+    return result
+}
 const MD5 = require('md5-node')
 string.md5 = function (content) {
     content = typeof (content) == 'string' ? content : JSON.stringify(content);
