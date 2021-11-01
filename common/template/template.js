@@ -12,4 +12,8 @@ Template.refresh = function () {
 	Template.template_error.refresh()
 }
 
+// ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ 可编辑区块 ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
+global.ERROR_INFO = Template.template_error;
+// ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ 可编辑区块 ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
+
 module.exports = Template;

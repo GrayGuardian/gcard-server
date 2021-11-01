@@ -25,7 +25,6 @@ module.exports = async function () {
     global.lock = require("../tool/lock");
     global.Template = require("../template/template");
     global.Template.refresh()
-    global.ERROR_INFO = Template.template_error;
 
     // 实例化对象
     global.pb = new (require("../pb/pb"))();

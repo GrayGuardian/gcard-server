@@ -249,7 +249,7 @@ def createJsManagerCode(name,field,code):
 
 	return format(result,{"name":name,"field":field});
 # 生成Js总管理类代码
-def createJsTemplateCode():
+def createJsTemplateCode(code):
 	code1 = ''
 	code2 = ''
 	for name in excelSheetDic:
@@ -258,7 +258,8 @@ def createJsTemplateCode():
 	code1 = code1.strip('\n')
 	code2 = code2.strip('\n')
 
-	result = format(CODE_TEMPLATE_JS['TEMPLATE'],{"code1":code1,"code2":code2})
+	result = createEditorCode(CODE_TEMPLATE_JS['TEMPLATE'],code,CODE_TEMPLATE_JS['EDITOR'])
+	result = format(result,{"code1":code1,"code2":code2})
 	return result
 # 生成代码 - Lua
 # 生成Lua数据代码
@@ -303,7 +304,7 @@ def createLuaManagerCode(clsName,name,field,code):
 	result = createEditorCode(CODE_TEMPLATE_LUA['MANAGER'],code,CODE_TEMPLATE_LUA['EDITOR'])
 	return format(result,{"clsName":clsName,"name":name,"field":field});
 # 生成Lua总管理类代码
-def createLuaTemplateCode():
+def createLuaTemplateCode(code):
 	code1 = ''
 	code2 = ''
 	for name in excelSheetDic:
@@ -312,7 +313,8 @@ def createLuaTemplateCode():
 	code1 = code1.strip('\n')
 	code2 = code2.strip('\n')
 
-	result = format(CODE_TEMPLATE_LUA['TEMPLATE'],{"code1":code1,"code2":code2})
+	result = createEditorCode(CODE_TEMPLATE_LUA['TEMPLATE'],code,CODE_TEMPLATE_LUA['EDITOR'])
+	result = format(result,{"code1":code1,"code2":code2})
 	return result
 
 for (name,sheet) in excelSheetDic.items():
@@ -363,11 +365,13 @@ for (name,sheet) in excelSheetDic.items():
 
 # Js
 filepath = BUILD_FILE_JS_TEMPLATE
+code = readFileText(filepath)
 file = open(filepath, "w")
-file.write(createJsTemplateCode());
+file.write(createJsTemplateCode(code));
 print("Build JS_Manager >>> [{}]".format(filepath));
 # Lua
 filepath = BUILD_FILE_LUA_TEMPLATE
+code = readFileText(filepath)
 file = open(filepath, "w")
-file.write(createLuaTemplateCode());
+file.write(createLuaTemplateCode(code));
 print("Build LUA_Manager >>> [{}]".format(filepath));

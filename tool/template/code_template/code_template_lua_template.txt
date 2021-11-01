@@ -8,4 +8,6 @@ Template.refresh = function ()
 {code2}
 end
 
+{EDITOR}
+
 return Template;
