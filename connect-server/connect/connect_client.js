@@ -8,7 +8,7 @@ var Client = function (server, idx, socket) {
     this.sendEvent = (data) => { this.send(data.router, data.data) }
 
     // 添加id发送广播事件
-    broadcast.on(BROADCAST_CODE.SOCKET_ID(this.idx), this.sendEvent);
+    eventManager.on(EVENT_CODE.SOCKET_ID(this.idx), this.sendEvent);
 }
 Client.prototype.genError = async function (model, data) {
     return await this.server.genError(this.socket, model, data)
@@ -22,7 +22,7 @@ Client.prototype.kickOut = async function () {
 Client.prototype.close = function () {
     // 清理发送广播事件
     // 清理id发送广播事件
-    broadcast.out(BROADCAST_CODE.SOCKET_ID(this.idx), this.sendEvent);
+    eventManager.out(EVENT_CODE.SOCKET_ID(this.idx), this.sendEvent);
     // 退出所有频道
     this.channels.forEach(key => {
         this.pullChannel(key);
@@ -34,7 +34,7 @@ Client.prototype.close = function () {
 }
 // 加入频道
 Client.prototype.pushChannel = function (key) {
-    let flag = broadcast.on(BROADCAST_CODE.SOCKET_CHANNEL(key), this.sendEvent);
+    let flag = eventManager.on(EVENT_CODE.SOCKET_CHANNEL(key), this.sendEvent);
     if (flag) {
         this.channels.push(key);
     }
@@ -45,7 +45,7 @@ Client.prototype.pullChannel = function (key) {
     let index = this.channels.indexOf(key)
     let flag = false;
     if (index != -1) {
-        flag = broadcast.out(BROADCAST_CODE.SOCKET_CHANNEL(key), this.sendEvent);
+        flag = eventManager.out(EVENT_CODE.SOCKET_CHANNEL(key), this.sendEvent);
         if (flag) {
             this.channels.splice(index, 1);
         }

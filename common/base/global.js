@@ -4,10 +4,12 @@ module.exports = async function () {
 
     // 常量
     global.SOCKET_EVENT = require("../config/SOCKET_EVENT");
-    global.BROADCAST_CODE = require("../config/BROADCAST_CODE");
+    global.EVENT_CODE = require("../config/EVENT_CODE");
     global.REGULAR_CODE = require("../config/REGULAR_CODE");
     global.GAME_CONST = require("../config/GAME_CONST");
     global.S2S_TYPE = require("../config/S2S_TYPE");
+
+    global.AssetManager = require("../asset/asset_manager");
     // 类
     global.SocketClient = require("../net/socket/socket_client");
     global.SocketServer = require("../net/socket/socket_server");
@@ -29,7 +31,7 @@ module.exports = async function () {
     // 实例化对象
     global.pb = new (require("../pb/pb"))();
     global.jwt = new (require("../tool/jwt"))();
-    global.broadcast = new (require("../tool/broadcast"))();
+    global.eventManager = new (require("../tool/event_manager"))();
 
     global.mysqlMgr = new (require("../db/mysql/mysql_mgr"))();
     global.mysqlLogic = new (require("../db/mysql/mysql_logic"))();

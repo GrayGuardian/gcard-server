@@ -1,5 +1,5 @@
 // 不需要Token即可访问的路由
-const NOTTOKEN_ROUTER = ["login", "register"];
+const NOTTOKEN_ROUTER = ["clientAssetVersion", "login", "register"];
 // 不需要区服ID即可访问的路由
 const NOTAID_ROUTER = ["enterArea"]
 module.exports = async (ctx, next) => {

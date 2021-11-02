@@ -1,7 +1,7 @@
-var Broadcast = function () {
+var EventManager = function () {
     this.callBackInfoMap = {}
 }
-Broadcast.prototype.notify = function (key, data) {
+EventManager.prototype.dispatch = function (key, data) {
     let index = 0;
     if (this.exist(key) == false) {
         return index;
@@ -22,7 +22,7 @@ Broadcast.prototype.notify = function (key, data) {
     }
     return index;
 }
-Broadcast.prototype.on = function (key, callback, order, isOnce) {
+EventManager.prototype.on = function (key, callback, order, isOnce) {
     let info = {};
     info.callback = callback;
     info.order = order || 0
@@ -51,7 +51,7 @@ Broadcast.prototype.on = function (key, callback, order, isOnce) {
     }
     return true;
 }
-Broadcast.prototype.out = function (key, callback) {
+EventManager.prototype.out = function (key, callback) {
     if (this.exist(key, callback) == false) {
         return false;
     }
@@ -65,14 +65,14 @@ Broadcast.prototype.out = function (key, callback) {
     }
     return false;
 }
-Broadcast.prototype.clear = function (key) {
+EventManager.prototype.clear = function (key) {
     if (this.exist(key) == true) {
         this.callBackInfoMap[key] = null;
         return true
     }
     return false;
 }
-Broadcast.prototype.exist = function (key, callback) {
+EventManager.prototype.exist = function (key, callback) {
     if (this.callBackInfoMap[key] != null) {
         if (callback == null) {
             return true;
@@ -89,4 +89,4 @@ Broadcast.prototype.exist = function (key, callback) {
     }
     return false;
 }
-module.exports = Broadcast;
+module.exports = EventManager;

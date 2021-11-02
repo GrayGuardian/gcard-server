@@ -118,10 +118,10 @@ Server.prototype.pullIDToChannel = function (key, idx) {
 }
 // 发送消息至id
 Server.prototype.sendToID = function (idx, router, data) {
-    return broadcast.notify(BROADCAST_CODE.SOCKET_ID(idx), { router: router, data: data })
+    return eventManager.dispatch(EVENT_CODE.SOCKET_ID(idx), { router: router, data: data })
 }
 // 发送消息至频道
 Server.prototype.sendToChannel = function (key, router, data) {
-    return broadcast.notify(BROADCAST_CODE.SOCKET_CHANNEL(key), { router: router, data: data })
+    return eventManager.dispatch(EVENT_CODE.SOCKET_CHANNEL(key), { router: router, data: data })
 }
 module.exports = Server

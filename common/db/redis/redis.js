@@ -14,7 +14,7 @@ var Redis = function (config) {
                 if (chan == '__keyevent@0__:set') {
                     //判断key做出相应的处理。
                     log.print(`[Redis] 数据被修改 >>> ${key}`)
-                    broadcast.notify(BROADCAST_CODE.REDIS_KEY_SET(key));
+                    eventManager.dispatch(EVENT_CODE.REDIS_KEY_SET(key));
                 }
             });
         })
@@ -23,7 +23,7 @@ var Redis = function (config) {
                 if (chan == '__keyevent@0__:del') {
                     //判断key做出相应的处理。
                     log.print(`[Redis] 数据被删除 >>> ${key}`)
-                    broadcast.notify(BROADCAST_CODE.REDIS_KEY_DELETE(key));
+                    eventManager.dispatch(EVENT_CODE.REDIS_KEY_DELETE(key));
                 }
             });
         })
@@ -32,7 +32,7 @@ var Redis = function (config) {
                 if (chan == '__keyevent@0__:expired') {
                     //判断key做出相应的处理。
                     log.print(`[Redis] 数据过期清理 >>> ${key}`)
-                    broadcast.notify(BROADCAST_CODE.REDIS_KEY_OUT(key));
+                    eventManager.dispatch(EVENT_CODE.REDIS_KEY_OUT(key));
                 }
             });
         })

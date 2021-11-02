@@ -26,8 +26,8 @@ var Lock = function (key, outTime) {
     this.successFunc = null;
     this.errorFunc = null;
 
-    broadcast.on(BROADCAST_CODE.REDIS_KEY_OUT(`lock:${this.key}`), this.onLockOut);
-    broadcast.on(BROADCAST_CODE.REDIS_KEY_DELETE(`lock:${this.key}`), this.onLockDelete);
+    eventManager.on(EVENT_CODE.REDIS_KEY_OUT(`lock:${this.key}`), this.onLockOut);
+    eventManager.on(EVENT_CODE.REDIS_KEY_DELETE(`lock:${this.key}`), this.onLockDelete);
 }
 // onLockOut过期回调
 Lock.prototype.onLockOut = function () {
@@ -117,8 +117,8 @@ Lock.prototype.unlock = async function () {
 Lock.prototype.close = function () {
     this.isLock = false;
     this.lockTime = null;
-    broadcast.out(BROADCAST_CODE.REDIS_KEY_OUT(`lock:${this.key}`), this.onLockOut);
-    broadcast.out(BROADCAST_CODE.REDIS_KEY_DELETE(`lock:${this.key}`), this.onLockDelete);
+    eventManager.out(EVENT_CODE.REDIS_KEY_OUT(`lock:${this.key}`), this.onLockOut);
+    eventManager.out(EVENT_CODE.REDIS_KEY_DELETE(`lock:${this.key}`), this.onLockDelete);
 }
 // 锁续期
 Lock.prototype.extended = async function (time) {

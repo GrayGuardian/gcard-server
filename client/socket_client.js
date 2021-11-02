@@ -13,7 +13,7 @@ var SocketClient = function (host, port, token) {
         let router = dataPack.router;
         let data = dataPack[router];
 
-        broadcast.notify(`SOCKET_CLIENT_${router}`, data);
+        eventManager.dispatch(`SOCKET_CLIENT_${router}`, data);
         console.log(router, ">>>", data);
     })
     this.client.use(global.SocketClient.EVENT_TYPE.OnDisConnect, async (ctx, next) => {
@@ -42,10 +42,10 @@ SocketClient.prototype.send = function (router, data) {
     )
 }
 SocketClient.prototype.on = function (router, callback, order, isOnce) {
-    return broadcast.on(`SOCKET_CLIENT_${router}`, callback, order, isOnce);
+    return eventManager.on(`SOCKET_CLIENT_${router}`, callback, order, isOnce);
 }
 SocketClient.prototype.out = function (router, callback) {
-    return broadcast.out(`SOCKET_CLIENT_${router}`, callback);
+    return eventManager.out(`SOCKET_CLIENT_${router}`, callback);
 }
 
 module.exports = SocketClient;

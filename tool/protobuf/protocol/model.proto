@@ -3,7 +3,6 @@ syntax = "proto2";
 // 数据模型
 package model;
 
-
 // 用户信息 db.game.user_info
 message UserInfo {
     required string uid = 1;        // ID
