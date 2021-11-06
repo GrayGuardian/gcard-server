@@ -1,0 +1,57 @@
+syntax = "proto2";
+package http;
+
+import "model.proto";
+import "db.proto";
+import "error.proto";
+
+message rpc {
+    required string router = 1; // 路由
+    // 下方命名规则：对应访问的router
+    optional error.Error error = 20;
+
+    optional register register = 100;
+    optional registerRet registerRet = 101;
+    optional login login = 102;
+    optional loginRet loginRet = 103;
+    optional enterArea enterArea = 104;
+    optional enterAreaRet enterAreaRet = 105;
+    optional enterGame enterGame = 106;
+    optional enterGameRet enterGameRet = 107;
+}
+// 用户注册
+message register{
+    required string username = 1;
+    required string password = 2;
+}
+message registerRet{
+    required model.UserInfo info = 1;
+    required string token = 2;
+    repeated model.AreaInfo areas = 3;
+}
+// 用户登录
+message login{
+    required string username = 1;
+    required string password = 2;
+}
+message loginRet{
+    required model.UserInfo info = 1;
+    required string token = 2;
+    repeated model.AreaInfo areas = 3;
+}
+// 进入区服
+message enterArea{
+    required int32 aid = 1;
+}
+message enterAreaRet{
+    required string token = 1;
+    repeated model.PlayerInfo players = 2;
+}
+// 进入游戏
+message enterGame {
+    required string pid = 1;
+}
+message enterGameRet{
+    required string token = 1;
+    required model.ServerConfig config = 2;
+}

@@ -1,0 +1,42 @@
+syntax = "proto2";
+package socket;
+
+import "model.proto";
+import "db.proto";
+import "error.proto";
+
+message rpc {
+    required string router = 1; // 路由
+    // 下方命名规则：对应访问的router
+    optional error.Error error = 20;
+    optional updateModelData updateModelData = 21;
+
+    optional conn conn = 50;
+    optional connRet connRet = 51;
+
+    optional test test = 200;
+    optional testRet testRet = 201;
+}
+
+message updateModelData {
+    required string clsName = 1;
+    required int32 idx = 2;
+    // 下方命名规则：对应Model的clsName
+    optional model.PlayerInfo Player = 10;
+    optional model.PlayerCurrency PlayerCurrency = 11;
+    optional model.PlayerProps PlayerProps = 12;
+}
+
+message conn {
+    required string token = 1;
+}
+message connRet{
+    required model.PlayerInfo player = 1;
+}
+
+message test {
+    required string text = 1;
+}
+message testRet{
+    required string text = 2;
+}

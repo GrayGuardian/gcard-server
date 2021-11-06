@@ -1,15 +1,12 @@
 
 module.exports = async function () {
     require("../util/util");
-
     // 常量
     global.SOCKET_EVENT = require("../config/SOCKET_EVENT");
     global.EVENT_CODE = require("../config/EVENT_CODE");
     global.REGULAR_CODE = require("../config/REGULAR_CODE");
     global.GAME_CONST = require("../config/GAME_CONST");
     global.S2S_TYPE = require("../config/S2S_TYPE");
-
-    global.AssetManager = require("../asset/asset_manager");
     // 类
     global.SocketClient = require("../net/socket/socket_client");
     global.SocketServer = require("../net/socket/socket_server");
@@ -27,7 +24,6 @@ module.exports = async function () {
     global.lock = require("../tool/lock");
     global.Template = require("../template/template");
     global.Template.refresh()
-
     // 实例化对象
     global.pb = new (require("../pb/pb"))();
     global.jwt = new (require("../tool/jwt"))();
@@ -42,5 +38,4 @@ module.exports = async function () {
 
     global.serverConfig = new (require("../config/server_config"))();
     global.serverConfig.create(await mysqlLogic.getAllServerConfigs())
-
 }

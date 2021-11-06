@@ -1,8 +1,4 @@
 var Router = function () { }
-Router.prototype.clientAssetVersion = async function (ctx, next) {
-    ctx.method.callback({ version: AssetManager.Version, assetDownloadRootUrl: "http://127.0.0.1/Download", clientDowanloadUrl: "www.baidu.com" })
-    await next();
-}
 Router.prototype.register = async function (ctx, next) {
     // 校验用户名格式
     if (!REGULAR_CODE.USERNAME_VALID(ctx.state.data.username)) {

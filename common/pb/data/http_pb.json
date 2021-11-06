@@ -13,14 +13,6 @@
               "type": "error.Error",
               "id": 20
             },
-            "clientAssetVersion": {
-              "type": "clientAssetVersion",
-              "id": 80
-            },
-            "clientAssetVersionRet": {
-              "type": "clientAssetVersionRet",
-              "id": 81
-            },
             "register": {
               "type": "register",
               "id": 100
@@ -52,28 +44,6 @@
             "enterGameRet": {
               "type": "enterGameRet",
               "id": 107
-            }
-          }
-        },
-        "clientAssetVersion": {
-          "fields": {}
-        },
-        "clientAssetVersionRet": {
-          "fields": {
-            "version": {
-              "rule": "required",
-              "type": "string",
-              "id": 1
-            },
-            "assetDownloadRootUrl": {
-              "rule": "required",
-              "type": "string",
-              "id": 2
-            },
-            "clientDowanloadUrl": {
-              "rule": "required",
-              "type": "string",
-              "id": 3
             }
           }
         },

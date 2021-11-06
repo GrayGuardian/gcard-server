@@ -1,0 +1,18 @@
+syntax = "proto2";
+
+// 错误代码
+package error;
+
+message Error{
+    required string id = 1;
+    optional ErrorData data = 2;
+}
+
+message ErrorData {
+    optional USER_BAN USER_BAN = 1;
+}
+
+message USER_BAN {
+    required int32 time = 1;
+}
+
