@@ -5,7 +5,7 @@ cd %cd%
 set pbjs=../../node_modules/protobufjs/bin/pbjs
 set protocol_dir=%cd%\
 set json_pb_dir=../../common/pb/data/
-set lua_pb_dir=D:\testtttt\Assets\AssetBundles\pb\
+set lua_pb_dir=../../../gcard-client/Assets/AssetBundles/pb/
 
 for /R %protocol_dir% %%f in (*.proto) do (
 	echo Json PB === %json_pb_dir%%%~nf_pb.json

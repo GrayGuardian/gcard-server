@@ -29,7 +29,7 @@ BUILD_DIR_JS_MANAGER = BUILD_DIR_JS_ROOT + "manager"
 # 导出JS_TEMPLATE文件
 BUILD_FILE_JS_TEMPLATE = BUILD_DIR_JS_ROOT + "template.js"
 # 导出LUA根目录
-BUILD_DIR_LUA_ROOT = "D:\\testtttt\\Assets\\AssetBundles\\lua\\template\\"
+BUILD_DIR_LUA_ROOT = "../../../gcard-client/Assets/AssetBundles/lua/template/"
 # 导出LUA_DATA目录
 BUILD_DIR_LUA_DATA = BUILD_DIR_LUA_ROOT + "data"
 # 导出LUA_MODEL目录
