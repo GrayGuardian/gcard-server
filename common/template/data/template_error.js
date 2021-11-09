@@ -34,6 +34,7 @@ tpl.data = [
 	{ id:"GAMENAME_EXIST", code:50020, tip:300122, },
 	{ id:"GAMENAME_NOTVALID", code:50021, tip:300123, },
 	{ id:"PLAYER_SUM_MAX", code:50022, tip:300124, },
+	{ id:"VERSION_GET_ERROR", code:50023, tip:null, },
 ]
 
 module.exports = tpl
